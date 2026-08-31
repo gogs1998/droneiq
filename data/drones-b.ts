@@ -45,7 +45,7 @@ export const dronesB: Drone[] = [
     ukClassNote:
       "C0 with the standard Intelligent Flight Battery / Fly More Combo. C1 with Battery Plus. Weigh yours.",
     sub250: true,
-    flyerIdRequired: false,
+    flyerIdRequired: true,
     operatorIdRequired: true,
     cameras: [
       wide({

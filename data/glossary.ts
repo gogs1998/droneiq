@@ -12,9 +12,9 @@ export const glossary: Record<string, GlossaryEntry> = {
     id: "weight",
     label: "Weight",
     oneLiner: "The number that decides UK paperwork more often than the camera does.",
-    body: "Takeoff weight is what the CAA cares about, not the number on the box without a battery. In the UK, crossing 250 g is the line between a C0/UK0 Mini you can treat as a travel camera and a drone that needs a Flyer ID and tighter distances from uninvolved people. A 4 g swing on the Mini 5 Pro is therefore a legal fact, not trivia. Always weigh the aircraft you actually fly, with the battery you actually use.",
+    body: "Takeoff weight is what the CAA cares about, not the number on the box without a battery. From March 2026 the Flyer ID line is 100 g, not 250 g: any of these camera drones needs a Flyer ID. Operator ID is required from 250 g, or from 100 g if it has a camera — again, every drone here. The 250 g / C0 line still matters for Open subcategory and how close you may fly to uninvolved people. A 4 g swing on the Mini 5 Pro is therefore a class-mark fact, not an ID-exemption. Always weigh the aircraft you actually fly, with the battery you actually use.",
     sourceLabel: "CAA Drone and model aircraft code",
-    sourceUrl: "https://www.caa.co.uk/drones/",
+    sourceUrl: "https://www.caa.co.uk/drones/open-category/drone-code/getting-what-you-need-to-fly-legally/",
   },
   ukClass: {
     id: "ukClass",

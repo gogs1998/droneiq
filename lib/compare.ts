@@ -129,14 +129,15 @@ export function flyCard(d: Drone): {
     return {
       subcategory: "A1 Over People (C0 pack)",
       people:
-        "May overfly uninvolved people; not crowds. Plus battery is C1 — still A1 until 31 Dec 2027. Weigh it.",
+        "May overfly uninvolved people; not crowds. Flyer ID + Operator ID on both packs. Plus battery is C1 — still A1 until 31 Dec 2027. Weigh it.",
       height,
     };
   }
   if (d.ukClass === "C0" || d.sub250) {
     return {
       subcategory: "A1 Over People",
-      people: "May overfly uninvolved people; not crowds. Towns OK.",
+      people:
+        "May overfly uninvolved people; not crowds. Flyer ID + Operator ID from 100 g with a camera. Towns OK in A1.",
       height,
     };
   }
@@ -667,12 +668,12 @@ function lawLine(list: Drone[]): string {
   const sub = new Set(list.map((d) => d.sub250));
   if (classes.size === 1 && sub.size === 1) {
     const d = list[0];
-    return `UK: ${d.ukClass}${d.sub250 ? ", stays under 250 g" : ", Flyer ID required"} on every one of these. Operator ID applies because they all have cameras.`;
+    return `UK: ${d.ukClass}${d.sub250 ? ", stays under 250 g" : ""} on every one of these. Flyer ID and Operator ID apply from 100 g with a camera — that is every drone here.`;
   }
   return `UK paperwork is part of the difference: ${list
     .map(
       (d) =>
-        `${d.shortName} is ${d.ukClass}${d.sub250 ? " / sub-250 g" : ""} (${d.flyerIdRequired ? "Flyer ID + Operator ID" : "Operator ID, no Flyer ID"})`,
+        `${d.shortName} is ${d.ukClass}${d.sub250 ? " / sub-250 g" : ""} (Flyer ID + Operator ID)`,
     )
     .join("; ")}.`;
 }
@@ -855,11 +856,7 @@ function cameraNotice(a: Drone, b: Drone): string {
 }
 
 function ukRegister(d: Drone): string {
-  return `${d.shortName} is ${d.ukClass}, takeoff about ${trimNum(d.weightG)} g (${d.weightNote}) ${
-    d.flyerIdRequired
-      ? "so a Flyer ID is required in the UK as well as an Operator ID."
-      : "so under 250 g you do not need a Flyer ID, but you still need an Operator ID because it has a camera (it is not a toy)."
-  } This is not legal advice; read the CAA drone code for the airframe and battery you actually fly.`;
+  return `${d.shortName} is ${d.ukClass}, takeoff about ${trimNum(d.weightG)} g (${d.weightNote}). In the UK a Flyer ID is required from 100 g, and an Operator ID is required from 100 g with a camera or from 250 g — this airframe needs both. This is not legal advice; read the CAA drone code for the airframe and battery you actually fly.`;
 }
 
 function flyFaq(d: Drone): string {

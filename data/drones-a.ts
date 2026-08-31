@@ -32,7 +32,7 @@ export const drones: Drone[] = [
     ukClass: "C0",
     ukClassNote: "Well under 250 g. Camera drone: Operator ID still required in the UK.",
     sub250: true,
-    flyerIdRequired: false,
+    flyerIdRequired: true,
     operatorIdRequired: true,
     cameras: [
       wide({
@@ -148,7 +148,7 @@ export const drones: Drone[] = [
     ukClass: "C0",
     ukClassNote: "Under 250 g. Operator ID required (camera).",
     sub250: true,
-    flyerIdRequired: false,
+    flyerIdRequired: true,
     operatorIdRequired: true,
     cameras: [
       wide({
@@ -272,7 +272,7 @@ export const drones: Drone[] = [
     ukClass: "C0",
     ukClassNote: "C0 / under 249 g with guards on.",
     sub250: true,
-    flyerIdRequired: false,
+    flyerIdRequired: true,
     operatorIdRequired: true,
     cameras: [
       wide({
@@ -396,7 +396,7 @@ export const drones: Drone[] = [
     ukClass: "C0",
     ukClassNote: "C0. Downward sensing only.",
     sub250: true,
-    flyerIdRequired: false,
+    flyerIdRequired: true,
     operatorIdRequired: true,
     cameras: [
       wide({
@@ -518,7 +518,7 @@ export const drones: Drone[] = [
     ukClass: "C0",
     ukClassNote: "C0 version still sold in the UK.",
     sub250: true,
-    flyerIdRequired: false,
+    flyerIdRequired: true,
     operatorIdRequired: true,
     cameras: [
       wide({
@@ -627,7 +627,7 @@ export const drones: Drone[] = [
     ukClass: "C0",
     ukClassNote: "C0 with the standard pack. Plus battery broke 250 g.",
     sub250: true,
-    flyerIdRequired: false,
+    flyerIdRequired: true,
     operatorIdRequired: true,
     cameras: [
       wide({
@@ -740,7 +740,7 @@ export const drones: Drone[] = [
     ukClass: "C0",
     ukClassNote: "C0 with the Intelligent Flight Battery sold in the UK.",
     sub250: true,
-    flyerIdRequired: false,
+    flyerIdRequired: true,
     operatorIdRequired: true,
     cameras: [
       wide({
