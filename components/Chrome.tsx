@@ -1,5 +1,4 @@
 import Link from "next/link";
-import Script from "next/script";
 
 export function SiteHeader() {
   return (
@@ -58,14 +57,19 @@ export function SiteFooter() {
   );
 }
 
-/** Cloudflare Web Analytics. Token arrives after DNS; keep it out of the HTML until then. */
+/**
+ * Cloudflare Web Analytics. iqlabs.app is DNS-only (grey cloud), so the
+ * beacon has to live in the HTML — the edge cannot inject it.
+ * Shared iqlabs.app site tag; override with NEXT_PUBLIC_CF_BEACON_TOKEN.
+ */
 export function CloudflareBeacon() {
-  const token = process.env.NEXT_PUBLIC_CF_BEACON_TOKEN;
-  if (!token) return null;
+  const token =
+    process.env.NEXT_PUBLIC_CF_BEACON_TOKEN ||
+    "c504a8ead0414297aa303dd4f37b398e";
   return (
-    <Script
+    <script
+      defer
       src="https://static.cloudflareinsights.com/beacon.min.js"
-      strategy="afterInteractive"
       data-cf-beacon={JSON.stringify({ token })}
     />
   );
