@@ -6,9 +6,12 @@ import Link from "next/link";
 export function SpecTable({ drones }: { drones: Drone[] }) {
   const rows = specRows(drones);
   const grouped = groups(rows);
+  const solo = drones.length === 1;
   return (
     <div className="overflow-x-auto">
-      <table className="w-full min-w-[36rem] border-collapse text-sm">
+      <table
+        className={`w-full border-collapse text-sm ${solo ? "" : "min-w-[36rem]"}`}
+      >
         <thead>
           <tr>
             <th className="sticky left-0 z-10 bg-paper px-3 py-3 text-left text-xs font-medium uppercase tracking-wider text-quiet">
@@ -19,19 +22,34 @@ export function SpecTable({ drones }: { drones: Drone[] }) {
                 key={d.slug}
                 className="sticky top-0 bg-paper px-3 py-3 text-left align-bottom"
               >
-                <Link href={`/drones/${d.slug}`} className="display text-lg text-ink hover:underline">
-                  {d.shortName}
-                </Link>
-                <div className="num mt-1 text-xs text-muted">
-                  {d.ukClass} · {d.weightG} g
-                </div>
+                {solo ? (
+                  <span className="display text-lg text-ink">{d.shortName}</span>
+                ) : (
+                  <Link
+                    href={`/drones/${d.slug}`}
+                    className="display text-lg text-ink hover:underline"
+                  >
+                    {d.shortName}
+                  </Link>
+                )}
+                {solo ? null : (
+                  <div className="num mt-1 text-xs text-muted">
+                    {d.ukClass} · {d.weightG} g
+                  </div>
+                )}
               </th>
             ))}
           </tr>
         </thead>
         <tbody>
           {grouped.map((g) => (
-            <GroupRows key={g.name} group={g.name} rows={g.rows} cols={drones.length} />
+            <GroupRows
+              key={g.name}
+              group={g.name}
+              rows={g.rows}
+              cols={drones.length}
+              solo={solo}
+            />
           ))}
         </tbody>
       </table>
@@ -43,10 +61,12 @@ function GroupRows({
   group,
   rows,
   cols,
+  solo,
 }: {
   group: string;
   rows: SpecRow[];
   cols: number;
+  solo: boolean;
 }) {
   return (
     <>
@@ -90,17 +110,17 @@ function GroupRows({
               <td
                 key={i}
                 className={`px-3 py-3 ${
-                  flag === "notice"
+                  !solo && flag === "notice"
                     ? "bg-[color-mix(in_srgb,var(--color-yellow)_22%,transparent)]"
                     : ""
                 }`}
               >
                 <div className="num text-[0.95rem] text-ink">{v}</div>
-                {win && flag !== "same" ? (
+                {solo ? null : win && flag !== "same" ? (
                   <div className="mt-1 text-[10px] uppercase tracking-wider text-yellow-ink">
                     Ahead
                   </div>
-                ) : flag === "same" ? (
+                ) : !solo && flag === "same" ? (
                   <div className="mt-1 text-[10px] uppercase tracking-wider text-quiet">
                     Same
                   </div>

@@ -6,17 +6,47 @@ import type { Drone, SensingKind } from "@/data/types";
 export type Notice = "notice" | "quiet" | "same";
 
 export type SpecKey =
+  | "released"
+  | "app"
   | "weight"
   | "ukClass"
+  | "folded"
   | "sensor"
+  | "aperture"
+  | "fov"
+  | "iso"
+  | "log"
   | "telephoto"
   | "video"
   | "gimbal"
   | "flightTime"
+  | "hover"
   | "wind"
+  | "speed"
+  | "climb"
+  | "ceiling"
   | "sensing"
   | "range"
-  | "storage";
+  | "battery"
+  | "storage"
+  | "sdCard"
+  | "gnss"
+  | "opTemp";
+
+/** Rows that feed the “would you notice” verdict — not every spec line. */
+const VERDICT_KEYS: SpecKey[] = [
+  "weight",
+  "ukClass",
+  "sensor",
+  "telephoto",
+  "video",
+  "gimbal",
+  "flightTime",
+  "wind",
+  "sensing",
+  "range",
+  "storage",
+];
 
 export type SpecRow = {
   key: SpecKey;
@@ -54,6 +84,16 @@ export function gbp(n: number | null | undefined): string {
   }).format(n);
 }
 
+export function formatReleased(iso: string): string {
+  const [y, m, d] = iso.split("-").map(Number);
+  if (!y || !m || !d) return iso;
+  return new Date(Date.UTC(y, m - 1, d)).toLocaleDateString("en-GB", {
+    day: "numeric",
+    month: "short",
+    year: "numeric",
+  });
+}
+
 export function primaryCamera(d: Drone) {
   return d.cameras[0];
 }
@@ -73,6 +113,23 @@ export function teleSummary(d: Drone): string {
 export function sensorSummary(d: Drone): string {
   const c = primaryCamera(d);
   return `${c.sensor} · ${c.megapixels} MP · ${c.equivMm} mm`;
+}
+
+function allSame(n: number): Notice[] {
+  return Array.from({ length: n }, () => "same" as Notice);
+}
+
+function gapNotice(nums: number[], noticeAt: number, quietAt: number): Notice[] {
+  if (nums.length < 2) return allSame(nums.length);
+  const gap = Math.max(...nums) - Math.min(...nums);
+  const flag: Notice = gap >= noticeAt ? "notice" : gap >= quietAt ? "quiet" : "same";
+  return nums.map(() => flag);
+}
+
+function differNotice(vals: string[], level: Notice = "quiet"): Notice[] {
+  if (vals.length < 2) return allSame(vals.length);
+  const flag: Notice = new Set(vals).size === 1 ? "same" : level;
+  return vals.map(() => flag);
 }
 
 function maxNotice(flags: Notice[]): Notice {
@@ -187,6 +244,25 @@ export function specRows(list: Drone[]): SpecRow[] {
 
   return [
     row(
+      "released",
+      "Identity",
+      "Released",
+      list.map((d) => formatReleased(d.released)),
+      differNotice(list.map((d) => d.released.slice(0, 4))),
+      uniqueWinner(
+        list.map((d) => Number(d.released.slice(0, 4))),
+        "max",
+      ),
+    ),
+    row(
+      "app",
+      "Identity",
+      "App",
+      list.map((d) => d.app),
+      differNotice(list.map((d) => d.app)),
+      null,
+    ),
+    row(
       "weight",
       "Weight & UK law",
       "Takeoff weight",
@@ -209,12 +285,59 @@ export function specRows(list: Drone[]): SpecRow[] {
       ),
     ),
     row(
+      "folded",
+      "Weight & UK law",
+      "Folded size",
+      list.map((d) => d.foldedMm),
+      differNotice(list.map((d) => d.foldedMm)),
+      null,
+    ),
+    row(
       "sensor",
       "Camera",
       "Main sensor",
       list.map(sensorSummary),
       sensorNotice,
       sensorWinner,
+    ),
+    row(
+      "aperture",
+      "Camera",
+      "Aperture",
+      list.map((d) => d.cameras[0].aperture),
+      differNotice(list.map((d) => d.cameras[0].aperture)),
+      null,
+    ),
+    row(
+      "fov",
+      "Camera",
+      "Field of view",
+      list.map((d) => `${d.cameras[0].fovDeg}°`),
+      gapNotice(
+        list.map((d) => d.cameras[0].fovDeg),
+        20,
+        8,
+      ),
+      uniqueWinner(
+        list.map((d) => d.cameras[0].fovDeg),
+        "max",
+      ),
+    ),
+    row(
+      "iso",
+      "Camera",
+      "ISO (photo / video)",
+      list.map((d) => `${d.cameras[0].isoPhoto} / ${d.cameras[0].isoVideo}`),
+      differNotice(list.map((d) => `${d.cameras[0].isoPhoto}|${d.cameras[0].isoVideo}`)),
+      null,
+    ),
+    row(
+      "log",
+      "Camera",
+      "Colour / log",
+      list.map((d) => d.cameras[0].log ?? "Rec. 709 / normal"),
+      differNotice(list.map((d) => d.cameras[0].log ?? "none")),
+      null,
     ),
     row(
       "telephoto",
@@ -259,12 +382,72 @@ export function specRows(list: Drone[]): SpecRow[] {
       uniqueWinner(times, "max"),
     ),
     row(
+      "hover",
+      "Flight",
+      "Hover time",
+      list.map((d) => (d.hoverTimeMin != null ? `${d.hoverTimeMin} min` : "—")),
+      gapNotice(
+        list.map((d) => d.hoverTimeMin ?? 0),
+        8,
+        3,
+      ),
+      uniqueWinner(
+        list.map((d) => d.hoverTimeMin ?? 0),
+        "max",
+      ),
+    ),
+    row(
       "wind",
       "Flight",
       "Wind resistance",
       list.map((d) => `${d.windLevel} · ${d.windMs} m/s`),
       windNotice,
       uniqueWinner(wind, "max"),
+    ),
+    row(
+      "speed",
+      "Flight",
+      "Max speed (CE)",
+      list.map((d) => `${d.maxSpeedKphCe} km/h CE · ${d.maxSpeedKphFcc} FCC`),
+      gapNotice(
+        list.map((d) => d.maxSpeedKphCe),
+        20,
+        8,
+      ),
+      uniqueWinner(
+        list.map((d) => d.maxSpeedKphCe),
+        "max",
+      ),
+    ),
+    row(
+      "climb",
+      "Flight",
+      "Climb / descent",
+      list.map((d) => `${d.maxAscentMs} / ${d.maxDescentMs} m/s`),
+      gapNotice(
+        list.map((d) => d.maxAscentMs + d.maxDescentMs),
+        4,
+        2,
+      ),
+      uniqueWinner(
+        list.map((d) => d.maxAscentMs),
+        "max",
+      ),
+    ),
+    row(
+      "ceiling",
+      "Flight",
+      "Max takeoff altitude",
+      list.map((d) => `${d.maxTakeoffM} m`),
+      gapNotice(
+        list.map((d) => d.maxTakeoffM),
+        2000,
+        500,
+      ),
+      uniqueWinner(
+        list.map((d) => d.maxTakeoffM),
+        "max",
+      ),
     ),
     row(
       "sensing",
@@ -288,12 +471,51 @@ export function specRows(list: Drone[]): SpecRow[] {
         : null,
     ),
     row(
+      "battery",
+      "Power & storage",
+      "Battery",
+      list.map((d) => `${trimNum(d.batteryWh)} Wh`),
+      gapNotice(
+        list.map((d) => d.batteryWh),
+        30,
+        10,
+      ),
+      uniqueWinner(
+        list.map((d) => d.batteryWh),
+        "max",
+      ),
+    ),
+    row(
       "storage",
-      "Storage",
+      "Power & storage",
       "Internal storage",
       list.map((d) => (d.internalGb ? `${d.internalGb} GB` : "Card only")),
       storageNotice,
       uniqueWinner(storage, "max"),
+    ),
+    row(
+      "sdCard",
+      "Power & storage",
+      "microSD",
+      list.map((d) => d.sdCard),
+      differNotice(list.map((d) => d.sdCard)),
+      null,
+    ),
+    row(
+      "gnss",
+      "Power & storage",
+      "GNSS",
+      list.map((d) => d.gnss),
+      differNotice(list.map((d) => d.gnss)),
+      null,
+    ),
+    row(
+      "opTemp",
+      "Power & storage",
+      "Operating temperature",
+      list.map((d) => d.opTempC),
+      differNotice(list.map((d) => d.opTempC)),
+      null,
     ),
   ];
 }
@@ -327,6 +549,7 @@ export function verdictFor(list: Drone[]): Verdict {
   const same: string[] = [];
 
   for (const r of rows) {
+    if (!VERDICT_KEYS.includes(r.key)) continue;
     const flag = maxNotice(r.notice);
     const label = glossary[r.key]?.label ?? r.label;
     if (flag === "same") {
@@ -442,23 +665,11 @@ function snippetFor(list: Drone[], rows: SpecRow[], law: string): string {
 export type FaqItem = { q: string; a: string };
 
 export function faqsFor(list: Drone[]): FaqItem[] {
-  if (list.length !== 2) {
-    return [
-      {
-        q: `How do ${list.map((d) => d.shortName).join(", ")} differ where you would notice?`,
-        a: verdictFor(list).paragraph,
-      },
-    ];
-  }
+  if (list.length !== 2) return [];
   const [rawA, rawB] = list;
   const older = rawA.sortOrder <= rawB.sortOrder ? rawA : rawB;
   const newer = older === rawA ? rawB : rawA;
   const items: FaqItem[] = [];
-
-  items.push({
-    q: `Is the ${newer.shortName} worth it over the ${older.shortName}?`,
-    a: worthIt(older, newer),
-  });
 
   const sensorGap = Math.abs(
     primaryCamera(older).sensorRank - primaryCamera(newer).sensorRank,
@@ -535,15 +746,6 @@ export function faqsFor(list: Drone[]): FaqItem[] {
   }
 
   return items;
-}
-
-function worthIt(older: Drone, newer: Drone): string {
-  const v = verdictFor([older, newer]);
-  const price =
-    older.prices.djiRrpGbp != null && newer.prices.djiRrpGbp != null
-      ? ` The new-box gap is ${gbp(Math.abs(newer.prices.djiRrpGbp - older.prices.djiRrpGbp))} at DJI UK RRP (${older.prices.asOf}).`
-      : "";
-  return `${v.paragraph}${price} If none of the “would notice” lines match how you actually fly, keep the ${older.shortName}.`;
 }
 
 function cameraNotice(a: Drone, b: Drone): string {

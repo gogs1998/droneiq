@@ -9,8 +9,7 @@ export function VerdictBlock({ drones }: { drones: Drone[] }) {
       <p className="text-xs uppercase tracking-wider text-yellow-ink">
         Would you notice?
       </p>
-      <p className="mt-2 text-lg leading-snug">{v.snippet}</p>
-      <p className="mt-4 text-[0.95rem] leading-relaxed text-muted">{v.paragraph}</p>
+      <p className="mt-2 text-[0.95rem] leading-relaxed">{v.paragraph}</p>
       <div className="mt-4">
         <CopyVerdict text={v.paragraph} />
       </div>

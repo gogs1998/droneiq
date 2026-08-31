@@ -1,4 +1,3 @@
-import { YouCanKeep } from "@/components/Compatibility";
 import { JsonLd } from "@/components/JsonLd";
 import { PriceBoard } from "@/components/PriceBoard";
 import { Questions } from "@/components/Questions";
@@ -105,7 +104,7 @@ export default async function ComparePage({
             description: v.snippet,
             url,
           }),
-          jsonLdFaq(faqs),
+          ...(faqs.length ? [jsonLdFaq(faqs)] : []),
           jsonLdItemList(ordered, url),
         ]}
       />
@@ -115,18 +114,12 @@ export default async function ComparePage({
           ? `${ordered[0].name} vs ${ordered[1].name}`
           : ordered.map((d) => d.shortName).join(" vs ")}
       </h1>
-      <p className="mt-4 max-w-2xl text-lg leading-snug">{v.snippet}</p>
       <div className="mt-6">
         <VerdictBlock drones={ordered} />
       </div>
       <div className="mt-6">
         <UpgradeCost targets={ordered} />
       </div>
-      {ordered.length === 2 ? (
-        <div className="mt-4">
-          <YouCanKeep from={ordered[0]} to={ordered[1]} />
-        </div>
-      ) : null}
 
       <section className="mt-10">
         <SpecTable drones={ordered} />
@@ -150,16 +143,6 @@ export default async function ComparePage({
                 </Link>
               </li>
             ))}
-            {ordered.length === 2 ? (
-              <li>
-                <Link
-                  href={`/compare/${pairSlug(ordered[0], related[0] ?? ordered[1])}`}
-                  className="hover:underline"
-                >
-                  More with {ordered[0].shortName}
-                </Link>
-              </li>
-            ) : null}
           </ul>
         </section>
       ) : null}

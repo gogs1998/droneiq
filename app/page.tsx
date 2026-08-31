@@ -48,32 +48,11 @@ export default function HomePage() {
             </li>
           ))}
         </ul>
-      </section>
-
-      <section className="mt-14">
-        <div className="flex items-baseline justify-between">
-          <h2 className="display text-2xl">Catalog</h2>
-          <Link href="/drones" className="text-sm underline">
-            All drones
+        <p className="mt-4 text-sm">
+          <Link href="/drones" className="underline">
+            Full catalog
           </Link>
-        </div>
-        <ul className="mt-4 grid gap-px bg-rule sm:grid-cols-2 lg:grid-cols-3">
-          {drones.map((d) => (
-            <li key={d.slug} className="bg-paper px-4 py-4">
-              <Link href={`/drones/${d.slug}`} className="display text-xl hover:underline">
-                {d.shortName}
-              </Link>
-              <p className="num mt-1 text-sm text-muted">
-                {d.weightG} g · {d.ukClass} · {d.cameras[0].sensor}
-              </p>
-              {d.discontinued ? (
-                <p className="mt-1 text-xs uppercase tracking-wider text-quiet">
-                  Discontinued as new
-                </p>
-              ) : null}
-            </li>
-          ))}
-        </ul>
+        </p>
       </section>
     </div>
   );

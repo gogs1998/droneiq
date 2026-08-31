@@ -1,5 +1,4 @@
 import Link from "next/link";
-import { JOBS } from "@/data/catalog";
 
 export function SiteHeader() {
   return (
@@ -15,11 +14,9 @@ export function SiteHeader() {
           <Link href="/#bench" className="hover:text-ink">
             Bench
           </Link>
-          {JOBS.map((j) => (
-            <Link key={j.slug} href={`/for/${j.slug}`} className="hover:text-ink">
-              {j.title}
-            </Link>
-          ))}
+          <Link href="/for" className="hover:text-ink">
+            For
+          </Link>
           <Link href="/guides/buying-used" className="hover:text-ink">
             Used
           </Link>
@@ -45,6 +42,10 @@ export function SiteFooter() {
           {" · "}
           <Link href="/drones" className="hover:text-ink">
             Catalog
+          </Link>
+          {" · "}
+          <Link href="/for" className="hover:text-ink">
+            Pick by job
           </Link>
           {" · "}
           <Link href="/guides/buying-used" className="hover:text-ink">

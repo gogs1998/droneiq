@@ -3,9 +3,10 @@ import { Compatibility } from "@/components/Compatibility";
 import { JsonLd } from "@/components/JsonLd";
 import { PriceBoard } from "@/components/PriceBoard";
 import { ReviewsShelf } from "@/components/ReviewsShelf";
+import { SpecTable } from "@/components/SpecTable";
 import { UpgradeCost } from "@/components/UpgradeCost";
 import { drones, getDrone, relatedDrones } from "@/data/catalog";
-import { gbp, sensorSummary } from "@/lib/compare";
+import { formatReleased, gbp, sensorSummary } from "@/lib/compare";
 import { jsonLdWebPage, pairSlug, siteUrl } from "@/lib/seo";
 import type { Metadata } from "next";
 import Link from "next/link";
@@ -54,9 +55,11 @@ export default async function DronePage({
       </p>
       <h1 className="display mt-2 text-4xl md:text-5xl">{d.name}</h1>
       <p className="num mt-3 text-lg text-muted">
-        {d.weightG} g · {d.ukClass} · {sensorSummary(d)} · {gbp(d.prices.djiRrpGbp)} RRP
+        {formatReleased(d.released)} · {gbp(d.prices.djiRrpGbp)} RRP
       </p>
-      <p className="mt-4 max-w-2xl text-muted">{d.weightNote} {d.ukClassNote}</p>
+      <p className="mt-4 max-w-2xl text-sm text-muted">
+        {d.weightNote} {d.ukClassNote}
+      </p>
 
       <div className="mt-8">
         <UpgradeCost targets={[d]} />
@@ -64,23 +67,9 @@ export default async function DronePage({
 
       <section className="mt-10">
         <h2 className="display text-2xl">Record</h2>
-        <dl className="mt-4 grid gap-3 sm:grid-cols-2">
-          <Fact k="Released" v={d.released} />
-          <Fact k="Lab flight time" v={`${d.flightTimeMin} min`} />
-          <Fact k="Wind" v={`${d.windLevel} · ${d.windMs} m/s`} />
-          <Fact k="Max speed (CE)" v={`${d.maxSpeedKphCe} km/h (${d.maxSpeedKphFcc} FCC)`} />
-          <Fact k="Sensing" v={d.sensing.replaceAll("-", " ")} />
-          <Fact k="Transmission" v={`${d.transmission} · ${d.rangeKmCe} km CE`} />
-          <Fact k="Internal storage" v={d.internalGb ? `${d.internalGb} GB` : "Card only"} />
-          <Fact k="Operator / Flyer ID" v={`Operator ID${d.flyerIdRequired ? " + Flyer ID" : " only"}`} />
-        </dl>
-        {d.cameras.map((c) => (
-          <p key={c.role} className="mt-3 text-sm text-muted">
-            <span className="uppercase tracking-wider text-quiet">{c.role}</span>{" "}
-            {c.sensor}, {c.megapixels} MP, {c.equivMm} mm {c.aperture}, {c.maxVideo}
-            {c.trueVertical ? ", true vertical" : ""}
-          </p>
-        ))}
+        <div className="mt-4">
+          <SpecTable drones={[d]} />
+        </div>
       </section>
 
       <PriceBoard drones={[d]} />
@@ -121,15 +110,6 @@ export default async function DronePage({
           ))}
         </ul>
       </section>
-    </div>
-  );
-}
-
-function Fact({ k, v }: { k: string; v: string }) {
-  return (
-    <div className="border-b border-rule pb-2">
-      <dt className="text-xs uppercase tracking-wider text-quiet">{k}</dt>
-      <dd className="num mt-1">{v}</dd>
     </div>
   );
 }

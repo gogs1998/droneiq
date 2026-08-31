@@ -19,6 +19,9 @@ export type Camera = {
   megapixels: number;
   equivMm: number;
   aperture: string;
+  fovDeg: number;
+  isoPhoto: string;
+  isoVideo: string;
   maxVideo: string;
   maxVideoFps: number;
   maxPhotoMp: number;
@@ -84,6 +87,14 @@ export type Drone = {
   maxSpeedKphCe: number;
   maxSpeedKphFcc: number;
   maxTakeoffM: number;
+  hoverTimeMin: number | null;
+  maxAscentMs: number;
+  maxDescentMs: number;
+  foldedMm: string;
+  sdCard: string;
+  gnss: string;
+  opTempC: string;
+  app: string;
   sensing: SensingKind;
   sensingNote: string;
   transmission: string;
