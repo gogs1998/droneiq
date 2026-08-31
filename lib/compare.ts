@@ -249,10 +249,7 @@ export function specRows(list: Drone[]): SpecRow[] {
       "Released",
       list.map((d) => formatReleased(d.released)),
       differNotice(list.map((d) => d.released.slice(0, 4))),
-      uniqueWinner(
-        list.map((d) => Number(d.released.slice(0, 4))),
-        "max",
-      ),
+      null,
     ),
     row(
       "app",
