@@ -80,7 +80,7 @@ function GroupRows({
       </tr>
       {rows.map((r) => (
         <tr key={r.key} className="border-b border-rule align-top">
-          <th className="sticky left-0 max-w-[9.5rem] bg-paper px-2 py-2 text-left font-normal sm:max-w-none sm:px-3 sm:py-3">
+          <th className="sticky left-0 z-10 max-w-[10rem] bg-paper px-2 py-2 text-left font-normal leading-snug break-words sm:max-w-none sm:px-3 sm:py-3">
             <details className="group">
               <summary className="cursor-pointer list-none text-ink marker:hidden">
                 <span className="border-b border-dotted border-quiet">

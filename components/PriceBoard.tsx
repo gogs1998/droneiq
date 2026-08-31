@@ -19,7 +19,7 @@ export function PriceBoard({ drones }: { drones: Drone[] }) {
         <table className="w-full min-w-[18rem] text-sm sm:min-w-[40rem]">
           <thead>
             <tr className="text-left text-xs uppercase tracking-wider text-quiet">
-              <th className="sticky left-0 bg-paper px-2 py-2 sm:px-3"> </th>
+              <th className="sticky left-0 z-10 bg-paper px-2 py-2 sm:px-3"> </th>
               {drones.map((d) => (
                 <th key={d.slug} className="px-2 py-2 sm:px-3">
                   {d.shortName}
@@ -103,7 +103,7 @@ function PriceRow({
 }) {
   return (
     <tr className="border-t border-rule align-top">
-      <th className="sticky left-0 bg-paper px-2 py-3 text-left font-normal text-muted sm:px-3">
+      <th className="sticky left-0 z-10 bg-paper px-2 py-3 text-left font-normal leading-snug text-muted sm:px-3">
         {label}
       </th>
       {drones.map((d) => {
