@@ -33,6 +33,15 @@ yarn-error.log*
 # env files (can opt-in for committing if needed)
 .env*
 
+# flight logs, GPS traces, operator IDs, client sites — never in a public repo
+*.gpx
+*.kml
+*.igc
+*.nmea
+/flights/
+/logs/
+/operator/
+
 # vercel
 .vercel
 

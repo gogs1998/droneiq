@@ -1,7 +1,7 @@
 import { JsonLd } from "@/components/JsonLd";
 import { JOBS, dronesForJob } from "@/data/catalog";
 import { gbp, sensorSummary } from "@/lib/compare";
-import { jsonLdItemList, jsonLdWebPage, siteUrl } from "@/lib/seo";
+import { jsonLdItemList, jsonLdWebPage, pageMeta, siteUrl } from "@/lib/seo";
 import type { Job } from "@/data/types";
 import type { Metadata } from "next";
 import Link from "next/link";
@@ -19,10 +19,11 @@ export async function generateMetadata({
   const { job } = await params;
   const meta = JOBS.find((j) => j.slug === job);
   if (!meta) return {};
-  return {
+  return pageMeta({
     title: `Best DJI drones for ${meta.title.toLowerCase()}`,
     description: meta.lede,
-  };
+    path: `/for/${meta.slug}`,
+  });
 }
 
 export default async function JobPage({

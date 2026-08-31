@@ -3,8 +3,16 @@ import { JsonLd } from "@/components/JsonLd";
 import { drones } from "@/data/catalog";
 import { featuredPairs } from "@/data/featured-matchups";
 import { getDrone } from "@/data/catalog";
-import { pairSlug, jsonLdWebPage, siteUrl } from "@/lib/seo";
+import { pairSlug, jsonLdWebPage, pageMeta, siteUrl } from "@/lib/seo";
 import Link from "next/link";
+
+export const metadata = pageMeta({
+  title: "DroneIQ — drone specs you can decide with",
+  description:
+    "Facts-first DJI comparison: sourced specs, CE not FCC, UK class, prices, and whether you would notice the difference.",
+  path: "/",
+  absoluteTitle: true,
+});
 
 export default function HomePage() {
   const featured = featuredPairs

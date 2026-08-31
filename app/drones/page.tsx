@@ -1,15 +1,16 @@
 import { drones } from "@/data/catalog";
 import { JsonLd } from "@/components/JsonLd";
-import { jsonLdItemList, siteUrl } from "@/lib/seo";
+import { jsonLdItemList, jsonLdWebPage, pageMeta, siteUrl } from "@/lib/seo";
 import { gbp } from "@/lib/compare";
 import Link from "next/link";
 import type { Metadata } from "next";
 
-export const metadata: Metadata = {
+export const metadata: Metadata = pageMeta({
   title: "All drones",
   description:
     "DJI consumer drones with sourced weight, sensor, UK class and RRP. Filter by sub-250 g, telephoto, sensing and price.",
-};
+  path: "/drones",
+});
 
 type Props = {
   searchParams: Promise<{ maxg?: string; tele?: string; omni?: string; maxgbp?: string }>;
@@ -39,7 +40,17 @@ export default async function DronesIndex({ searchParams }: Props) {
 
   return (
     <div className="mx-auto max-w-6xl px-4 py-8 md:px-6">
-      <JsonLd data={jsonLdItemList(list, `${siteUrl()}/drones`)} />
+      <JsonLd
+        data={[
+          jsonLdWebPage({
+            name: "All drones",
+            description:
+              "DJI consumer drones with sourced weight, sensor, UK class and RRP.",
+            url: `${siteUrl()}/drones`,
+          }),
+          jsonLdItemList(list, `${siteUrl()}/drones`),
+        ]}
+      />
       <h1 className="display text-4xl">Drones</h1>
       <p className="mt-2 max-w-xl text-muted">
         {list.length} of {drones.length} in the catalog. Filters are shareable

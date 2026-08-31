@@ -1,15 +1,26 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import { JsonLd } from "@/components/JsonLd";
+import { jsonLdWebPage, pageMeta, siteUrl } from "@/lib/seo";
 
-export const metadata: Metadata = {
+export const metadata: Metadata = pageMeta({
   title: "Buying a used DJI drone",
   description:
     "A short used-buy checklist for DJI Minis, Airs, Mavics and Avata: gimbal, batteries, props, ND, pairing.",
-};
+  path: "/guides/buying-used",
+});
 
 export default function BuyingUsed() {
   return (
     <article className="mx-auto max-w-2xl px-4 py-8 md:px-6">
+      <JsonLd
+        data={jsonLdWebPage({
+          name: "Buying a used DJI drone",
+          description:
+            "A short used-buy checklist for DJI Minis, Airs, Mavics and Avata.",
+          url: `${siteUrl()}/guides/buying-used`,
+        })}
+      />
       <p className="text-xs uppercase tracking-wider text-quiet">Guide</p>
       <h1 className="display mt-2 text-4xl">Buying used</h1>
       <p className="mt-4 text-muted">

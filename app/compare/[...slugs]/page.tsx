@@ -14,6 +14,7 @@ import {
   jsonLdFaq,
   jsonLdItemList,
   jsonLdWebPage,
+  pageMeta,
   pairSlug,
   parsePairParam,
   siteUrl,
@@ -41,17 +42,17 @@ export async function generateMetadata({
   if (!list || list.length < 2) return {};
   if (list.length === 2) {
     const [a, b] = canonicalOrder(list[0], list[1]);
-    return {
+    return pageMeta({
       title: titleForPair(a, b),
       description: descriptionForPair(a, b),
-      alternates: { canonical: `${siteUrl()}/compare/${pairSlug(a, b)}` },
-      openGraph: { title: `${a.name} vs ${b.name}` },
-    };
+      path: `/compare/${pairSlug(a, b)}`,
+    });
   }
-  return {
+  return pageMeta({
     title: list.map((d) => d.shortName).join(" vs "),
     description: `Spec comparison: ${list.map((d) => d.name).join(", ")}.`,
-  };
+    path: `/compare/${list.map((d) => d.slug).join("/")}`,
+  });
 }
 
 export default async function ComparePage({

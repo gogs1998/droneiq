@@ -1,4 +1,5 @@
 import Link from "next/link";
+import Script from "next/script";
 
 export function SiteHeader() {
   return (
@@ -37,7 +38,7 @@ export function SiteFooter() {
         </p>
         <p>
           <a href="https://iqlabs.app" className="text-ink hover:underline">
-            A tool from IQ Labs
+            An IQ Labs product
           </a>
           {" · "}
           <Link href="/drones" className="hover:text-ink">
@@ -54,5 +55,18 @@ export function SiteFooter() {
         </p>
       </div>
     </footer>
+  );
+}
+
+/** Cloudflare Web Analytics. Token arrives after DNS; keep it out of the HTML until then. */
+export function CloudflareBeacon() {
+  const token = process.env.NEXT_PUBLIC_CF_BEACON_TOKEN;
+  if (!token) return null;
+  return (
+    <Script
+      src="https://static.cloudflareinsights.com/beacon.min.js"
+      strategy="afterInteractive"
+      data-cf-beacon={JSON.stringify({ token })}
+    />
   );
 }

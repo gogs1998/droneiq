@@ -1,8 +1,8 @@
 import { IBM_Plex_Mono, IBM_Plex_Sans, Source_Serif_4 } from "next/font/google";
 import type { Metadata } from "next";
 import "./globals.css";
-import { SiteFooter, SiteHeader } from "@/components/Chrome";
-import { siteUrl } from "@/lib/seo";
+import { CloudflareBeacon, SiteFooter, SiteHeader } from "@/components/Chrome";
+import { OG_IMAGE, siteUrl } from "@/lib/seo";
 
 const plexSans = IBM_Plex_Sans({
   variable: "--font-plex-sans",
@@ -32,7 +32,13 @@ export const metadata: Metadata = {
     "Facts-first DJI comparison: sourced specs, CE not FCC, UK class, prices, and whether you would notice the difference.",
   openGraph: {
     siteName: "DroneIQ",
+    locale: "en_GB",
     type: "website",
+    images: [OG_IMAGE],
+  },
+  twitter: {
+    card: "summary_large_image",
+    images: [OG_IMAGE.url],
   },
 };
 
@@ -46,6 +52,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
         <SiteHeader />
         <main className="flex-1">{children}</main>
         <SiteFooter />
+        <CloudflareBeacon />
       </body>
     </html>
   );

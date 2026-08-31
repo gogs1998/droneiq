@@ -1,5 +1,16 @@
 import { drones, getDrone } from "@/data/catalog";
 import type { Drone } from "@/data/types";
+import type { Metadata } from "next";
+
+/** Canonical host from docs/GOLIVE.md. Override with NEXT_PUBLIC_SITE_URL if needed. */
+export const CANONICAL_HOST = "https://droneiq.iqlabs.app";
+
+export const OG_IMAGE = {
+  url: "/og.png",
+  width: 1200,
+  height: 630,
+  alt: "DroneIQ — DJI specs you can decide with",
+} as const;
 
 export function canonicalOrder(a: Drone, b: Drone): [Drone, Drone] {
   return a.sortOrder <= b.sortOrder ? [a, b] : [b, a];
@@ -40,7 +51,44 @@ export function comparePath(slugs: string[]): string {
 }
 
 export function siteUrl(): string {
-  return process.env.NEXT_PUBLIC_SITE_URL?.replace(/\/$/, "") || "https://droneiq.pro";
+  return process.env.NEXT_PUBLIC_SITE_URL?.replace(/\/$/, "") || CANONICAL_HOST;
+}
+
+function absUrl(path: string): string {
+  const base = siteUrl();
+  if (!path || path === "/") return base;
+  return `${base}${path.startsWith("/") ? path : `/${path}`}`;
+}
+
+/** Self-referencing canonical, unique title/description, PNG og:image. Never the homepage. */
+export function pageMeta(opts: {
+  title: string;
+  description: string;
+  path: string;
+  /** Home page: skip the "%s · DroneIQ" template. */
+  absoluteTitle?: boolean;
+}): Metadata {
+  const url = absUrl(opts.path);
+  return {
+    title: opts.absoluteTitle ? { absolute: opts.title } : opts.title,
+    description: opts.description,
+    alternates: { canonical: url },
+    openGraph: {
+      title: opts.title,
+      description: opts.description,
+      url,
+      siteName: "DroneIQ",
+      locale: "en_GB",
+      type: "website",
+      images: [OG_IMAGE],
+    },
+    twitter: {
+      card: "summary_large_image",
+      title: opts.title,
+      description: opts.description,
+      images: [OG_IMAGE.url],
+    },
+  };
 }
 
 export function titleForPair(a: Drone, b: Drone): string {

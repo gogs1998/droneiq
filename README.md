@@ -1,6 +1,8 @@
 # DroneIQ
 
-Facts-first DJI drone comparison for [IQ Labs](https://iqlabs.app). Canonical site: [droneiq.pro](https://droneiq.pro). Sourced specs, CE (not FCC) range, UK class, dated UK prices, and a plain-language answer to whether you would notice the difference.
+Facts-first DJI drone comparison for [IQ Labs](https://iqlabs.app). Canonical site: [droneiq.iqlabs.app](https://droneiq.iqlabs.app). Sourced specs, CE (not FCC) range, UK class, dated UK prices, and a plain-language answer to whether you would notice the difference.
+
+Go-live brief: [`docs/GOLIVE.md`](docs/GOLIVE.md).
 
 ```
 npm install

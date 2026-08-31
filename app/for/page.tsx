@@ -1,14 +1,15 @@
 import { JsonLd } from "@/components/JsonLd";
 import { JOBS } from "@/data/catalog";
-import { jsonLdWebPage, siteUrl } from "@/lib/seo";
+import { jsonLdWebPage, pageMeta, siteUrl } from "@/lib/seo";
 import type { Metadata } from "next";
 import Link from "next/link";
 
-export const metadata: Metadata = {
+export const metadata: Metadata = pageMeta({
   title: "Pick a DJI drone by job",
   description:
     "Shortlists from the same catalog: travel, wind, dusk, beginner, FPV. Not a personality quiz.",
-};
+  path: "/for",
+});
 
 export default function ForIndex() {
   return (

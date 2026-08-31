@@ -8,7 +8,7 @@ import { SpecTable } from "@/components/SpecTable";
 import { UpgradeCost } from "@/components/UpgradeCost";
 import { drones, getDrone, relatedDrones } from "@/data/catalog";
 import { faqsFor, formatReleased, gbp, sensorSummary } from "@/lib/compare";
-import { jsonLdFaq, jsonLdWebPage, pairSlug, siteUrl } from "@/lib/seo";
+import { jsonLdFaq, jsonLdWebPage, pageMeta, pairSlug, siteUrl } from "@/lib/seo";
 import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
@@ -25,10 +25,11 @@ export async function generateMetadata({
   const { slug } = await params;
   const d = getDrone(slug);
   if (!d) return {};
-  return {
+  return pageMeta({
     title: `${d.name} specs, UK class, price`,
     description: `${d.name}: ${d.weightG} g, ${d.ukClass}, ${sensorSummary(d)}, ${d.flightTimeMin} min lab time. Sourced figures, UK prices, reviews.`,
-  };
+    path: `/drones/${d.slug}`,
+  });
 }
 
 export default async function DronePage({
