@@ -10,11 +10,11 @@ export function SpecTable({ drones }: { drones: Drone[] }) {
   return (
     <div className="-mx-4 overflow-x-auto px-4 sm:mx-0 sm:px-0">
       <table
-        className={`w-full border-collapse text-sm ${solo ? "" : "min-w-[28rem] sm:min-w-[36rem]"}`}
+        className={`w-full border-separate border-spacing-0 text-sm ${solo ? "" : "min-w-[28rem] sm:min-w-[36rem]"}`}
       >
         <thead>
           <tr>
-            <th className="sticky left-0 z-10 max-w-[9.5rem] bg-paper px-2 py-2 text-left text-xs font-medium uppercase tracking-wider text-quiet sm:max-w-none sm:px-3 sm:py-3">
+            <th className="sticky left-0 z-10 max-w-[10rem] bg-paper px-2 py-2 text-left text-xs font-medium uppercase tracking-wider text-quiet sm:max-w-none sm:px-3 sm:py-3">
               Spec
             </th>
             {drones.map((d) => (
