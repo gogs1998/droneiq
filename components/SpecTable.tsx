@@ -96,7 +96,7 @@ function GroupRows({
                 }`}
               >
                 <div className="num text-[0.95rem] text-ink">{v}</div>
-                {win ? (
+                {win && flag !== "same" ? (
                   <div className="mt-1 text-[10px] uppercase tracking-wider text-yellow-ink">
                     Ahead
                   </div>
