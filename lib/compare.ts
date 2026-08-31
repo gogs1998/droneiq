@@ -10,6 +10,9 @@ export type SpecKey =
   | "app"
   | "weight"
   | "ukClass"
+  | "ukOpen"
+  | "ukPeople"
+  | "ukHeight"
   | "folded"
   | "sensor"
   | "aperture"
@@ -113,6 +116,50 @@ export function teleSummary(d: Drone): string {
 export function sensorSummary(d: Drone): string {
   const c = primaryCamera(d);
   return `${c.sensor} · ${c.megapixels} MP · ${c.equivMm} mm`;
+}
+
+/** UK Open-category distances from the March 2026 Drone Code. Not legal advice. */
+export function flyCard(d: Drone): {
+  subcategory: string;
+  people: string;
+  height: string;
+} {
+  const height = "120 m AGL";
+  if (d.slug === "mini-5-pro") {
+    return {
+      subcategory: "A1 Over People (C0 pack)",
+      people:
+        "May overfly uninvolved people; not crowds. Plus battery is C1 — still A1 until 31 Dec 2027. Weigh it.",
+      height,
+    };
+  }
+  if (d.ukClass === "C0" || d.sub250) {
+    return {
+      subcategory: "A1 Over People",
+      people: "May overfly uninvolved people; not crowds. Towns OK.",
+      height,
+    };
+  }
+  if (d.ukClass === "C1") {
+    return {
+      subcategory: "A1 Over People (C1 until 31 Dec 2027)",
+      people: "May overfly uninvolved people; not crowds. Flyer ID required. Towns OK in A1.",
+      height,
+    };
+  }
+  if (d.ukClass === "C2") {
+    return {
+      subcategory: "A2 (A2 CofC) or A3",
+      people:
+        "A2: 30 m from uninvolved people (5 m low-speed). Without CofC, A3: 50 m and 150 m from built-up areas. No overflight.",
+      height,
+    };
+  }
+  return {
+    subcategory: "A3 Far from People",
+    people: "50 m from uninvolved people; 150 m from built-up areas. No overflight.",
+    height,
+  };
 }
 
 function allSame(n: number): Notice[] {
@@ -280,6 +327,36 @@ export function specRows(list: Drone[]): SpecRow[] {
         list.map((d) => (d.sub250 ? 1 : 0) + (d.ukClass === "C0" ? 1 : 0)),
         "max",
       ),
+    ),
+    row(
+      "ukOpen",
+      "Weight & UK law",
+      "Open subcategory",
+      list.map((d) => flyCard(d).subcategory),
+      classNotice,
+      uniqueWinner(
+        list.map((d) => (d.sub250 || d.ukClass === "C0" ? 2 : d.ukClass === "C1" ? 1 : 0)),
+        "max",
+      ),
+    ),
+    row(
+      "ukPeople",
+      "Weight & UK law",
+      "From uninvolved people",
+      list.map((d) => flyCard(d).people),
+      classNotice,
+      uniqueWinner(
+        list.map((d) => (d.sub250 || d.ukClass === "C0" ? 2 : d.ukClass === "C1" ? 1 : 0)),
+        "max",
+      ),
+    ),
+    row(
+      "ukHeight",
+      "Weight & UK law",
+      "Height (Open)",
+      list.map((d) => flyCard(d).height),
+      allSame(list.length),
+      null,
     ),
     row(
       "folded",
@@ -617,8 +694,8 @@ function proseNotices(list: Drone[], rows: SpecRow[]): string {
           ? "you would notice a real telephoto (optical, not a crop)"
           : "the camera count is different",
       );
-    } else if (r.key === "weight" || r.key === "ukClass") {
-      bits.push("you would notice weight mostly as paperwork and bag mass");
+    } else if (r.key === "weight" || r.key === "ukClass" || r.key === "ukPeople" || r.key === "ukOpen") {
+      bits.push("you would notice weight mostly as paperwork, bag mass and how close you may fly to people");
     } else if (r.key === "sensing") {
       bits.push(
         `you would notice obstacle sensing (${list.map((d) => SENSING_LABEL[d.sensing]).join(" vs ")})`,
@@ -662,6 +739,19 @@ function snippetFor(list: Drone[], rows: SpecRow[], law: string): string {
 export type FaqItem = { q: string; a: string };
 
 export function faqsFor(list: Drone[]): FaqItem[] {
+  if (list.length === 1) {
+    const d = list[0];
+    return [
+      {
+        q: `Do I need to register the ${d.shortName} in the UK?`,
+        a: ukRegister(d),
+      },
+      {
+        q: `How far from people can I fly the ${d.shortName} in the UK?`,
+        a: flyFaq(d),
+      },
+    ];
+  }
   if (list.length !== 2) return [];
   const [rawA, rawB] = list;
   const older = rawA.sortOrder <= rawB.sortOrder ? rawA : rawB;
@@ -687,6 +777,17 @@ export function faqsFor(list: Drone[]): FaqItem[] {
     items.push({
       q: `Do I need to register the ${older.shortName} in the UK?`,
       a: ukRegister(older),
+    });
+  }
+
+  items.push({
+    q: `How far from people can I fly the ${newer.shortName} in the UK?`,
+    a: flyFaq(newer),
+  });
+  if (older.ukClass !== newer.ukClass || older.sub250 !== newer.sub250) {
+    items.push({
+      q: `How far from people can I fly the ${older.shortName} in the UK?`,
+      a: flyFaq(older),
     });
   }
 
@@ -759,6 +860,11 @@ function ukRegister(d: Drone): string {
       ? "so a Flyer ID is required in the UK as well as an Operator ID."
       : "so under 250 g you do not need a Flyer ID, but you still need an Operator ID because it has a camera (it is not a toy)."
   } This is not legal advice; read the CAA drone code for the airframe and battery you actually fly.`;
+}
+
+function flyFaq(d: Drone): string {
+  const f = flyCard(d);
+  return `${d.shortName} (${d.ukClass}): ${f.subcategory}. ${f.people} Open height is ${f.height}. Never over crowds. This is not legal advice — the CAA Drone Code (March 2026) applies to the airframe and battery you actually fly.`;
 }
 
 function heavierFlyer(a: Drone, b: Drone): string {

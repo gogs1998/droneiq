@@ -42,3 +42,9 @@ body {
   background: #e2b100;
   color: #141311;
 }
+
+@media (max-width: 640px) {
+  .overflow-x-auto {
+    -webkit-overflow-scrolling: touch;
+  }
+}

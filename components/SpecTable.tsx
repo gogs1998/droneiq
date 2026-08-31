@@ -8,19 +8,19 @@ export function SpecTable({ drones }: { drones: Drone[] }) {
   const grouped = groups(rows);
   const solo = drones.length === 1;
   return (
-    <div className="overflow-x-auto">
+    <div className="-mx-4 overflow-x-auto px-4 sm:mx-0 sm:px-0">
       <table
-        className={`w-full border-collapse text-sm ${solo ? "" : "min-w-[36rem]"}`}
+        className={`w-full border-collapse text-sm ${solo ? "" : "min-w-[28rem] sm:min-w-[36rem]"}`}
       >
         <thead>
           <tr>
-            <th className="sticky left-0 z-10 bg-paper px-3 py-3 text-left text-xs font-medium uppercase tracking-wider text-quiet">
+            <th className="sticky left-0 z-10 max-w-[9.5rem] bg-paper px-2 py-2 text-left text-xs font-medium uppercase tracking-wider text-quiet sm:max-w-none sm:px-3 sm:py-3">
               Spec
             </th>
             {drones.map((d) => (
               <th
                 key={d.slug}
-                className="sticky top-0 bg-paper px-3 py-3 text-left align-bottom"
+                className="sticky top-0 bg-paper px-2 py-2 text-left align-bottom sm:px-3 sm:py-3"
               >
                 {solo ? (
                   <span className="display text-lg text-ink">{d.shortName}</span>
@@ -73,20 +73,20 @@ function GroupRows({
       <tr>
         <td
           colSpan={cols + 1}
-          className="bg-paper-2 px-3 py-2 text-xs font-medium uppercase tracking-wider text-muted"
+          className="bg-paper-2 px-2 py-2 text-xs font-medium uppercase tracking-wider text-muted sm:px-3"
         >
           {group}
         </td>
       </tr>
       {rows.map((r) => (
         <tr key={r.key} className="border-b border-rule align-top">
-          <th className="sticky left-0 bg-paper px-3 py-3 text-left font-normal">
+          <th className="sticky left-0 max-w-[9.5rem] bg-paper px-2 py-2 text-left font-normal sm:max-w-none sm:px-3 sm:py-3">
             <details className="group">
               <summary className="cursor-pointer list-none text-ink marker:hidden">
                 <span className="border-b border-dotted border-quiet">
                   {r.label}
                 </span>
-                <span className="mt-1 block text-xs text-quiet">
+                <span className="mt-1 hidden text-xs text-quiet sm:block">
                   {glossary[r.key]?.oneLiner}
                 </span>
               </summary>
@@ -109,7 +109,7 @@ function GroupRows({
             return (
               <td
                 key={i}
-                className={`px-3 py-3 ${
+                className={`px-2 py-2 sm:px-3 sm:py-3 ${
                   !solo && flag === "notice"
                     ? "bg-[color-mix(in_srgb,var(--color-yellow)_22%,transparent)]"
                     : ""

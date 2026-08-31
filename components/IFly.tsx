@@ -36,7 +36,7 @@ export function IFlySelect({ drones }: { drones: { slug: string; name: string }[
     <label className="block">
       <span className="text-xs uppercase tracking-wider text-quiet">I fly</span>
       <select
-        className="mt-1 block w-full max-w-md border border-rule bg-paper px-3 py-2 text-ink"
+        className="mt-1 block min-h-11 w-full max-w-md border border-rule bg-paper px-3 py-2 text-base text-ink sm:text-sm"
         value={slug ?? ""}
         onChange={(e) => set(e.target.value || null)}
       >

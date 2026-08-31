@@ -2,12 +2,13 @@ import { ComboDecoder } from "@/components/ComboDecoder";
 import { Compatibility } from "@/components/Compatibility";
 import { JsonLd } from "@/components/JsonLd";
 import { PriceBoard } from "@/components/PriceBoard";
+import { Questions } from "@/components/Questions";
 import { ReviewsShelf } from "@/components/ReviewsShelf";
 import { SpecTable } from "@/components/SpecTable";
 import { UpgradeCost } from "@/components/UpgradeCost";
 import { drones, getDrone, relatedDrones } from "@/data/catalog";
-import { formatReleased, gbp, sensorSummary } from "@/lib/compare";
-import { jsonLdWebPage, pairSlug, siteUrl } from "@/lib/seo";
+import { faqsFor, formatReleased, gbp, sensorSummary } from "@/lib/compare";
+import { jsonLdFaq, jsonLdWebPage, pairSlug, siteUrl } from "@/lib/seo";
 import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
@@ -39,21 +40,25 @@ export default async function DronePage({
   const d = getDrone(slug);
   if (!d) notFound();
   const related = relatedDrones(d);
+  const faqs = faqsFor([d]);
 
   return (
     <div className="mx-auto max-w-6xl px-4 py-8 md:px-6">
       <JsonLd
-        data={jsonLdWebPage({
-          name: d.name,
-          description: `${d.weightG} g · ${d.ukClass} · ${sensorSummary(d)}`,
-          url: `${siteUrl()}/drones/${d.slug}`,
-        })}
+        data={[
+          jsonLdWebPage({
+            name: d.name,
+            description: `${d.weightG} g · ${d.ukClass} · ${sensorSummary(d)}`,
+            url: `${siteUrl()}/drones/${d.slug}`,
+          }),
+          jsonLdFaq(faqs),
+        ]}
       />
       <p className="text-xs uppercase tracking-wider text-quiet">
         {d.brand} · {d.series}
         {d.discontinued ? " · discontinued as new" : ""}
       </p>
-      <h1 className="display mt-2 text-4xl md:text-5xl">{d.name}</h1>
+      <h1 className="display mt-2 text-3xl md:text-5xl">{d.name}</h1>
       <p className="num mt-3 text-lg text-muted">
         {formatReleased(d.released)} · {gbp(d.prices.djiRrpGbp)} RRP
       </p>
@@ -76,6 +81,7 @@ export default async function DronePage({
       <ComboDecoder drone={d} />
       <Compatibility drone={d} />
       <ReviewsShelf drones={[d]} mode="drone" />
+      <Questions items={faqs} />
 
       <section className="mt-12">
         <h2 className="display text-2xl">Compared with</h2>

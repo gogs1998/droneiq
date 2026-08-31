@@ -37,6 +37,8 @@ export type Combo = {
   gbp: number | null;
   url: string;
   blurb: string;
+  ean?: string | null;
+  mpn?: string | null;
 };
 
 export type ReviewItem = {
@@ -112,15 +114,22 @@ export type Drone = {
     asOf: string;
     djiRrpGbp: number | null;
     djiUrl: string;
+    djiBox: string;
+    djiEan: string | null;
     amazonGbp: number | null;
     amazonUrl: string;
+    amazonBox: string;
+    amazonEan: string | null;
     ebayLowGbp: number | null;
     ebayHighGbp: number | null;
     ebayUrl: string;
+    ebayBox: string;
     cexSellGbp: number | null;
     cexCashGbp: number | null;
     cexVoucherGbp: number | null;
     cexUrl: string;
+    cexBox: string;
+    cexEan: string | null;
   };
   reviews: {
     asOf: string;

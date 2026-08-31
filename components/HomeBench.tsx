@@ -35,7 +35,7 @@ export function HomeBench({ drones }: { drones: Drone[] }) {
   return (
     <div id="bench" className="scroll-mt-8 border border-ink bg-paper-2 px-4 py-6 md:px-6">
       <p className="text-xs uppercase tracking-wider text-quiet">The bench</p>
-      <h1 className="display mt-2 max-w-xl text-4xl leading-none md:text-5xl">
+      <h1 className="display mt-2 max-w-xl text-3xl leading-none md:text-5xl">
         Compare drones by the numbers you would actually notice.
       </h1>
       <p className="mt-4 max-w-xl text-muted">
@@ -56,7 +56,7 @@ export function HomeBench({ drones }: { drones: Drone[] }) {
                   key={d.slug}
                   type="button"
                   onClick={() => toggle(d.slug)}
-                  className={`border px-2 py-1 text-sm ${
+                  className={`min-h-10 border px-3 py-1.5 text-sm ${
                     on ? "border-ink bg-ink text-paper" : "border-rule text-ink"
                   }`}
                 >
