@@ -1,5 +1,6 @@
 import { ComboDecoder } from "@/components/ComboDecoder";
 import { Compatibility } from "@/components/Compatibility";
+import { DronePhoto } from "@/components/DronePhoto";
 import { JsonLd } from "@/components/JsonLd";
 import { PriceBoard } from "@/components/PriceBoard";
 import { Questions } from "@/components/Questions";
@@ -66,6 +67,10 @@ export default async function DronePage({
       <p className="mt-4 max-w-2xl text-sm text-muted">
         {d.weightNote} {d.ukClassNote}
       </p>
+
+      <div className="mt-6 max-w-xl">
+        <DronePhoto drone={d} variant="hero" priority />
+      </div>
 
       <div className="mt-8">
         <UpgradeCost targets={[d]} />

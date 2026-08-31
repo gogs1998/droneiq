@@ -1,3 +1,4 @@
+import { DronePhoto } from "@/components/DronePhoto";
 import { glossary } from "@/data/glossary";
 import type { Drone } from "@/data/types";
 import { groups, specRows, type SpecRow } from "@/lib/compare";
@@ -22,6 +23,7 @@ export function SpecTable({ drones }: { drones: Drone[] }) {
                 key={d.slug}
                 className="sticky top-0 bg-paper px-2 py-2 text-left align-bottom sm:px-3 sm:py-3"
               >
+                {solo ? null : <DronePhoto drone={d} variant="header" />}
                 {solo ? (
                   <span className="display text-lg text-ink">{d.shortName}</span>
                 ) : (
