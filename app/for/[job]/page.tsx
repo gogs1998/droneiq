@@ -1,3 +1,4 @@
+import { DronePhoto } from "@/components/DronePhoto";
 import { JsonLd } from "@/components/JsonLd";
 import { JOBS, dronesForJob } from "@/data/catalog";
 import { gbp, sensorSummary } from "@/lib/compare";
@@ -53,14 +54,19 @@ export default async function JobPage({
       <p className="mt-4 text-lg leading-relaxed">{meta.lede}</p>
       <ol className="mt-8 divide-y divide-rule border-y border-rule">
         {list.map((d, i) => (
-          <li key={d.slug} className="py-4">
-            <p className="num text-xs text-quiet">{String(i + 1).padStart(2, "0")}</p>
-            <Link href={`/drones/${d.slug}`} className="display text-2xl hover:underline">
-              {d.name}
+          <li key={d.slug} className="flex items-center gap-3 py-4 sm:gap-4">
+            <Link href={`/drones/${d.slug}`} className="shrink-0">
+              <DronePhoto drone={d} variant="thumb" />
             </Link>
-            <p className="mt-1 text-sm text-muted">
-              {sensorSummary(d)} · {d.weightG} g · {d.ukClass} · {gbp(d.prices.djiRrpGbp)}
-            </p>
+            <div className="min-w-0">
+              <p className="num text-xs text-quiet">{String(i + 1).padStart(2, "0")}</p>
+              <Link href={`/drones/${d.slug}`} className="display text-xl hover:underline sm:text-2xl">
+                {d.name}
+              </Link>
+              <p className="mt-1 text-sm text-muted">
+                {sensorSummary(d)} · {d.weightG} g · {d.ukClass} · {gbp(d.prices.djiRrpGbp)}
+              </p>
+            </div>
           </li>
         ))}
       </ol>

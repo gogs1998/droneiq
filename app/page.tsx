@@ -1,3 +1,4 @@
+import { DronePhoto } from "@/components/DronePhoto";
 import { HomeBench } from "@/components/HomeBench";
 import { JsonLd } from "@/components/JsonLd";
 import { drones } from "@/data/catalog";
@@ -42,17 +43,26 @@ export default function HomePage() {
         <h2 className="display text-2xl">The matchups people search</h2>
         <ul className="mt-4 divide-y divide-rule border-y border-rule">
           {featured.map(({ da, db }) => (
-            <li key={pairSlug(da, db)} className="py-3">
+            <li key={pairSlug(da, db)} className="flex items-start gap-3 py-3 sm:items-center">
               <Link
                 href={`/compare/${pairSlug(da, db)}`}
-                className="text-lg hover:underline"
+                className="flex shrink-0 gap-1"
               >
-                {da.shortName} vs {db.shortName}
+                <DronePhoto drone={da} variant="thumb" />
+                <DronePhoto drone={db} variant="thumb" />
               </Link>
-              <p className="text-sm text-muted">
-                {da.cameras[0].sensor} · {da.weightG} g against {db.cameras[0].sensor} ·{" "}
-                {db.weightG} g
-              </p>
+              <div className="min-w-0">
+                <Link
+                  href={`/compare/${pairSlug(da, db)}`}
+                  className="text-lg hover:underline"
+                >
+                  {da.shortName} vs {db.shortName}
+                </Link>
+                <p className="text-sm text-muted">
+                  {da.cameras[0].sensor} · {da.weightG} g against {db.cameras[0].sensor} ·{" "}
+                  {db.weightG} g
+                </p>
+              </div>
             </li>
           ))}
         </ul>

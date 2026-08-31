@@ -1,9 +1,10 @@
-import { drones } from "@/data/catalog";
+import { DronePhoto } from "@/components/DronePhoto";
 import { JsonLd } from "@/components/JsonLd";
-import { jsonLdItemList, jsonLdWebPage, pageMeta, siteUrl } from "@/lib/seo";
+import { drones } from "@/data/catalog";
 import { gbp } from "@/lib/compare";
-import Link from "next/link";
+import { jsonLdItemList, jsonLdWebPage, pageMeta, siteUrl } from "@/lib/seo";
 import type { Metadata } from "next";
+import Link from "next/link";
 
 export const metadata: Metadata = pageMeta({
   title: "All drones",
@@ -67,16 +68,21 @@ export default async function DronesIndex({ searchParams }: Props) {
       </div>
       <ul className="mt-8 divide-y divide-rule border-y border-rule">
         {list.map((d) => (
-          <li key={d.slug} className="flex flex-wrap items-baseline justify-between gap-3 py-4">
-            <div>
-              <Link href={`/drones/${d.slug}`} className="display text-2xl hover:underline">
-                {d.name}
-              </Link>
+          <li key={d.slug} className="flex items-start gap-3 py-3 sm:items-center sm:gap-4 sm:py-4">
+            <Link href={`/drones/${d.slug}`} className="shrink-0">
+              <DronePhoto drone={d} variant="thumb" />
+            </Link>
+            <div className="min-w-0 flex-1">
+              <div className="flex flex-wrap items-baseline justify-between gap-x-3 gap-y-0.5">
+                <Link href={`/drones/${d.slug}`} className="display text-xl hover:underline sm:text-2xl">
+                  {d.name}
+                </Link>
+                <div className="num text-base sm:text-lg">{gbp(d.prices.djiRrpGbp)}</div>
+              </div>
               <p className="num mt-1 text-sm text-muted">
                 {d.weightG} g · {d.ukClass} · {d.cameras[0].sensor} · {d.cameras[0].maxVideo}
               </p>
             </div>
-            <div className="num text-lg">{gbp(d.prices.djiRrpGbp)}</div>
           </li>
         ))}
       </ul>

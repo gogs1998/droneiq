@@ -1,3 +1,4 @@
+import { DronePhoto } from "@/components/DronePhoto";
 import { glossary } from "@/data/glossary";
 import type { Drone } from "@/data/types";
 import { groups, specRows, type SpecRow } from "@/lib/compare";
@@ -20,8 +21,9 @@ export function SpecTable({ drones }: { drones: Drone[] }) {
             {drones.map((d) => (
               <th
                 key={d.slug}
-                className="sticky top-0 bg-paper px-2 py-2 text-left align-bottom sm:px-3 sm:py-3"
+                className="min-w-[8.5rem] bg-paper px-2 py-2 text-left align-bottom sm:min-w-[10rem] sm:px-3 sm:py-3"
               >
+                {solo ? null : <DronePhoto drone={d} variant="header" />}
                 {solo ? (
                   <span className="display text-lg text-ink">{d.shortName}</span>
                 ) : (
@@ -109,13 +111,13 @@ function GroupRows({
             return (
               <td
                 key={i}
-                className={`px-2 py-2 sm:px-3 sm:py-3 ${
+                className={`min-w-[8.5rem] px-2 py-2 align-top sm:min-w-[10rem] sm:px-3 sm:py-3 ${
                   !solo && flag === "notice"
                     ? "bg-[color-mix(in_srgb,var(--color-yellow)_22%,transparent)]"
                     : ""
                 }`}
               >
-                <div className="num text-[0.95rem] text-ink">{v}</div>
+                <div className="num text-[0.95rem] break-words text-ink">{v}</div>
                 {solo ? null : win && flag !== "same" ? (
                   <div className="mt-1 text-[10px] uppercase tracking-wider text-yellow-ink">
                     Ahead
