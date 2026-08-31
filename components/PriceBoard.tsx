@@ -7,8 +7,11 @@ export function PriceBoard({ drones }: { drones: Drone[] }) {
     <section className="mt-12">
       <h2 className="display text-2xl">Price board</h2>
       <p className="mt-1 max-w-2xl text-sm text-muted">
-        UK pounds, dated snapshots. Not live. CeX is cash / voucher trade-in
-        where we have a listing; otherwise a search link.{" "}
+        UK pounds, dated snapshots (as of the date under each name). Not live
+        APIs. Amazon is a typical <em>new</em> box that day — drone-only on Neo,
+        goggles kit on Avata — not always the DJI RRP SKU. CeX is one graded
+        SKU when we have a product page; cash and voucher are trade-in.
+        Otherwise the cell is a search link.{" "}
         <Link href="/guides/buying-used" className="underline">
           Buying used checklist
         </Link>

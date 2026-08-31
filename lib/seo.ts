@@ -40,7 +40,7 @@ export function comparePath(slugs: string[]): string {
 }
 
 export function siteUrl(): string {
-  return process.env.NEXT_PUBLIC_SITE_URL?.replace(/\/$/, "") || "https://droneiq.app";
+  return process.env.NEXT_PUBLIC_SITE_URL?.replace(/\/$/, "") || "https://droneiq.pro";
 }
 
 export function titleForPair(a: Drone, b: Drone): string {
