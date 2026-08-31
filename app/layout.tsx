@@ -1,5 +1,5 @@
 import { IBM_Plex_Mono, IBM_Plex_Sans, Source_Serif_4 } from "next/font/google";
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import "./globals.css";
 import { CloudflareBeacon, SiteFooter, SiteHeader } from "@/components/Chrome";
 import { OG_IMAGE, siteUrl } from "@/lib/seo";
@@ -24,12 +24,27 @@ const serif = Source_Serif_4({
 
 export const metadata: Metadata = {
   metadataBase: new URL(siteUrl()),
+  applicationName: "DroneIQ",
   title: {
     default: "DroneIQ — drone specs you can decide with",
     template: "%s · DroneIQ",
   },
   description:
     "Facts-first DJI comparison: sourced specs, CE not FCC, UK class, prices, and whether you would notice the difference.",
+  icons: {
+    icon: [
+      { url: "/favicon.ico", sizes: "48x48" },
+      { url: "/icon-32.png", type: "image/png", sizes: "32x32" },
+      { url: "/icon-192.png", type: "image/png", sizes: "192x192" },
+    ],
+    apple: [{ url: "/apple-touch-icon.png", sizes: "180x180" }],
+  },
+  manifest: "/manifest.webmanifest",
+  appleWebApp: {
+    capable: true,
+    title: "DroneIQ",
+    statusBarStyle: "default",
+  },
   openGraph: {
     siteName: "DroneIQ",
     locale: "en_GB",
@@ -40,6 +55,10 @@ export const metadata: Metadata = {
     card: "summary_large_image",
     images: [OG_IMAGE.url],
   },
+};
+
+export const viewport: Viewport = {
+  themeColor: "#f3efe6",
 };
 
 export default function RootLayout({ children }: LayoutProps<"/">) {
