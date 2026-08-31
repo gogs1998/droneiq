@@ -1,0 +1,44 @@
+@import "tailwindcss";
+
+@theme inline {
+  --color-paper: #f3efe6;
+  --color-paper-2: #eae4d6;
+  --color-ink: #141311;
+  --color-muted: #5c574e;
+  --color-quiet: #8a8478;
+  --color-rule: #d4cfc3;
+  --color-yellow: #e2b100;
+  --color-yellow-ink: #6b5200;
+  --font-sans: var(--font-plex-sans);
+  --font-mono: var(--font-plex-mono);
+  --font-display: var(--font-serif);
+}
+
+html {
+  background: var(--color-paper);
+  color: var(--color-ink);
+}
+
+body {
+  background: var(--color-paper);
+  color: var(--color-ink);
+  font-family: var(--font-plex-sans), ui-sans-serif, system-ui, sans-serif;
+  font-feature-settings: "ss01" 1, "kern" 1;
+}
+
+.num {
+  font-family: var(--font-plex-mono), ui-monospace, monospace;
+  font-variant-numeric: tabular-nums;
+  letter-spacing: -0.02em;
+}
+
+.display {
+  font-family: var(--font-serif), ui-serif, Georgia, serif;
+  font-weight: 600;
+  letter-spacing: -0.03em;
+}
+
+::selection {
+  background: #e2b100;
+  color: #141311;
+}
