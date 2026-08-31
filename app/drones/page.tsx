@@ -68,19 +68,21 @@ export default async function DronesIndex({ searchParams }: Props) {
       </div>
       <ul className="mt-8 divide-y divide-rule border-y border-rule">
         {list.map((d) => (
-          <li key={d.slug} className="flex items-center gap-3 py-3 sm:gap-4 sm:py-4">
+          <li key={d.slug} className="flex items-start gap-3 py-3 sm:items-center sm:gap-4 sm:py-4">
             <Link href={`/drones/${d.slug}`} className="shrink-0">
               <DronePhoto drone={d} variant="thumb" />
             </Link>
             <div className="min-w-0 flex-1">
-              <Link href={`/drones/${d.slug}`} className="display text-xl hover:underline sm:text-2xl">
-                {d.name}
-              </Link>
+              <div className="flex flex-wrap items-baseline justify-between gap-x-3 gap-y-0.5">
+                <Link href={`/drones/${d.slug}`} className="display text-xl hover:underline sm:text-2xl">
+                  {d.name}
+                </Link>
+                <div className="num text-base sm:text-lg">{gbp(d.prices.djiRrpGbp)}</div>
+              </div>
               <p className="num mt-1 text-sm text-muted">
                 {d.weightG} g · {d.ukClass} · {d.cameras[0].sensor} · {d.cameras[0].maxVideo}
               </p>
             </div>
-            <div className="num shrink-0 text-base sm:text-lg">{gbp(d.prices.djiRrpGbp)}</div>
           </li>
         ))}
       </ul>

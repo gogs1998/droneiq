@@ -27,13 +27,10 @@ export function DronePhoto({
     variant === "hero"
       ? "overflow-hidden border border-rule bg-paper-2"
       : variant === "header"
-        ? "mb-2 w-24 overflow-hidden border border-rule bg-paper-2 sm:w-28"
-        : "h-16 w-[5.5rem] shrink-0 overflow-hidden border border-rule bg-paper-2 sm:h-[4.5rem] sm:w-28";
+        ? "mb-2 aspect-[3/2] w-20 shrink-0 overflow-hidden border border-rule bg-paper-2 sm:w-28"
+        : "aspect-[3/2] w-[4.75rem] shrink-0 overflow-hidden border border-rule bg-paper-2 sm:w-28";
 
-  const imgClass =
-    variant === "hero"
-      ? "aspect-[3/2] h-auto w-full object-cover"
-      : "h-full w-full object-cover";
+  const imgClass = "aspect-[3/2] h-auto w-full object-cover";
 
   return (
     <figure className={frame}>

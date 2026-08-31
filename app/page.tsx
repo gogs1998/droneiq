@@ -43,7 +43,7 @@ export default function HomePage() {
         <h2 className="display text-2xl">The matchups people search</h2>
         <ul className="mt-4 divide-y divide-rule border-y border-rule">
           {featured.map(({ da, db }) => (
-            <li key={pairSlug(da, db)} className="flex items-center gap-3 py-3">
+            <li key={pairSlug(da, db)} className="flex items-start gap-3 py-3 sm:items-center">
               <Link
                 href={`/compare/${pairSlug(da, db)}`}
                 className="flex shrink-0 gap-1"
