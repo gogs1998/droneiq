@@ -250,3 +250,47 @@ export const glossary: Record<string, GlossaryEntry> = {
     sourceUrl: "https://www.dji.com/uk/mini-4-pro/specs",
   },
 };
+
+/** Price-board rows. Same shape as spec glossary so the i tooltip is shared. */
+export const priceGlossary: Record<string, GlossaryEntry> = {
+  djiRrp: {
+    id: "djiRrp",
+    label: "DJI Store UK RRP",
+    oneLiner: "Official UK store price for the named box, on the date.",
+    body: "Recommended retail for that exact combo on DJI Store UK. Not a live tick, not a street price. The box line under the figure is the carton — Fly More and Plus packs are different SKUs.",
+    sourceLabel: "DJI Store UK",
+    sourceUrl: "https://store.dji.com/uk",
+  },
+  amazon: {
+    id: "amazon",
+    label: "Amazon UK",
+    oneLiner: "A dated street snapshot for a named listing, not a buy box you can trust forever.",
+    body: "Amazon mixes combos, refurbs and third-party sellers. We print the box we meant. Search-only rows have no GBP because there was no clean new buy-box that day. Not a live API.",
+    sourceLabel: "Amazon UK",
+    sourceUrl: "https://www.amazon.co.uk/",
+  },
+  ebay: {
+    id: "ebay",
+    label: "eBay UK band",
+    oneLiner: "A used/new range we actually saw, not a single listing.",
+    body: "Low–high from completed or live UK listings on the date, after ignoring accessory noise. A £200 ‘Mini’ is usually a battery. Confirm the airframe and the pack.",
+    sourceLabel: "eBay UK",
+    sourceUrl: "https://www.ebay.co.uk/",
+  },
+  cexSell: {
+    id: "cexSell",
+    label: "CeX sell",
+    oneLiner: "What CeX asked for that SKU on the date, if they had one.",
+    body: "CeX sell is the ticket on the shelf. No SKU priced means they were not holding it that day — we leave it blank rather than invent a number. Box and barcode matter; Mini 4 Pro is not Mini 5 Pro.",
+    sourceLabel: "CeX UK",
+    sourceUrl: "https://uk.webuy.com/",
+  },
+  cexTrade: {
+    id: "cexTrade",
+    label: "CeX cash / voucher",
+    oneLiner: "What CeX would pay you, cash versus voucher, on the date.",
+    body: "Trade-in, not a selling price. Voucher is usually higher than cash. Condition grades move this. Use it for the upgrade-cost sum, not as a promise they will still pay it tomorrow.",
+    sourceLabel: "CeX UK",
+    sourceUrl: "https://uk.webuy.com/",
+  },
+};
