@@ -129,7 +129,7 @@ export function FactExplainer({
         type="button"
         aria-expanded={open}
         aria-controls={tipId}
-        aria-label={`What ${entry.label} means`}
+        aria-label={`What ${label ?? entry.label} means`}
         className="relative top-px inline-flex h-[1.05rem] w-[1.05rem] shrink-0 items-center justify-center rounded-full border border-quiet text-[10px] font-medium italic leading-none text-quiet hover:border-ink hover:text-ink focus-visible:border-ink focus-visible:text-ink focus-visible:outline-none"
         onFocus={show}
         onClick={(e) => {
