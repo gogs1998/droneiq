@@ -77,7 +77,7 @@ export const reviews: ReviewItem[] = [
     url: "https://www.dpreview.com/reviews/review-the-dji-mini-2-is-the-perfect-drone-for-beginners",
     date: "2020-11-05",
     tested: "4K/30, RAW stills, OcuSync 2.0, sub-250 g, no obstacle avoidance",
-    models: ["mini-2"],
+    models: ["mini-2", "mini-se"],
   },
   {
     id: "heliguy-mini2",
@@ -147,7 +147,7 @@ export const reviews: ReviewItem[] = [
     url: "https://www.heliguy.com/blogs/posts/dji-air-2s-vs-dji-mavic-air-2-vs-dji-mavic-2-pro/",
     date: "2021-04-15",
     tested: "1-inch vs Air 2, 5.4K, no class mark, front/back/up/down sensing",
-    models: ["air-2s"],
+    models: ["air-2s", "mavic-air-2", "mavic-2-pro"],
   },
   {
     id: "dpreview-air3-mini4pro",
@@ -208,6 +208,16 @@ export const reviews: ReviewItem[] = [
     date: "2022-08-25",
     tested: "Pro-View (Goggles 2) vs Fly Smart (FPV Goggles V2) vs drone-only",
     models: ["avata"],
+  },
+  {
+    id: "uavcoach-avata-fpv",
+    type: "article",
+    outlet: "UAV Coach",
+    title: "DJI Avata vs. DJI FPV—Which One Is Right for You?",
+    url: "https://uavcoach.com/avata-vs-dji-fpv/",
+    date: "2022-08-31",
+    tested: "Cinewhoop vs exposed-prop FPV, speed, goggles, motion vs sticks",
+    models: ["avata", "fpv"],
   },
 ];
 
