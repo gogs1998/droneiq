@@ -1,5 +1,6 @@
 import { glossary } from "@/data/glossary";
 import { keepFromTo } from "@/data/parts";
+import { gearForDrone } from "@/data/gear";
 import { featuredFor } from "@/data/featured-matchups";
 import type { Drone, SensingKind } from "@/data/types";
 
@@ -748,7 +749,10 @@ export type FaqItem = { q: string; a: string };
 export function faqsFor(list: Drone[]): FaqItem[] {
   if (list.length === 1) {
     const d = list[0];
-    return [
+    const radio = gearForDrone(d.slug).filter(
+      (g) => g.kind === "rc" || g.kind === "motion" || g.kind === "goggles",
+    );
+    const items: FaqItem[] = [
       {
         q: `Do I need to register the ${d.shortName} in the UK?`,
         a: ukRegister(d),
@@ -758,6 +762,13 @@ export function faqsFor(list: Drone[]): FaqItem[] {
         a: flyFaq(d),
       },
     ];
+    if (radio.length) {
+      items.push({
+        q: `Which controller or headset flies the ${d.shortName}?`,
+        a: `${radio.map((g) => `${g.name} (${g.form}, ${g.transmission})`).join("; ")}. A matching OcuSync generation is not enough — firmware on a used RC still has to list this airframe. Full matrix on the Gear page.`,
+      });
+    }
+    return items;
   }
   if (list.length !== 2) return [];
   const [rawA, rawB] = list;

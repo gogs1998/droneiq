@@ -249,6 +249,46 @@ export const glossary: Record<string, GlossaryEntry> = {
     sourceLabel: "DJI operating temperature",
     sourceUrl: "https://www.dji.com/uk/mini-4-pro/specs",
   },
+  form: {
+    id: "form",
+    label: "Form",
+    oneLiner: "Phone clamp, screen RC, FPV sticks, motion, or a headset — not interchangeable sports.",
+    body: "A phone-clamp RC-N3 is not a screen RC 2. Motion 3 is not FPV Remote Controller 3. Goggles are a display, not a transmitter for a Mini. Buy the form the airframe’s kit actually lists.",
+    sourceLabel: "DJI controller and goggles product pages",
+    sourceUrl: "https://www.dji.com/uk/products/camera-drones",
+  },
+  transmission: {
+    id: "transmission",
+    label: "Transmission",
+    oneLiner: "O2, O3, O4 are protocol families, not a promise the stick flies every drone in that family.",
+    body: "O4 on RC-N2 does not make it an RC-N3. Firmware on the RC still has to list the aircraft. CE range on the airframe is the UK radio fact; the letters on the stick are which handshake it speaks. Confirm the kit, then the firmware.",
+    sourceLabel: "DJI OcuSync / O4 notes",
+    sourceUrl: "https://www.dji.com/uk/mini-4-pro/specs",
+  },
+  screen: {
+    id: "screen",
+    label: "Screen",
+    oneLiner: "Built-in display, your phone, or the goggles. Not a camera spec.",
+    body: "RC 2 is a 5.5-inch 1080p controller. RC-N1/N2/N3 put the picture on your phone. Goggles 3 are dual Micro-OLED; Goggles N3 are LCD. None of this changes the airframe’s sensor. Goggles do not cancel Flyer ID or VLOS.",
+    sourceLabel: "DJI RC 2 / Goggles 3 product notes",
+    sourceUrl: "https://www.dji.com/uk/avata-2",
+  },
+  flies: {
+    id: "flies",
+    label: "Flies in this catalog",
+    oneLiner: "Which of our 16 DJI airframes this stick, motion or headset is listed for.",
+    body: "This is the fact that decides a used RC more often than the millimetres of the clamp. A beautiful RC-N1 does not fly Mini 5 Pro. Avata 1 goggles do not fly Avata 2. Firmware can still block a listed pair — check the RC you actually hold. Not every DJI SKU in the world; the catalog on this site.",
+    sourceLabel: "DJI product compatibility notes",
+    sourceUrl: "https://www.dji.com/uk/products/camera-drones",
+  },
+  protocol: {
+    id: "protocol",
+    label: "Protocol note",
+    oneLiner: "The handshake and the firmware caveat, in one line.",
+    body: "O3+ versus O4, phone clamp versus screen, Goggles 2 versus 3. Used gear still needs the aircraft on that RC’s firmware list. Mixing kits is how people buy the wrong second-hand stick.",
+    sourceLabel: "DJI controller / goggles compatibility notes",
+    sourceUrl: "https://www.dji.com/uk/products/camera-drones",
+  },
 };
 
 /** Price-board rows. Same shape as spec glossary so the i tooltip is shared. */

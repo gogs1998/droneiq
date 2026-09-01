@@ -65,7 +65,11 @@ export default function BuyingUsed() {
           <p className="mt-1 text-muted">
             Confirm the RC in the photo is the protocol this airframe speaks
             (O3 vs O4, RC-N2 vs RC 2). A beautiful RC 2 does not fly a Mini 3
-            Pro. Ask them to bind it in front of you.
+            Pro. Ask them to bind it in front of you. The{" "}
+            <Link href="/gear" className="underline">
+              compatibility matrix
+            </Link>{" "}
+            is the list we actually keep.
           </p>
         </li>
         <li>

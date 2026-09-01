@@ -1,4 +1,5 @@
 import { drones, getDrone } from "@/data/catalog";
+import { canonicalGearOrder, type Gear } from "@/data/gear";
 import type { Drone } from "@/data/types";
 import type { Metadata } from "next";
 
@@ -101,6 +102,16 @@ export function descriptionForPair(a: Drone, b: Drone): string {
   return `${x.shortName} vs ${y.shortName}: ${x.cameras[0]?.sensor} against ${y.cameras[0]?.sensor}, ${x.weightG} g vs ${y.weightG} g, ${x.ukClass} vs ${y.ukClass}. CE range, sourced specs, UK prices.`;
 }
 
+export function titleForGearPair(a: Gear, b: Gear): string {
+  const [x, y] = canonicalGearOrder(a, b);
+  return `${x.name} vs ${y.name} (2026): which drones they fly`;
+}
+
+export function descriptionForGearPair(a: Gear, b: Gear): string {
+  const [x, y] = canonicalGearOrder(a, b);
+  return `${x.shortName} vs ${y.shortName}: ${x.form} against ${y.form}, ${x.transmission} vs ${y.transmission}. Compatibility with the DroneIQ catalog, not a review.`;
+}
+
 export function jsonLdFaq(questions: { q: string; a: string }[]) {
   return {
     "@context": "https://schema.org",
@@ -132,7 +143,11 @@ export function jsonLdWebPage(opts: {
   };
 }
 
-export function jsonLdItemList(items: Drone[], url: string) {
+export function jsonLdItemList(
+  items: { slug: string; name: string }[],
+  url: string,
+  pathPrefix = "/drones",
+) {
   return {
     "@context": "https://schema.org",
     "@type": "ItemList",
@@ -142,7 +157,7 @@ export function jsonLdItemList(items: Drone[], url: string) {
       "@type": "ListItem",
       position: i + 1,
       name: d.name,
-      url: `${siteUrl()}/drones/${d.slug}`,
+      url: `${siteUrl()}${pathPrefix}/${d.slug}`,
     })),
   };
 }
