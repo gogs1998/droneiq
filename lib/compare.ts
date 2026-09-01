@@ -129,21 +129,23 @@ export function flyCard(d: Drone): {
     return {
       subcategory: "A1 Over People (C0 pack)",
       people:
-        "May overfly uninvolved people; not crowds. Plus battery is C1 — still A1 until 31 Dec 2027. Weigh it.",
+        "May overfly uninvolved people; not crowds. Flyer ID + Operator ID on both packs. Plus battery is C1 — still A1 until 31 Dec 2027. Weigh it.",
       height,
     };
   }
   if (d.ukClass === "C0" || d.sub250) {
     return {
       subcategory: "A1 Over People",
-      people: "May overfly uninvolved people; not crowds. Towns OK.",
+      people:
+        "May overfly uninvolved people; not crowds. Flyer ID + Operator ID from 100 g with a camera. Towns OK in A1.",
       height,
     };
   }
   if (d.ukClass === "C1") {
     return {
       subcategory: "A1 Over People (C1 until 31 Dec 2027)",
-      people: "May overfly uninvolved people; not crowds. Flyer ID required. Towns OK in A1.",
+      people:
+        "May overfly uninvolved people; not crowds. Flyer ID + Operator ID. Remote ID on from 1 Jan 2026 (C1 as UK1). Towns OK in A1.",
       height,
     };
   }
@@ -151,7 +153,7 @@ export function flyCard(d: Drone): {
     return {
       subcategory: "A2 (A2 CofC) or A3",
       people:
-        "A2: 30 m from uninvolved people (5 m low-speed). Without CofC, A3: 50 m and 150 m from built-up areas. No overflight.",
+        "A2: 30 m from uninvolved people (5 m low-speed). Without CofC, A3: 50 m and 150 m from built-up areas. No overflight. Remote ID on from 1 Jan 2026 (C2 as UK2).",
       height,
     };
   }
@@ -318,10 +320,7 @@ export function specRows(list: Drone[]): SpecRow[] {
       "ukClass",
       "Weight & UK law",
       "UK class / IDs",
-      list.map(
-        (d) =>
-          `${d.ukClass}${d.sub250 ? " · sub-250 g" : ""} · Operator ID${d.flyerIdRequired ? " + Flyer ID" : ""}`,
-      ),
+      list.map((d) => ukClassCell(d)),
       classNotice,
       uniqueWinner(
         list.map((d) => (d.sub250 ? 1 : 0) + (d.ukClass === "C0" ? 1 : 0)),
@@ -481,8 +480,12 @@ export function specRows(list: Drone[]): SpecRow[] {
     row(
       "speed",
       "Flight",
-      "Max speed (CE)",
-      list.map((d) => `${d.maxSpeedKphCe} km/h CE · ${d.maxSpeedKphFcc} FCC`),
+      "Max speed",
+      list.map((d) =>
+        d.maxSpeedKphCe === d.maxSpeedKphFcc
+          ? `${d.maxSpeedKphFcc} km/h Sport`
+          : `${d.maxSpeedKphCe} km/h EU · ${d.maxSpeedKphFcc} km/h FCC`,
+      ),
       gapNotice(
         list.map((d) => d.maxSpeedKphCe),
         20,
@@ -548,7 +551,11 @@ export function specRows(list: Drone[]): SpecRow[] {
       "battery",
       "Power & storage",
       "Battery",
-      list.map((d) => `${trimNum(d.batteryWh)} Wh`),
+      list.map((d) =>
+        d.batteryWhPlus
+          ? `${trimNum(d.batteryWh)} Wh (${trimNum(d.batteryWhPlus)} Wh Plus)`
+          : `${trimNum(d.batteryWh)} Wh`,
+      ),
       gapNotice(
         list.map((d) => d.batteryWh),
         30,
@@ -667,12 +674,12 @@ function lawLine(list: Drone[]): string {
   const sub = new Set(list.map((d) => d.sub250));
   if (classes.size === 1 && sub.size === 1) {
     const d = list[0];
-    return `UK: ${d.ukClass}${d.sub250 ? ", stays under 250 g" : ", Flyer ID required"} on every one of these. Operator ID applies because they all have cameras.`;
+    return `UK: ${d.ukClass}${d.sub250 ? ", stays under 250 g" : ""} on every one of these. Flyer ID and Operator ID apply from 100 g with a camera — that is every drone here.`;
   }
   return `UK paperwork is part of the difference: ${list
     .map(
       (d) =>
-        `${d.shortName} is ${d.ukClass}${d.sub250 ? " / sub-250 g" : ""} (${d.flyerIdRequired ? "Flyer ID + Operator ID" : "Operator ID, no Flyer ID"})`,
+        `${d.shortName} is ${d.ukClass}${d.sub250 ? " / sub-250 g" : ""} (Flyer ID + Operator ID)`,
     )
     .join("; ")}.`;
 }
@@ -854,17 +861,23 @@ function cameraNotice(a: Drone, b: Drone): string {
   return `${a.shortName} main: ${sensorSummary(a)}, ${a.cameras[0].maxVideo}. ${b.shortName} main: ${sensorSummary(b)}, ${b.cameras[0].maxVideo}. You would notice sensor class in low light; you would not notice the word 4K if both already do it.${tele}`;
 }
 
+function ukClassCell(d: Drone): string {
+  const plus =
+    d.batteryWhPlus && d.sub250 ? " (C1 with Plus pack)" : "";
+  return `${d.ukClass}${d.sub250 ? " · sub-250 g" : ""}${plus} · Operator ID${d.flyerIdRequired ? " + Flyer ID" : ""}`;
+}
+
 function ukRegister(d: Drone): string {
-  return `${d.shortName} is ${d.ukClass}, takeoff about ${trimNum(d.weightG)} g (${d.weightNote}) ${
-    d.flyerIdRequired
-      ? "so a Flyer ID is required in the UK as well as an Operator ID."
-      : "so under 250 g you do not need a Flyer ID, but you still need an Operator ID because it has a camera (it is not a toy)."
-  } This is not legal advice; read the CAA drone code for the airframe and battery you actually fly.`;
+  const plus =
+    d.batteryWhPlus && d.sub250
+      ? " A Plus battery can take this out of C0 — weigh the pack you fly."
+      : "";
+  return `${d.shortName} is ${d.ukClass}, takeoff about ${trimNum(d.weightG)} g (${d.weightNote}). In the UK a Flyer ID is required from 100 g, and an Operator ID is required from 100 g with a camera or from 250 g — this airframe needs both.${plus} This is not legal advice; read the CAA Drone Code for the airframe and battery you actually fly. Longer version: the UK Open explainer on this site (/guides/uk).`;
 }
 
 function flyFaq(d: Drone): string {
   const f = flyCard(d);
-  return `${d.shortName} (${d.ukClass}): ${f.subcategory}. ${f.people} Open height is ${f.height}. Never over crowds. This is not legal advice — the CAA Drone Code (March 2026) applies to the airframe and battery you actually fly.`;
+  return `${d.shortName} (${d.ukClass}): ${f.subcategory}. ${f.people} Open height is ${f.height}. Never over crowds. This is not legal advice — the CAA Drone Code (March 2026) applies to the airframe and battery you actually fly. Longer version: the UK Open explainer on this site (/guides/uk).`;
 }
 
 function heavierFlyer(a: Drone, b: Drone): string {

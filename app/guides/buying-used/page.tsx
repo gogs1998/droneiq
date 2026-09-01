@@ -82,7 +82,11 @@ export default function BuyingUsed() {
           spec
         </Link>{" "}
         for the model you are actually holding — used photos lie about which
-        Mini it is.
+        Mini it is. Plus batteries can change UK class; the{" "}
+        <Link href="/guides/uk" className="underline">
+          UK Open explainer
+        </Link>{" "}
+        is the paperwork page.
       </p>
     </article>
   );

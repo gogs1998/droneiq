@@ -38,7 +38,7 @@ export const featuredMatchups: FeaturedMatchup[] = [
     questions: [
       {
         q: "Is this a camera upgrade or a legal upgrade?",
-        a: "The main sensors are in the same 1-inch conversation. Air 3S adds a 70 mm optical camera, more mass in wind, and C1 paperwork (Flyer ID, 250 g+). Mini 5 Pro keeps the travel/C0 option if you stay on the standard battery. Gadget Scout’s line is the honest one: complementary, not rivals, unless you only have money for one.",
+        a: "The main sensors are in the same 1-inch conversation. Air 3S adds a 70 mm optical camera, more mass in wind, and C1 class (A1 until 31 Dec 2027, then the C1 distances). Mini 5 Pro keeps the travel/C0 option if you stay on the standard battery. Both need a Flyer ID and Operator ID — the 100 g camera line, not 250 g. Gadget Scout’s line is the honest one: complementary, not rivals, unless you only have money for one.",
       },
     ],
   },
@@ -98,7 +98,7 @@ export const featuredMatchups: FeaturedMatchup[] = [
     questions: [
       {
         q: "Is Avata 2 an alternative to Mini 5 Pro?",
-        a: "Only if you want goggles and a 155° FPV picture. Mini 5 Pro is a stabilised camera on a gimbal you fly in third person. Avata 2 is a different sport: tighter, wider, shorter flights, Flyer ID, no omni. Buy both if you have two hobbies. Do not buy one expecting the other.",
+        a: "Only if you want goggles and a 155° FPV picture. Mini 5 Pro is a stabilised camera on a gimbal you fly in third person. Avata 2 is a different sport: tighter, wider, shorter flights, C1, no omni. Both need Flyer ID and Operator ID. Buy both if you have two hobbies. Do not buy one expecting the other.",
       },
     ],
   },

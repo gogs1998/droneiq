@@ -17,6 +17,9 @@ export function SiteHeader() {
           <Link href="/for" className="hover:text-ink">
             For
           </Link>
+          <Link href="/guides/uk" className="hover:text-ink">
+            UK
+          </Link>
           <Link href="/guides/buying-used" className="hover:text-ink">
             Used
           </Link>
@@ -46,6 +49,10 @@ export function SiteFooter() {
           {" · "}
           <Link href="/for" className="hover:text-ink">
             Pick by job
+          </Link>
+          {" · "}
+          <Link href="/guides/uk" className="hover:text-ink">
+            Flying in the UK
           </Link>
           {" · "}
           <Link href="/guides/buying-used" className="hover:text-ink">

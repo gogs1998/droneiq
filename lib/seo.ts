@@ -3,7 +3,7 @@ import type { Drone } from "@/data/types";
 import type { Metadata } from "next";
 
 /** Canonical host from docs/GOLIVE.md. Override with NEXT_PUBLIC_SITE_URL if needed. */
-export const CANONICAL_HOST = "https://droneiq.iqlabs.app";
+export const CANONICAL_HOST = "https://droneiq.pro";
 
 export const OG_IMAGE = {
   url: "/og.png",
