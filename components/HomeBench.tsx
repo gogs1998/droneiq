@@ -62,7 +62,7 @@ export function HomeBench({ drones }: { drones: Drone[] }) {
         or tick two without setting I fly.
       </p>
 
-      <div className="mt-6">
+      <div className="mt-6" data-section="ifly">
         <p className="text-xs uppercase tracking-wider text-quiet">I fly</p>
         <div className="mt-2">
           <SeriesChipRows
@@ -73,7 +73,7 @@ export function HomeBench({ drones }: { drones: Drone[] }) {
         </div>
       </div>
 
-      <div className="mt-6">
+      <div className="mt-6" data-section="against">
         <p className="text-xs uppercase tracking-wider text-quiet">Against (up to three)</p>
         {home && suggested.length > 0 ? (
           <div className="mt-3">
@@ -92,14 +92,30 @@ export function HomeBench({ drones }: { drones: Drone[] }) {
             </div>
           </div>
         ) : null}
-        <div className="mt-3">
-          <SeriesChipRows
-            drones={options}
-            selected={picked}
-            onToggle={toggleAgainst}
-            maxSelected={3}
-          />
-        </div>
+        {home ? (
+          <details className="mt-4">
+            <summary className="cursor-pointer text-sm text-muted hover:text-ink">
+              Any other airframe
+            </summary>
+            <div className="mt-3">
+              <SeriesChipRows
+                drones={options}
+                selected={picked}
+                onToggle={toggleAgainst}
+                maxSelected={3}
+              />
+            </div>
+          </details>
+        ) : (
+          <div className="mt-3">
+            <SeriesChipRows
+              drones={options}
+              selected={picked}
+              onToggle={toggleAgainst}
+              maxSelected={3}
+            />
+          </div>
+        )}
       </div>
 
       <button
