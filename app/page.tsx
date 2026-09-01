@@ -149,7 +149,7 @@ export default function HomePage() {
       <section className="mt-14">
         <h2 className="display text-2xl">From the desk</h2>
         <p className="mt-2 max-w-xl text-sm text-muted">
-          Original copy from CAA, legislation and DJI. Not a scraped roundup.
+          Original copy from CAA, legislation and DJI.
         </p>
         <ul className="mt-4 divide-y divide-rule border-y border-rule">
           {newsByDate()

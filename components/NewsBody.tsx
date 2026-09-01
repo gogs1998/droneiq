@@ -66,18 +66,18 @@ export function NewsBody({ blocks }: { blocks: NewsBlock[] }) {
 export function formatNewsDate(iso: string): string {
   const [y, m, d] = iso.split("-").map(Number);
   const months = [
-    "January",
-    "February",
+    "Jan.",
+    "Feb.",
     "March",
     "April",
     "May",
     "June",
     "July",
-    "August",
-    "September",
-    "October",
-    "November",
-    "December",
+    "Aug.",
+    "Sept.",
+    "Oct.",
+    "Nov.",
+    "Dec.",
   ];
-  return `${d} ${months[m - 1]} ${y}`;
+  return `${months[m - 1]} ${d}, ${y}`;
 }

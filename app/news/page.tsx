@@ -34,7 +34,7 @@ export default function NewsIndex() {
         ]}
       />
       <p className="text-xs uppercase tracking-wider text-quiet">News</p>
-      <h1 className="display mt-2 text-4xl">The desk</h1>
+      <h1 className="display mt-2 text-4xl">News</h1>
       <p className="mt-4 text-muted">{newsDeskNote.lede}</p>
 
       <ul className="mt-10 divide-y divide-rule border-y border-rule">
