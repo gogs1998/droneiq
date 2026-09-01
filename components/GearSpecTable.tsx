@@ -1,4 +1,5 @@
 import { FactLabel } from "@/components/FactExplainer";
+import { GearPhoto } from "@/components/GearPhoto";
 import { glossary } from "@/data/glossary";
 import type { Gear } from "@/data/gear";
 import { gearSpecGroups, gearSpecRows, type GearSpecRow } from "@/lib/gear-compare";
@@ -24,6 +25,7 @@ export function GearSpecTable({ items }: { items: Gear[] }) {
                   key={g.slug}
                   className="min-w-[8.5rem] bg-paper px-2 py-2 text-left align-bottom sm:min-w-[10rem] sm:px-3 sm:py-3"
                 >
+                  {solo ? null : <GearPhoto item={g} variant="header" />}
                   {solo ? (
                     <span className="display text-lg text-ink">{g.shortName}</span>
                   ) : (

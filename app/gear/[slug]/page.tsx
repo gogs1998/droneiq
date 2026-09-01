@@ -1,3 +1,4 @@
+import { GearPhoto } from "@/components/GearPhoto";
 import { GearSpecTable } from "@/components/GearSpecTable";
 import { JsonLd } from "@/components/JsonLd";
 import { Questions } from "@/components/Questions";
@@ -74,6 +75,10 @@ export default async function GearPage({
           Full compatibility matrix
         </Link>
       </p>
+
+      <div className="mt-6 max-w-xl">
+        <GearPhoto item={g} variant="hero" priority />
+      </div>
 
       <section className="mt-10">
         <h2 className="display text-2xl">Record</h2>
