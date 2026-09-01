@@ -124,6 +124,39 @@ export function jsonLdFaq(questions: { q: string; a: string }[]) {
   };
 }
 
+export function jsonLdNewsArticle(opts: {
+  headline: string;
+  description: string;
+  url: string;
+  datePublished: string;
+}) {
+  return {
+    "@context": "https://schema.org",
+    "@type": "NewsArticle",
+    headline: opts.headline,
+    description: opts.description,
+    datePublished: opts.datePublished,
+    dateModified: opts.datePublished,
+    url: opts.url,
+    inLanguage: "en-GB",
+    author: {
+      "@type": "Organization",
+      name: "IQ Labs",
+      url: "https://iqlabs.app",
+    },
+    publisher: {
+      "@type": "Organization",
+      name: "DroneIQ",
+      url: siteUrl(),
+    },
+    isPartOf: {
+      "@type": "WebSite",
+      name: "DroneIQ",
+      url: siteUrl(),
+    },
+  };
+}
+
 export function jsonLdWebPage(opts: {
   name: string;
   description: string;

@@ -1,9 +1,11 @@
 import { HomeBench } from "@/components/HomeBench";
 import { JsonLd } from "@/components/JsonLd";
 import { MatchupRow } from "@/components/MatchupRow";
+import { formatNewsDate } from "@/components/NewsBody";
 import { drones, getDrone } from "@/data/catalog";
 import { featuredPairs, homeSheetKeys, homeSheets, pairKey } from "@/data/featured-matchups";
 import { gearPairSlug } from "@/data/gear";
+import { DESK_LABEL, newsByDate } from "@/data/news";
 import { featuredGearResolved } from "@/lib/gear-compare";
 import { jsonLdWebPage, pageMeta, siteUrl } from "@/lib/seo";
 import Link from "next/link";
@@ -88,6 +90,10 @@ export default function HomePage() {
           <Link href="/#bench" className="underline">
             Assemble your own
           </Link>
+          {" · "}
+          <Link href="/news" className="underline">
+            News
+          </Link>
         </p>
       </section>
 
@@ -136,6 +142,33 @@ export default function HomePage() {
         <p className="mt-4 text-sm">
           <Link href="/gear" className="underline">
             Compatibility matrix
+          </Link>
+        </p>
+      </section>
+
+      <section className="mt-14">
+        <h2 className="display text-2xl">From the desk</h2>
+        <p className="mt-2 max-w-xl text-sm text-muted">
+          Original copy from CAA, legislation and DJI. Not a scraped roundup.
+        </p>
+        <ul className="mt-4 divide-y divide-rule border-y border-rule">
+          {newsByDate()
+            .slice(0, 3)
+            .map((a) => (
+              <li key={a.slug} className="py-3">
+                <p className="text-xs uppercase tracking-wider text-quiet">
+                  {DESK_LABEL[a.desk]} · {formatNewsDate(a.published)}
+                </p>
+                <Link href={`/news/${a.slug}`} className="text-lg hover:underline">
+                  {a.title}
+                </Link>
+                <p className="text-sm text-muted">{a.dek}</p>
+              </li>
+            ))}
+        </ul>
+        <p className="mt-4 text-sm">
+          <Link href="/news" className="underline">
+            All news
           </Link>
         </p>
       </section>
