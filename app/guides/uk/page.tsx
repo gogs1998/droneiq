@@ -120,6 +120,20 @@ export default function UkOpenGuide() {
           Plus battery to a C0 airframe takes it over the C0/UK0 MTOM. Weigh
           the pack you fly.
         </p>
+        <p className="mt-3 text-sm text-muted">
+          Unmarked airframes use the CAA legacy weight table, not “no sticker,
+          therefore A3.” Under 250 g (Mini 2, Mini SE) is A1 Over People — the
+          same Open subcategory as a C0 Mini 4K. The difference is the missing
+          class mark, not where you may fly. From 250 g up to 2 kg (Air 2S, Air
+          2, Mavic 2 Pro, DJI FPV) is A3 unless you hold an A2 CofC. Source:{" "}
+          <a
+            href="https://www.caa.co.uk/drones/open-category/getting-started-with-drones-and-model-aircraft/class-marks/"
+            className="underline"
+          >
+            CAA class marks
+          </a>
+          .
+        </p>
       </section>
 
       <section className="mt-10">

@@ -7,9 +7,11 @@ export type DronePhoto = {
 };
 
 /**
- * Local catalog stills. Photos are Wikimedia Commons (CC BY-SA or CC0),
- * cropped for the spec-sheet layout. Avata 1 is an illustration — Commons
- * has no usable product still of the original airframe.
+ * Local catalog stills. Most photos are Wikimedia Commons (CC BY-SA or CC0),
+ * cropped for the spec-sheet layout. Mini 2, Mini SE, Air 2, Air 2S, original
+ * Mavic 3, Mavic 2 Pro and DJI FPV use official DJI product stills (no clean
+ * Commons cutout, or Store UK 404 for Mini SE).
+ * Avata 1 is an illustration — Commons has no usable product still.
  */
 export const photos: Record<string, DronePhoto> = {
   neo: {
@@ -32,6 +34,20 @@ export const photos: Record<string, DronePhoto> = {
     alt: "DJI Flip on a shop display, propeller guards on",
     credit: "Photo: Kyu3a, Wikimedia Commons, CC BY-SA 4.0",
     sourceUrl: "https://commons.wikimedia.org/wiki/File:DJI_Flip_-_2.jpg",
+    kind: "photo",
+  },
+  "mini-se": {
+    src: "/drones/mini-se.jpg",
+    alt: "DJI Mini SE, official product still",
+    credit: "Product image: DJI",
+    sourceUrl: "https://www.dji.com/uk/support/product/mini-se",
+    kind: "photo",
+  },
+  "mini-2": {
+    src: "/drones/mini-2.jpg",
+    alt: "DJI Mini 2, official product still",
+    credit: "Product image: DJI Store UK",
+    sourceUrl: "https://store.dji.com/uk/product/mini-2",
     kind: "photo",
   },
   "mini-4k": {
@@ -73,6 +89,20 @@ export const photos: Record<string, DronePhoto> = {
       "https://commons.wikimedia.org/wiki/File:DJI_MT5MFND_Mini_5_Pro_(FA3TPCHHM7)_(3-1-2026).jpg",
     kind: "photo",
   },
+  "mavic-air-2": {
+    src: "/drones/mavic-air-2.jpg",
+    alt: "DJI Mavic Air 2, official product still",
+    credit: "Product image: DJI Store UK",
+    sourceUrl: "https://store.dji.com/uk/product/mavic-air-2",
+    kind: "photo",
+  },
+  "air-2s": {
+    src: "/drones/air-2s.jpg",
+    alt: "DJI Air 2S, official product still",
+    credit: "Product image: DJI Store UK",
+    sourceUrl: "https://store.dji.com/uk/product/dji-air-2s",
+    kind: "photo",
+  },
   "air-3": {
     src: "/drones/air-3.jpg",
     alt: "DJI Air 3 in flight against a blue sky",
@@ -87,6 +117,20 @@ export const photos: Record<string, DronePhoto> = {
     credit: "Photo: Jacek Halicki, Wikimedia Commons, CC BY-SA 4.0",
     sourceUrl:
       "https://commons.wikimedia.org/wiki/File:2024_Dron_DJI_Air_3S_(3).jpg",
+    kind: "photo",
+  },
+  "mavic-2-pro": {
+    src: "/drones/mavic-2-pro.jpg",
+    alt: "DJI Mavic 2 Pro, official product still",
+    credit: "Product image: DJI Store UK",
+    sourceUrl: "https://store.dji.com/uk/product/mavic-2",
+    kind: "photo",
+  },
+  "mavic-3": {
+    src: "/drones/mavic-3.jpg",
+    alt: "DJI Mavic 3, official product still",
+    credit: "Product image: DJI Store UK",
+    sourceUrl: "https://store.dji.com/uk/product/dji-mavic-3",
     kind: "photo",
   },
   "mavic-3-classic": {
@@ -110,6 +154,13 @@ export const photos: Record<string, DronePhoto> = {
     credit: "Photo: C.Stadler/Bwag, Wikimedia Commons, CC BY-SA 4.0",
     sourceUrl:
       "https://commons.wikimedia.org/wiki/File:DJI_-_Drohne_Mavic_4_Pro.JPG",
+    kind: "photo",
+  },
+  fpv: {
+    src: "/drones/fpv.jpg",
+    alt: "DJI FPV, official product still",
+    credit: "Product image: DJI Store UK",
+    sourceUrl: "https://store.dji.com/uk/product/dji-fpv",
     kind: "photo",
   },
   avata: {

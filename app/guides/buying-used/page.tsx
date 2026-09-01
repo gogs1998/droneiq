@@ -65,7 +65,10 @@ export default function BuyingUsed() {
           <p className="mt-1 text-muted">
             Confirm the RC in the photo is the protocol this airframe speaks
             (O3 vs O4, RC-N2 vs RC 2). A beautiful RC 2 does not fly a Mini 3
-            Pro. Ask them to bind it in front of you. The{" "}
+            Pro. Mini 2 and Mini SE have no class mark; under 250 g that is
+            still A1 on the CAA weight table. Air 2S, Air 2 and Mavic 2 Pro are
+            unmarked and over 250 g — that is A3 (A2 only with a CofC). Ask them
+            to bind it in front of you. The{" "}
             <Link href="/gear" className="underline">
               compatibility matrix
             </Link>{" "}

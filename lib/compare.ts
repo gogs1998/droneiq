@@ -134,6 +134,22 @@ export function flyCard(d: Drone): {
       height,
     };
   }
+  if (d.ukClass === "unmarked") {
+    if (d.sub250) {
+      return {
+        subcategory: "A1 Over People",
+        people:
+          "No class mark. CAA legacy weight table: under 250 g is A1 — same Open subcategory as C0. May overfly uninvolved people; not crowds. Flyer ID + Operator ID from 100 g with a camera.",
+        height,
+      };
+    }
+    return {
+      subcategory: "A3 Far from People",
+      people:
+        "No class mark. CAA legacy weight table: 50 m from uninvolved people; 150 m from built-up areas. No overflight. A2 only with an A2 CofC. Flyer ID + Operator ID.",
+      height,
+    };
+  }
   if (d.ukClass === "C0" || d.sub250) {
     return {
       subcategory: "A1 Over People",
@@ -163,6 +179,20 @@ export function flyCard(d: Drone): {
     people: "50 m from uninvolved people; 150 m from built-up areas. No overflight.",
     height,
   };
+}
+
+/** Higher is easier Open-category flying (A1 over A3). Unmarked <250 g is A1. */
+function openEase(d: Drone): number {
+  if (d.ukClass === "unmarked") return d.sub250 ? 2 : 0;
+  if (d.sub250 || d.ukClass === "C0") return 2;
+  if (d.ukClass === "C1") return 1;
+  return 0;
+}
+
+/** Higher is the kinder class-mark row. Unmarked loses to C0 even under 250 g. */
+function classEase(d: Drone): number {
+  if (d.ukClass === "unmarked") return 0;
+  return (d.sub250 ? 1 : 0) + (d.ukClass === "C0" ? 1 : 0);
 }
 
 function allSame(n: number): Notice[] {
@@ -214,6 +244,10 @@ export function specRows(list: Drone[]): SpecRow[] {
     list.some((o) => o.ukClass !== d.ukClass || o.flyerIdRequired !== d.flyerIdRequired)
       ? "notice"
       : "same",
+  );
+
+  const openNotice: Notice[] = list.map((d) =>
+    list.some((o) => flyCard(o).subcategory !== flyCard(d).subcategory) ? "notice" : "same",
   );
 
   const sensorRanks = list.map((d) => primaryCamera(d).sensorRank);
@@ -324,7 +358,7 @@ export function specRows(list: Drone[]): SpecRow[] {
       list.map((d) => ukClassCell(d)),
       classNotice,
       uniqueWinner(
-        list.map((d) => (d.sub250 ? 1 : 0) + (d.ukClass === "C0" ? 1 : 0)),
+        list.map(classEase),
         "max",
       ),
     ),
@@ -333,9 +367,9 @@ export function specRows(list: Drone[]): SpecRow[] {
       "Weight & UK law",
       "Open subcategory",
       list.map((d) => flyCard(d).subcategory),
-      classNotice,
+      openNotice,
       uniqueWinner(
-        list.map((d) => (d.sub250 || d.ukClass === "C0" ? 2 : d.ukClass === "C1" ? 1 : 0)),
+        list.map(openEase),
         "max",
       ),
     ),
@@ -344,9 +378,9 @@ export function specRows(list: Drone[]): SpecRow[] {
       "Weight & UK law",
       "From uninvolved people",
       list.map((d) => flyCard(d).people),
-      classNotice,
+      openNotice,
       uniqueWinner(
-        list.map((d) => (d.sub250 || d.ukClass === "C0" ? 2 : d.ukClass === "C1" ? 1 : 0)),
+        list.map(openEase),
         "max",
       ),
     ),
@@ -791,7 +825,7 @@ export function faqsFor(list: Drone[]): FaqItem[] {
     q: `Do I need to register the ${newer.shortName} in the UK?`,
     a: ukRegister(newer),
   });
-  if (older.flyerIdRequired !== newer.flyerIdRequired || older.sub250 !== newer.sub250) {
+  if (older.flyerIdRequired !== newer.flyerIdRequired || older.sub250 !== newer.sub250 || older.ukClass !== newer.ukClass) {
     items.push({
       q: `Do I need to register the ${older.shortName} in the UK?`,
       a: ukRegister(older),

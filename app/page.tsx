@@ -1,11 +1,13 @@
-import { DronePhoto } from "@/components/DronePhoto";
 import { HomeBench } from "@/components/HomeBench";
 import { JsonLd } from "@/components/JsonLd";
+import { MatchupRow } from "@/components/MatchupRow";
+import { formatNewsDate } from "@/components/NewsBody";
 import { drones, getDrone } from "@/data/catalog";
-import { featuredPairs } from "@/data/featured-matchups";
+import { featuredPairs, homeSheetKeys, homeSheets, pairKey } from "@/data/featured-matchups";
 import { gearPairSlug } from "@/data/gear";
+import { DESK_LABEL, newsByDate } from "@/data/news";
 import { featuredGearResolved } from "@/lib/gear-compare";
-import { pairSlug, jsonLdWebPage, pageMeta, siteUrl } from "@/lib/seo";
+import { jsonLdWebPage, pageMeta, siteUrl } from "@/lib/seo";
 import Link from "next/link";
 
 export const metadata = pageMeta({
@@ -17,8 +19,20 @@ export const metadata = pageMeta({
 });
 
 export default function HomePage() {
-  const featured = featuredPairs
+  const sheets = homeSheets
+    .map((s) => {
+      const da = getDrone(s.a);
+      const db = getDrone(s.b);
+      if (!da || !db) return null;
+      return { da, db, lede: s.lede };
+    })
+    .filter((x): x is { da: NonNullable<typeof x>["da"]; db: NonNullable<typeof x>["db"]; lede: string } =>
+      Boolean(x),
+    );
+
+  const more = featuredPairs
     .map(([a, b]) => {
+      if (homeSheetKeys.has(pairKey(a, b))) return null;
       const da = getDrone(a);
       const db = getDrone(b);
       if (!da || !db) return null;
@@ -40,33 +54,58 @@ export default function HomePage() {
           url: siteUrl(),
         })}
       />
-      <HomeBench drones={drones} />
+
+      <p className="text-xs uppercase tracking-wider text-quiet">The sheets</p>
+      <h1 className="display mt-2 max-w-xl text-3xl leading-none md:text-5xl">
+        Compare drones by the numbers you would actually notice.
+      </h1>
+      <p className="mt-4 max-w-xl text-muted">
+        Specs with sources, CE range not FCC, UK class, and a plain-language
+        verdict. Not another video essay.
+      </p>
+
+      <section className="mt-10">
+        <h2 className="text-xs uppercase tracking-wider text-quiet">Open a sheet</h2>
+        <ul className="mt-3 divide-y divide-rule border-y border-rule">
+          {sheets.map(({ da, db, lede }, i) => (
+            <MatchupRow
+              key={`${da.slug}-${db.slug}`}
+              da={da}
+              db={db}
+              lede={lede}
+              prominent
+              priority={i < 2}
+            />
+          ))}
+        </ul>
+        <p className="mt-4 text-sm">
+          <Link href="/drones" className="underline">
+            Full catalog
+          </Link>
+          {" · "}
+          <Link href="/for" className="underline">
+            Pick by job
+          </Link>
+          {" · "}
+          <Link href="/#bench" className="underline">
+            Assemble your own
+          </Link>
+          {" · "}
+          <Link href="/news" className="underline">
+            News
+          </Link>
+        </p>
+      </section>
+
+      <div className="mt-12">
+        <HomeBench drones={drones} />
+      </div>
 
       <section className="mt-14">
-        <h2 className="display text-2xl">The matchups people search</h2>
+        <h2 className="display text-2xl">More matchups people search</h2>
         <ul className="mt-4 divide-y divide-rule border-y border-rule">
-          {featured.map(({ da, db }) => (
-            <li key={pairSlug(da, db)} className="flex items-start gap-3 py-3 sm:items-center">
-              <Link
-                href={`/compare/${pairSlug(da, db)}`}
-                className="flex shrink-0 gap-1"
-              >
-                <DronePhoto drone={da} variant="thumb" />
-                <DronePhoto drone={db} variant="thumb" />
-              </Link>
-              <div className="min-w-0">
-                <Link
-                  href={`/compare/${pairSlug(da, db)}`}
-                  className="text-lg hover:underline"
-                >
-                  {da.shortName} vs {db.shortName}
-                </Link>
-                <p className="text-sm text-muted">
-                  {da.cameras[0].sensor} · {da.weightG} g against {db.cameras[0].sensor} ·{" "}
-                  {db.weightG} g
-                </p>
-              </div>
-            </li>
+          {more.map(({ da, db }) => (
+            <MatchupRow key={`${da.slug}-${db.slug}`} da={da} db={db} />
           ))}
         </ul>
         <p className="mt-4 text-sm">
@@ -103,6 +142,33 @@ export default function HomePage() {
         <p className="mt-4 text-sm">
           <Link href="/gear" className="underline">
             Compatibility matrix
+          </Link>
+        </p>
+      </section>
+
+      <section className="mt-14">
+        <h2 className="display text-2xl">From the desk</h2>
+        <p className="mt-2 max-w-xl text-sm text-muted">
+          Original copy from CAA, legislation and DJI.
+        </p>
+        <ul className="mt-4 divide-y divide-rule border-y border-rule">
+          {newsByDate()
+            .slice(0, 3)
+            .map((a) => (
+              <li key={a.slug} className="py-3">
+                <p className="text-xs uppercase tracking-wider text-quiet">
+                  {DESK_LABEL[a.desk]} · {formatNewsDate(a.published)}
+                </p>
+                <Link href={`/news/${a.slug}`} className="text-lg hover:underline">
+                  {a.title}
+                </Link>
+                <p className="text-sm text-muted">{a.dek}</p>
+              </li>
+            ))}
+        </ul>
+        <p className="mt-4 text-sm">
+          <Link href="/news" className="underline">
+            All news
           </Link>
         </p>
       </section>

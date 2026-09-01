@@ -5,7 +5,7 @@ export default function NotFound() {
     <div className="mx-auto max-w-xl px-4 py-16">
       <h1 className="display text-4xl">No such page</h1>
       <p className="mt-3 text-muted">
-        That drone or comparison is not in the catalog.
+        That drone, comparison or article is not in the catalog.
       </p>
       <p className="mt-6">
         <Link href="/" className="underline">
