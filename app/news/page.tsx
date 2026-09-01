@@ -33,14 +33,9 @@ export default function NewsIndex() {
           ),
         ]}
       />
-      <p className="text-xs uppercase tracking-wider text-quiet">{newsDeskNote.kicker}</p>
-      <h1 className="display mt-2 text-4xl">{newsDeskNote.title}</h1>
+      <p className="text-xs uppercase tracking-wider text-quiet">News</p>
+      <h1 className="display mt-2 text-4xl">The desk</h1>
       <p className="mt-4 text-muted">{newsDeskNote.lede}</p>
-      {newsDeskNote.body.map((p) => (
-        <p key={p} className="mt-3 text-sm text-muted">
-          {p}
-        </p>
-      ))}
 
       <ul className="mt-10 divide-y divide-rule border-y border-rule">
         {list.map((a) => (
@@ -57,6 +52,15 @@ export default function NewsIndex() {
           </li>
         ))}
       </ul>
+
+      <section className="mt-14">
+        <h2 className="text-lg font-medium">{newsDeskNote.title}</h2>
+        {newsDeskNote.body.map((p) => (
+          <p key={p} className="mt-3 text-sm text-muted">
+            {p}
+          </p>
+        ))}
+      </section>
     </div>
   );
 }
