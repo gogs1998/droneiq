@@ -36,9 +36,7 @@ export const DESK_LABEL: Record<NewsDesk, string> = {
 };
 
 export const newsDeskNote = {
-  kicker: "News",
   title: "Where the news comes from",
-  lede: "DroneIQ reads the Civil Aviation Authority, UK legislation and DJI, then writes its own copy.",
   body: [
     "Primary sources are the desk. Specialist retailers and enthusiast sites are useful for knowing what people are arguing about. They are not a second catalog.",
     "Each article lists the URLs opened and the date they were opened. Spec figures that already live on a comparison sheet stay there.",

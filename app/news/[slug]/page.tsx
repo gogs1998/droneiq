@@ -77,8 +77,7 @@ export default async function NewsArticlePage({ params }: Props) {
       <section className="mt-10">
         <h2 className="text-lg font-medium">Sources</h2>
         <p className="mt-2 text-sm text-muted">
-          Opened {formatNewsDate(article.sources[0]?.accessed ?? article.published)}. We write from
-          these URLs; we do not paste them.
+          Opened {formatNewsDate(article.sources[0]?.accessed ?? article.published)}.
         </p>
         <ul className="mt-3 list-disc space-y-2 pl-5 text-sm text-muted">
           {article.sources.map((s) => (

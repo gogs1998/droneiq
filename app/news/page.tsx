@@ -35,9 +35,8 @@ export default function NewsIndex() {
       />
       <p className="text-xs uppercase tracking-wider text-quiet">News</p>
       <h1 className="display mt-2 text-4xl">News</h1>
-      <p className="mt-4 text-muted">{newsDeskNote.lede}</p>
 
-      <ul className="mt-10 divide-y divide-rule border-y border-rule">
+      <ul className="mt-8 divide-y divide-rule border-y border-rule">
         {list.map((a) => (
           <li key={a.slug} className="py-5">
             <p className="text-xs uppercase tracking-wider text-quiet">
