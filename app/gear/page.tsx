@@ -103,8 +103,9 @@ export default async function GearIndex({ searchParams }: Props) {
       <section className="mt-8">
         <h2 className="display text-2xl">Compatibility</h2>
         <p className="mt-1 text-sm text-muted">
-          {list.length} of the gear catalog against {drones.length} airframes.
-          Scroll sideways on a phone.
+          {list.length} of the gear catalog against {drones.length} airframes,
+          including Avata 360 at the right edge. Scroll sideways if a column is
+          clipped.
         </p>
         <div className="mt-4">
           <CompatMatrix items={list} highlight={highlight} />

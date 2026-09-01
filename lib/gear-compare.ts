@@ -104,24 +104,28 @@ export function gearVerdict(a: Gear, b: Gear): { snippet: string; paragraph: str
   const share = sharedFlies(a, b);
   const aOnly = onlyFlies(a, b);
   const bOnly = onlyFlies(b, a);
-  const shareTxt = share.length ? namesForSlugs(share) : "none of the catalog airframes";
-  const paragraph = [
-    `${a.shortName} and ${b.shortName} share ${shareTxt}.`,
-    aOnly.length
-      ? `${a.shortName} also flies ${namesForSlugs(aOnly)}.`
-      : `${a.shortName} has no extras in this catalog.`,
-    bOnly.length
-      ? `${b.shortName} also flies ${namesForSlugs(bOnly)}.`
-      : `${b.shortName} has no extras in this catalog.`,
+  const lines: string[] = [];
+  if (share.length) {
+    lines.push(`${a.shortName} and ${b.shortName} share ${namesForSlugs(share)}.`);
+    if (aOnly.length) lines.push(`${a.shortName} also flies ${namesForSlugs(aOnly)}.`);
+    if (bOnly.length) lines.push(`${b.shortName} also flies ${namesForSlugs(bOnly)}.`);
+  } else {
+    lines.push(
+      `${a.shortName} and ${b.shortName} share none of the catalog airframes.`,
+    );
+    lines.push(`${a.shortName} flies ${namesForSlugs(a.flies)}.`);
+    lines.push(`${b.shortName} flies ${namesForSlugs(b.flies)}.`);
+  }
+  lines.push(
     a.protocolNote !== b.protocolNote
       ? `${a.shortName}: ${a.protocolNote} ${b.shortName}: ${b.protocolNote}`
       : a.protocolNote,
-  ].join(" ");
+  );
   const snippet =
     share.length === 0
       ? `No shared airframes: ${a.shortName} vs ${b.shortName}.`
       : `${a.shortName} vs ${b.shortName}: both fly ${namesForSlugs(share)}.`;
-  return { snippet, paragraph };
+  return { snippet, paragraph: lines.join(" ") };
 }
 
 const FEATURED_FAQS: Record<string, FaqItem[]> = {

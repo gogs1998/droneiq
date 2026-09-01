@@ -11,16 +11,16 @@ export function CompatMatrix({
 }) {
   return (
     <div className="-mx-4 overflow-x-auto px-4 sm:mx-0 sm:px-0">
-      <table className="w-full min-w-[52rem] border-separate border-spacing-0 text-sm">
+      <table className="w-max min-w-full border-separate border-spacing-0 text-sm">
         <thead>
           <tr>
-            <th className="sticky left-0 z-10 min-w-[7.5rem] bg-paper px-2 py-2 text-left text-xs font-medium uppercase tracking-wider text-quiet">
+            <th className="sticky left-0 z-10 w-[6.5rem] min-w-[6.5rem] bg-paper px-2 py-2 text-left text-xs font-medium uppercase tracking-wider text-quiet">
               Gear
             </th>
             {drones.map((d) => (
               <th
                 key={d.slug}
-                className={`min-w-[3.4rem] px-1 py-2 text-left align-bottom text-[10px] font-medium leading-tight sm:min-w-[4.2rem] sm:text-xs ${
+                className={`w-[3.75rem] min-w-[3.75rem] px-0.5 py-2 text-left align-bottom text-[10px] font-medium leading-tight ${
                   highlight === d.slug ? "bg-[color-mix(in_srgb,var(--color-yellow)_28%,transparent)]" : "bg-paper"
                 }`}
               >
