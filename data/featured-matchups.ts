@@ -32,6 +32,46 @@ export const featuredPairs: [string, string][] = [
   ["avata-2", "mini-5-pro"],
 ];
 
+/** First-screen sheets — named matchups, not the whole catalog. */
+export const homeSheets: { a: string; b: string; lede: string }[] = [
+  {
+    a: "mini-2",
+    b: "mini-4k",
+    lede: "Same 1/2.3-inch 4K/30. Mini 4K is C0; Mini 2 is unmarked A1. The picture is not the fact.",
+  },
+  {
+    a: "mini-4-pro",
+    b: "mini-5-pro",
+    lede: "1/1.3 against 1-inch, and a battery that can push Mini 5 Pro out of C0. Weigh what you will fly.",
+  },
+  {
+    a: "air-3",
+    b: "air-3s",
+    lede: "Same 70 mm tele. You would notice the 1-inch wide and nightscape, not another telephoto.",
+  },
+  {
+    a: "air-2s",
+    b: "air-3",
+    lede: "One 1-inch camera against dual 1/1.3 and a 70 mm. Unmarked A3 against C1.",
+  },
+  {
+    a: "fpv",
+    b: "avata-2",
+    lede: "Exposed-prop racer against a ducted cinewhoop. Packs, goggles and sticks do not swap.",
+  },
+  {
+    a: "mavic-3-pro",
+    b: "mavic-4-pro",
+    lede: "Triple camera to triple camera. 4 Pro has to justify the bag, the class, and the invoice.",
+  },
+];
+
+export function pairKey(a: string, b: string): string {
+  return [a, b].sort().join("\0");
+}
+
+export const homeSheetKeys = new Set(homeSheets.map((s) => pairKey(s.a, s.b)));
+
 export const featuredMatchups: FeaturedMatchup[] = [
   {
     a: "mini-4-pro",

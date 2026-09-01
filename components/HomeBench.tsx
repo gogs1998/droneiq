@@ -2,22 +2,44 @@
 
 import { useMemo, useState } from "react";
 import { useRouter } from "next/navigation";
+import { featuredPairs } from "@/data/featured-matchups";
 import type { Drone } from "@/data/types";
 import { comparePath } from "@/lib/seo";
-import { IFlySelect } from "./IFly";
-import { useIFly } from "./IFly";
+import { SeriesChipRows, SpecChip, useIFly } from "./IFly";
 
 export function HomeBench({ drones }: { drones: Drone[] }) {
-  const [mine] = useIFly();
+  const [mine, setMine] = useIFly();
   const [picked, setPicked] = useState<string[]>([]);
   const router = useRouter();
+
+  const home = mine ? drones.find((d) => d.slug === mine) : undefined;
 
   const options = useMemo(
     () => drones.filter((d) => d.slug !== mine),
     [drones, mine],
   );
 
-  function toggle(slug: string) {
+  const suggested = useMemo(() => {
+    if (!mine) return [];
+    const seen = new Set<string>();
+    const out: Drone[] = [];
+    for (const [a, b] of featuredPairs) {
+      const other = a === mine ? b : b === mine ? a : null;
+      if (!other || seen.has(other)) continue;
+      seen.add(other);
+      const d = drones.find((x) => x.slug === other);
+      if (d) out.push(d);
+      if (out.length >= 4) break;
+    }
+    return out;
+  }, [drones, mine]);
+
+  function toggleMine(slug: string) {
+    setMine(mine === slug ? null : slug);
+    setPicked((cur) => cur.filter((s) => s !== slug));
+  }
+
+  function toggleAgainst(slug: string) {
     setPicked((cur) => {
       if (cur.includes(slug)) return cur.filter((s) => s !== slug);
       if (cur.length >= 3) return cur;
@@ -34,39 +56,52 @@ export function HomeBench({ drones }: { drones: Drone[] }) {
 
   return (
     <div id="bench" className="scroll-mt-8 border border-ink bg-paper-2 px-4 py-6 md:px-6">
-      <p className="text-xs uppercase tracking-wider text-quiet">The bench</p>
-      <h1 className="display mt-2 max-w-xl text-3xl leading-none md:text-5xl">
-        Compare drones by the numbers you would actually notice.
-      </h1>
-      <p className="mt-4 max-w-xl text-muted">
-        Specs with sources, CE range not FCC, UK class, and a plain-language
-        verdict. Not another video essay.
+      <p className="text-xs uppercase tracking-wider text-quiet">Or assemble a sheet</p>
+      <p className="mt-2 max-w-xl text-muted">
+        I fly stays in this browser. One airframe, then up to three against it —
+        or tick two without setting I fly.
       </p>
-      <div className="mt-6 grid gap-6 md:grid-cols-2">
-        <IFlySelect drones={drones.map((d) => ({ slug: d.slug, name: d.name }))} />
-        <div>
-          <p className="text-xs uppercase tracking-wider text-quiet">
-            Against (up to three)
-          </p>
-          <div className="mt-2 flex flex-wrap gap-2">
-            {options.map((d) => {
-              const on = picked.includes(d.slug);
-              return (
-                <button
-                  key={d.slug}
-                  type="button"
-                  onClick={() => toggle(d.slug)}
-                  className={`min-h-10 border px-3 py-1.5 text-sm ${
-                    on ? "border-ink bg-ink text-paper" : "border-rule text-ink"
-                  }`}
-                >
-                  {d.shortName}
-                </button>
-              );
-            })}
-          </div>
+
+      <div className="mt-6">
+        <p className="text-xs uppercase tracking-wider text-quiet">I fly</p>
+        <div className="mt-2">
+          <SeriesChipRows
+            drones={drones}
+            selected={mine ? [mine] : []}
+            onToggle={toggleMine}
+          />
         </div>
       </div>
+
+      <div className="mt-6">
+        <p className="text-xs uppercase tracking-wider text-quiet">Against (up to three)</p>
+        {home && suggested.length > 0 ? (
+          <div className="mt-3">
+            <p className="text-sm text-muted">Sheets people open from {home.shortName}</p>
+            <div className="mt-2 flex flex-wrap gap-2">
+              {suggested.map((d) => (
+                <SpecChip
+                  key={d.slug}
+                  on={picked.includes(d.slug)}
+                  disabled={!picked.includes(d.slug) && picked.length >= 3}
+                  onClick={() => toggleAgainst(d.slug)}
+                >
+                  {d.shortName}
+                </SpecChip>
+              ))}
+            </div>
+          </div>
+        ) : null}
+        <div className="mt-3">
+          <SeriesChipRows
+            drones={options}
+            selected={picked}
+            onToggle={toggleAgainst}
+            maxSelected={3}
+          />
+        </div>
+      </div>
+
       <button
         type="button"
         onClick={go}
