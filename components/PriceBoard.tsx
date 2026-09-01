@@ -1,3 +1,5 @@
+import { FactLabel } from "@/components/FactExplainer";
+import { priceGlossary, type GlossaryEntry } from "@/data/glossary";
 import type { Drone } from "@/data/types";
 import { gbp } from "@/lib/compare";
 import Link from "next/link";
@@ -33,6 +35,7 @@ export function PriceBoard({ drones }: { drones: Drone[] }) {
           <tbody>
             <PriceRow
               label="DJI Store UK RRP"
+              entry={priceGlossary.djiRrp}
               drones={drones}
               value={(d) => gbp(d.prices.djiRrpGbp)}
               href={(d) => d.prices.djiUrl}
@@ -41,6 +44,7 @@ export function PriceBoard({ drones }: { drones: Drone[] }) {
             />
             <PriceRow
               label="Amazon UK"
+              entry={priceGlossary.amazon}
               drones={drones}
               value={(d) => (d.prices.amazonGbp != null ? gbp(d.prices.amazonGbp) : "See Amazon")}
               href={(d) => d.prices.amazonUrl}
@@ -49,6 +53,7 @@ export function PriceBoard({ drones }: { drones: Drone[] }) {
             />
             <PriceRow
               label="eBay UK band"
+              entry={priceGlossary.ebay}
               drones={drones}
               value={(d) =>
                 d.prices.ebayLowGbp != null
@@ -61,6 +66,7 @@ export function PriceBoard({ drones }: { drones: Drone[] }) {
             />
             <PriceRow
               label="CeX sell"
+              entry={priceGlossary.cexSell}
               drones={drones}
               value={(d) => gbp(d.prices.cexSellGbp)}
               href={(d) => d.prices.cexUrl}
@@ -69,6 +75,7 @@ export function PriceBoard({ drones }: { drones: Drone[] }) {
             />
             <PriceRow
               label="CeX cash / voucher"
+              entry={priceGlossary.cexTrade}
               drones={drones}
               value={(d) =>
                 d.prices.cexCashGbp != null
@@ -88,6 +95,7 @@ export function PriceBoard({ drones }: { drones: Drone[] }) {
 
 function PriceRow({
   label,
+  entry,
   drones,
   value,
   href,
@@ -95,6 +103,7 @@ function PriceRow({
   ean,
 }: {
   label: string;
+  entry?: GlossaryEntry;
   drones: Drone[];
   value: (d: Drone) => string;
   href: (d: Drone) => string;
@@ -104,7 +113,7 @@ function PriceRow({
   return (
     <tr className="border-t border-rule align-top">
       <th className="sticky left-0 z-10 bg-paper px-2 py-3 text-left font-normal leading-snug text-muted sm:px-3">
-        {label}
+        <FactLabel label={label} entry={entry} />
       </th>
       {drones.map((d) => {
         const code = ean(d);
