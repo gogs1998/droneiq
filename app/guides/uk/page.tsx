@@ -120,6 +120,12 @@ export default function UkOpenGuide() {
           Plus battery to a C0 airframe takes it over the C0/UK0 MTOM. Weigh
           the pack you fly.
         </p>
+        <p className="mt-3 text-sm text-muted">
+          Unmarked airframes — Mini 2, Air 2S, anything without a class sticker
+          — fly A3 Far from People. Under 250 g does not buy A1 if there is no
+          class mark. That is why a 242 g Mini 2 is not the same legal drone as
+          a C0 Mini 4K.
+        </p>
       </section>
 
       <section className="mt-10">

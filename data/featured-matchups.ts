@@ -10,7 +10,10 @@ export const featuredPairs: [string, string][] = [
   ["mini-4-pro", "mini-5-pro"],
   ["mini-5-pro", "air-3s"],
   ["air-3s", "mavic-4-pro"],
+  ["mini-2", "mini-4k"],
+  ["mini-2", "mini-3"],
   ["mini-4k", "mini-4-pro"],
+  ["air-2s", "air-3"],
   ["air-3", "air-3s"],
   ["neo-2", "flip"],
   ["mini-5-pro", "mavic-4-pro"],
@@ -53,12 +56,42 @@ export const featuredMatchups: FeaturedMatchup[] = [
     ],
   },
   {
+    a: "mini-2",
+    b: "mini-4k",
+    questions: [
+      {
+        q: "Is Mini 4K just a Mini 2 with a new name?",
+        a: "On the camera, almost: both are 1/2.3-inch 12 MP, 4K/30, O2, downward sensing. You would not notice the picture. You would notice the class mark. Mini 4K is C0 / A1. Mini 2 is unmarked, so A3 Far from People in the UK even at 242 g. RC-N1 and the Mini 2 / Mini 4K pack fly both. Buy Mini 4K for a new box and A1. Buy Mini 2 if the used price is the point and you will fly A3.",
+      },
+    ],
+  },
+  {
+    a: "mini-2",
+    b: "mini-3",
+    questions: [
+      {
+        q: "Is Mini 3 worth it over a cheap Mini 2?",
+        a: "Yes if the picture is why you fly: 1/1.3-inch, true vertical, 38 minutes, C0 / A1. Mini 2 is the used 4K Mini — 1/2.3, no vertical, downward only, unmarked A3. RC-N1 flies both. Batteries do not: Mini 2 shares the Mini 4K pack, not the Mini 3 pack.",
+      },
+    ],
+  },
+  {
     a: "mini-4k",
     b: "mini-4-pro",
     questions: [
       {
         q: "Is ‘4K’ the same on both?",
         a: "No. Mini 4K is 4K/30 from a 1/2.3-inch sensor with downward sensing and O2. Mini 4 Pro is 4K/60 HDR from 1/1.3-inch, omnidirectional sensing and O4. You are buying a different aircraft that happens to share a weight class.",
+      },
+    ],
+  },
+  {
+    a: "air-2s",
+    b: "air-3",
+    questions: [
+      {
+        q: "Should I buy a used Air 2S instead of Air 3?",
+        a: "Air 2S is one 1-inch camera (5.4K/30, 4K/60, D-Log M) at 595 g, O3, front/back/up/down sensing — not omni, not a 70 mm tele. Air 3 is dual 1/1.3 including 70 mm, O4, omni, C1. You would notice the telephoto and the paperwork (unmarked A3 vs C1 A1 until 2027). You would notice the 1-inch wide in evening light more than Air 3’s 1/1.3. Batteries and ND glass are not the same family. RC-N1 flies Air 2S; Air 3 wants RC-N2 or RC 2.",
       },
     ],
   },

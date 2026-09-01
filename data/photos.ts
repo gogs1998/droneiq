@@ -7,9 +7,10 @@ export type DronePhoto = {
 };
 
 /**
- * Local catalog stills. Photos are Wikimedia Commons (CC BY-SA or CC0),
- * cropped for the spec-sheet layout. Avata 1 is an illustration — Commons
- * has no usable product still of the original airframe.
+ * Local catalog stills. Most photos are Wikimedia Commons (CC BY-SA or CC0),
+ * cropped for the spec-sheet layout. Mini 2 and Air 2S use official DJI Store
+ * UK product stills (no clean Commons cutout of those used-market airframes).
+ * Avata 1 is an illustration — Commons has no usable product still.
  */
 export const photos: Record<string, DronePhoto> = {
   neo: {
@@ -32,6 +33,13 @@ export const photos: Record<string, DronePhoto> = {
     alt: "DJI Flip on a shop display, propeller guards on",
     credit: "Photo: Kyu3a, Wikimedia Commons, CC BY-SA 4.0",
     sourceUrl: "https://commons.wikimedia.org/wiki/File:DJI_Flip_-_2.jpg",
+    kind: "photo",
+  },
+  "mini-2": {
+    src: "/drones/mini-2.jpg",
+    alt: "DJI Mini 2, official product still",
+    credit: "Product image: DJI Store UK",
+    sourceUrl: "https://store.dji.com/uk/product/mini-2",
     kind: "photo",
   },
   "mini-4k": {
@@ -71,6 +79,13 @@ export const photos: Record<string, DronePhoto> = {
     credit: "Photo: ZLEA, Wikimedia Commons, CC BY-SA 4.0",
     sourceUrl:
       "https://commons.wikimedia.org/wiki/File:DJI_MT5MFND_Mini_5_Pro_(FA3TPCHHM7)_(3-1-2026).jpg",
+    kind: "photo",
+  },
+  "air-2s": {
+    src: "/drones/air-2s.jpg",
+    alt: "DJI Air 2S, official product still",
+    credit: "Product image: DJI Store UK",
+    sourceUrl: "https://store.dji.com/uk/product/dji-air-2s",
     kind: "photo",
   },
   "air-3": {

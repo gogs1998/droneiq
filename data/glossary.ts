@@ -276,7 +276,7 @@ export const glossary: Record<string, GlossaryEntry> = {
   flies: {
     id: "flies",
     label: "Flies in this catalog",
-    oneLiner: "Which of our 16 DJI airframes this stick, motion or headset is listed for.",
+    oneLiner: "Which of our 18 DJI airframes this stick, motion or headset is listed for.",
     body: "This is the fact that decides a used RC more often than the millimetres of the clamp. A beautiful RC-N1 does not fly Mini 5 Pro. Avata 1 goggles do not fly Avata 2. Firmware can still block a listed pair — check the RC you actually hold. Not every DJI SKU in the world; the catalog on this site.",
     sourceLabel: "DJI product compatibility notes",
     sourceUrl: "https://www.dji.com/uk/products/camera-drones",

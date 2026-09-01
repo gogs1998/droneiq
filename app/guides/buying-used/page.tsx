@@ -65,7 +65,8 @@ export default function BuyingUsed() {
           <p className="mt-1 text-muted">
             Confirm the RC in the photo is the protocol this airframe speaks
             (O3 vs O4, RC-N2 vs RC 2). A beautiful RC 2 does not fly a Mini 3
-            Pro. Ask them to bind it in front of you. The{" "}
+            Pro. Mini 2 and Air 2S have no class mark — in the UK that is A3,
+            even on a 242 g Mini 2. Ask them to bind it in front of you. The{" "}
             <Link href="/gear" className="underline">
               compatibility matrix
             </Link>{" "}
