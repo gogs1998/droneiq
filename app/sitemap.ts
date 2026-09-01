@@ -9,6 +9,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
     { url: base, lastModified: now, changeFrequency: "weekly", priority: 1 },
     { url: `${base}/drones`, lastModified: now, changeFrequency: "weekly", priority: 0.9 },
     { url: `${base}/for`, lastModified: now, changeFrequency: "monthly", priority: 0.6 },
+    { url: `${base}/guides/uk`, lastModified: now, changeFrequency: "monthly", priority: 0.7 },
     { url: `${base}/guides/buying-used`, lastModified: now, changeFrequency: "monthly", priority: 0.5 },
   ];
   for (const j of JOBS) {

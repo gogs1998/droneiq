@@ -104,6 +104,8 @@ export type Drone = {
   rangeKmFcc: number;
   internalGb: number;
   batteryWh: number;
+  /** Plus / Intelligent Flight Battery Plus energy, if DJI sells one. Never the C0 row. */
+  batteryWhPlus?: number | null;
   batteryFamily: string;
   rcFamily: string;
   ndSize: string | null;

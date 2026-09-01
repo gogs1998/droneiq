@@ -48,6 +48,15 @@ export const glossary: Record<string, GlossaryEntry> = {
     sourceLabel: "CAA Drone Code",
     sourceUrl: "https://www.caa.co.uk/drones/open-category/drone-code/where-you-can-fly-points-3-to-9/",
   },
+  remoteId: {
+    id: "remoteId",
+    label: "Remote ID",
+    oneLiner: "Broadcast who and where. UK1/2/3 from 1 January 2026, not the US RID rule.",
+    body: "The March 2026 Drone Code (point 32): switch Remote ID on when flying a UK1, UK2 or UK3 aircraft, from 1 January 2026. A C-class drone flies as the matching UK class until 31 December 2027, so a C1 Air or Avata and a C2 Mavic are in that set. UK0 camera drones (C0 Minis) are later — 1 January 2028 for Open category. This is not US Remote ID. Put the code from your CAA operator account into the aircraft as the maker describes; this site will not invent DJI menu steps.",
+    sourceLabel: "CAA Drone Code — Operator ID and Remote ID (points 30–35)",
+    sourceUrl:
+      "https://www.caa.co.uk/drones/open-category/drone-code/getting-an-operator-id-before-you-fly-points-30-to-35/",
+  },
   sensor: {
     id: "sensor",
     label: "Sensor",
@@ -100,7 +109,7 @@ export const glossary: Record<string, GlossaryEntry> = {
     id: "sensing",
     label: "Obstacle sensing",
     oneLiner: "Omnidirectional means sides and above, not just ‘it has sensors’.",
-    body: "Downward-only (Neo, Mini 3, Mini 4K) will not stop a tree in front of you. Front/back/down (Mini 3 Pro, Flip) is the old Pro pattern. Omnidirectional (Mini 4 Pro and up) adds sides. Nightscape / LiDAR is the dusk version of the same idea, and it still needs texture and a minimum lux. None of this replaces looking.",
+    body: "Downward-only (Neo, Mini 3, Mini 4K) will not stop a tree in front of you. Mini 3 Pro is binocular front/back/down. Flip is forward 3D infrared plus down — not the Mini 3 Pro pattern. Omnidirectional (Mini 4 Pro and up) adds sides. Nightscape / LiDAR is the dusk version of the same idea, and it still needs texture and a minimum lux. None of this replaces looking.",
     sourceLabel: "DJI vision system specs",
     sourceUrl: "https://www.dji.com/uk/mini-4-pro/specs",
   },

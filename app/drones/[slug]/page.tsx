@@ -65,7 +65,10 @@ export default async function DronePage({
         {formatReleased(d.released)} · {gbp(d.prices.djiRrpGbp)} RRP
       </p>
       <p className="mt-4 max-w-2xl text-sm text-muted">
-        {d.weightNote} {d.ukClassNote}
+        {d.weightNote} {d.ukClassNote}{" "}
+        <Link href="/guides/uk" className="underline">
+          UK IDs, class and Remote ID
+        </Link>
       </p>
 
       <div className="mt-6 max-w-xl">

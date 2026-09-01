@@ -144,7 +144,8 @@ export function flyCard(d: Drone): {
   if (d.ukClass === "C1") {
     return {
       subcategory: "A1 Over People (C1 until 31 Dec 2027)",
-      people: "May overfly uninvolved people; not crowds. Flyer ID required. Towns OK in A1.",
+      people:
+        "May overfly uninvolved people; not crowds. Flyer ID + Operator ID. Remote ID on from 1 Jan 2026 (C1 as UK1). Towns OK in A1.",
       height,
     };
   }
@@ -152,7 +153,7 @@ export function flyCard(d: Drone): {
     return {
       subcategory: "A2 (A2 CofC) or A3",
       people:
-        "A2: 30 m from uninvolved people (5 m low-speed). Without CofC, A3: 50 m and 150 m from built-up areas. No overflight.",
+        "A2: 30 m from uninvolved people (5 m low-speed). Without CofC, A3: 50 m and 150 m from built-up areas. No overflight. Remote ID on from 1 Jan 2026 (C2 as UK2).",
       height,
     };
   }
@@ -482,8 +483,12 @@ export function specRows(list: Drone[]): SpecRow[] {
     row(
       "speed",
       "Flight",
-      "Max speed (CE)",
-      list.map((d) => `${d.maxSpeedKphCe} km/h CE · ${d.maxSpeedKphFcc} FCC`),
+      "Max speed",
+      list.map((d) =>
+        d.maxSpeedKphCe === d.maxSpeedKphFcc
+          ? `${d.maxSpeedKphFcc} km/h Sport`
+          : `${d.maxSpeedKphCe} km/h EU · ${d.maxSpeedKphFcc} km/h FCC`,
+      ),
       gapNotice(
         list.map((d) => d.maxSpeedKphCe),
         20,
@@ -549,7 +554,11 @@ export function specRows(list: Drone[]): SpecRow[] {
       "battery",
       "Power & storage",
       "Battery",
-      list.map((d) => `${trimNum(d.batteryWh)} Wh`),
+      list.map((d) =>
+        d.batteryWhPlus
+          ? `${trimNum(d.batteryWh)} Wh (${trimNum(d.batteryWhPlus)} Wh Plus)`
+          : `${trimNum(d.batteryWh)} Wh`,
+      ),
       gapNotice(
         list.map((d) => d.batteryWh),
         30,
@@ -856,12 +865,12 @@ function cameraNotice(a: Drone, b: Drone): string {
 }
 
 function ukRegister(d: Drone): string {
-  return `${d.shortName} is ${d.ukClass}, takeoff about ${trimNum(d.weightG)} g (${d.weightNote}). In the UK a Flyer ID is required from 100 g, and an Operator ID is required from 100 g with a camera or from 250 g — this airframe needs both. This is not legal advice; read the CAA drone code for the airframe and battery you actually fly.`;
+  return `${d.shortName} is ${d.ukClass}, takeoff about ${trimNum(d.weightG)} g (${d.weightNote}). In the UK a Flyer ID is required from 100 g, and an Operator ID is required from 100 g with a camera or from 250 g — this airframe needs both. This is not legal advice; read the CAA Drone Code for the airframe and battery you actually fly. Longer version: the UK Open explainer on this site (/guides/uk).`;
 }
 
 function flyFaq(d: Drone): string {
   const f = flyCard(d);
-  return `${d.shortName} (${d.ukClass}): ${f.subcategory}. ${f.people} Open height is ${f.height}. Never over crowds. This is not legal advice — the CAA Drone Code (March 2026) applies to the airframe and battery you actually fly.`;
+  return `${d.shortName} (${d.ukClass}): ${f.subcategory}. ${f.people} Open height is ${f.height}. Never over crowds. This is not legal advice — the CAA Drone Code (March 2026) applies to the airframe and battery you actually fly. Longer version: the UK Open explainer on this site (/guides/uk).`;
 }
 
 function heavierFlyer(a: Drone, b: Drone): string {

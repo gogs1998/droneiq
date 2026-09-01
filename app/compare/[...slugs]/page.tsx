@@ -124,6 +124,11 @@ export default async function ComparePage({
 
       <section className="mt-10">
         <SpecTable drones={ordered} />
+        <p className="mt-3 text-sm text-muted">
+          <Link href="/guides/uk" className="underline">
+            UK Open category, IDs and Remote ID
+          </Link>
+        </p>
       </section>
 
       <Questions items={faqs} />
