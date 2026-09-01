@@ -461,7 +461,7 @@ export const drones: Drone[] = [
     prices: {
       asOf: A,
       djiRrpGbp: 259,
-      djiUrl: "https://www.dji.com/uk/mini-4k",
+      djiUrl: "https://store.dji.com/uk/product/dji-mini-4k",
       djiBox: "Mini 4K (typical drone + RC)",
       djiEan: null,
       amazonGbp: null,
@@ -576,7 +576,7 @@ export const drones: Drone[] = [
     prices: {
       asOf: A,
       djiRrpGbp: 319,
-      djiUrl: "https://www.dji.com/uk/mini-3",
+      djiUrl: "https://store.dji.com/uk/product/dji-mini-3",
       djiBox: "Mini 3 with DJI RC (C0)",
       djiEan: null,
       amazonGbp: 339,
@@ -686,7 +686,7 @@ export const drones: Drone[] = [
     prices: {
       asOf: A,
       djiRrpGbp: null,
-      djiUrl: "https://www.dji.com/uk/mini-3-pro",
+      djiUrl: "https://store.dji.com/uk/product/dji-mini-3-pro",
       djiBox: "Discontinued as new",
       djiEan: null,
       amazonGbp: null,

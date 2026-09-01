@@ -1,4 +1,5 @@
 import { CompatMatrix } from "@/components/CompatMatrix";
+import { GearPhoto } from "@/components/GearPhoto";
 import { JsonLd } from "@/components/JsonLd";
 import { drones, getDrone } from "@/data/catalog";
 import { featuredGearResolved } from "@/lib/gear-compare";
@@ -114,17 +115,22 @@ export default async function GearIndex({ searchParams }: Props) {
 
       <ul className="mt-10 divide-y divide-rule border-y border-rule">
         {list.map((g) => (
-          <li key={g.slug} className="flex flex-wrap items-baseline justify-between gap-x-3 gap-y-1 py-3">
-            <div>
-              <Link href={`/gear/${g.slug}`} className="display text-xl hover:underline sm:text-2xl">
-                {g.name}
-              </Link>
+          <li key={g.slug} className="flex items-start gap-3 py-3 sm:items-center sm:gap-4 sm:py-4">
+            <Link href={`/gear/${g.slug}`} className="shrink-0">
+              <GearPhoto item={g} variant="thumb" />
+            </Link>
+            <div className="min-w-0 flex-1">
+              <div className="flex flex-wrap items-baseline justify-between gap-x-3 gap-y-0.5">
+                <Link href={`/gear/${g.slug}`} className="display text-xl hover:underline sm:text-2xl">
+                  {g.name}
+                </Link>
+                <div className="text-sm text-quiet">{KIND_LABEL[g.kind]}</div>
+              </div>
               <p className="mt-1 text-sm text-muted">
                 {g.form} · {g.transmission} · {g.flies.length} airframe
                 {g.flies.length === 1 ? "" : "s"}
               </p>
             </div>
-            <div className="text-sm text-quiet">{KIND_LABEL[g.kind]}</div>
           </li>
         ))}
       </ul>

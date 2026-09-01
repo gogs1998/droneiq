@@ -1,4 +1,5 @@
 import { DronePhoto } from "@/components/DronePhoto";
+import { GearPhoto } from "@/components/GearPhoto";
 import { HomeBench } from "@/components/HomeBench";
 import { JsonLd } from "@/components/JsonLd";
 import { drones, getDrone } from "@/data/catalog";
@@ -87,16 +88,25 @@ export default function HomePage() {
         </p>
         <ul className="mt-4 divide-y divide-rule border-y border-rule">
           {featuredGear.map(({ a, b }) => (
-            <li key={gearPairSlug(a, b)} className="py-3">
+            <li key={gearPairSlug(a, b)} className="flex items-start gap-3 py-3 sm:items-center">
               <Link
                 href={`/compare/${gearPairSlug(a, b)}`}
-                className="text-lg hover:underline"
+                className="flex shrink-0 gap-1"
               >
-                {a.shortName} vs {b.shortName}
+                <GearPhoto item={a} variant="thumb" />
+                <GearPhoto item={b} variant="thumb" />
               </Link>
-              <p className="text-sm text-muted">
-                {a.form} · {a.transmission} against {b.form} · {b.transmission}
-              </p>
+              <div className="min-w-0">
+                <Link
+                  href={`/compare/${gearPairSlug(a, b)}`}
+                  className="text-lg hover:underline"
+                >
+                  {a.shortName} vs {b.shortName}
+                </Link>
+                <p className="text-sm text-muted">
+                  {a.form} · {a.transmission} against {b.form} · {b.transmission}
+                </p>
+              </div>
             </li>
           ))}
         </ul>

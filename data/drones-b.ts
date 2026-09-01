@@ -261,7 +261,7 @@ export const dronesB: Drone[] = [
     prices: {
       asOf: A,
       djiRrpGbp: 869,
-      djiUrl: "https://www.dji.com/uk/air-3",
+      djiUrl: "https://store.dji.com/uk/product/dji-air-3",
       djiBox: "Air 3 (DJI RC-N2) — not Air 3S",
       djiEan: null,
       amazonGbp: null,
@@ -514,7 +514,7 @@ export const dronesB: Drone[] = [
     prices: {
       asOf: A,
       djiRrpGbp: 1119,
-      djiUrl: "https://www.dji.com/uk/mavic-3-classic",
+      djiUrl: "https://store.dji.com/uk/product/dji-mavic-3-classic",
       djiBox: "Mavic 3 Classic (standard, not Cine, not Mavic 3 Pro)",
       djiEan: null,
       amazonGbp: null,
@@ -657,7 +657,7 @@ export const dronesB: Drone[] = [
     prices: {
       asOf: A,
       djiRrpGbp: 1689,
-      djiUrl: "https://www.dji.com/uk/mavic-3-pro",
+      djiUrl: "https://store.dji.com/uk/product/dji-mavic-3-pro",
       djiBox: "Mavic 3 Pro (DJI RC) — not Cine, not Classic, not Mavic 4 Pro",
       djiEan: null,
       amazonGbp: null,
@@ -930,7 +930,7 @@ export const dronesB: Drone[] = [
     prices: {
       asOf: A,
       djiRrpGbp: null,
-      djiUrl: "https://www.dji.com/uk/avata",
+      djiUrl: "https://store.dji.com/uk/product/dji-avata",
       djiBox: "Discontinued — original Avata (not Avata 2, not Avata 360)",
       djiEan: null,
       amazonGbp: null,
@@ -1055,7 +1055,7 @@ export const dronesB: Drone[] = [
     prices: {
       asOf: A,
       djiRrpGbp: 539,
-      djiUrl: "https://www.dji.com/uk/avata-2",
+      djiUrl: "https://store.dji.com/uk/product/dji-avata-2",
       djiBox: "Avata 2 Fly More Combo (1 battery) — not original Avata, not 360",
       djiEan: null,
       amazonGbp: 685,
@@ -1167,7 +1167,7 @@ export const dronesB: Drone[] = [
     prices: {
       asOf: A,
       djiRrpGbp: 719,
-      djiUrl: "https://www.dji.com/uk/avata-360",
+      djiUrl: "https://store.dji.com/uk/product/dji-avata-360",
       djiBox: "Avata 360 (goggles combo) — not Avata 2, not an RC 2 camera drone",
       djiEan: null,
       amazonGbp: 829,
