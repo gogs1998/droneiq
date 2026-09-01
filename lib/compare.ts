@@ -320,10 +320,7 @@ export function specRows(list: Drone[]): SpecRow[] {
       "ukClass",
       "Weight & UK law",
       "UK class / IDs",
-      list.map(
-        (d) =>
-          `${d.ukClass}${d.sub250 ? " · sub-250 g" : ""} · Operator ID${d.flyerIdRequired ? " + Flyer ID" : ""}`,
-      ),
+      list.map((d) => ukClassCell(d)),
       classNotice,
       uniqueWinner(
         list.map((d) => (d.sub250 ? 1 : 0) + (d.ukClass === "C0" ? 1 : 0)),
@@ -864,8 +861,18 @@ function cameraNotice(a: Drone, b: Drone): string {
   return `${a.shortName} main: ${sensorSummary(a)}, ${a.cameras[0].maxVideo}. ${b.shortName} main: ${sensorSummary(b)}, ${b.cameras[0].maxVideo}. You would notice sensor class in low light; you would not notice the word 4K if both already do it.${tele}`;
 }
 
+function ukClassCell(d: Drone): string {
+  const plus =
+    d.batteryWhPlus && d.sub250 ? " (C1 with Plus pack)" : "";
+  return `${d.ukClass}${d.sub250 ? " · sub-250 g" : ""}${plus} · Operator ID${d.flyerIdRequired ? " + Flyer ID" : ""}`;
+}
+
 function ukRegister(d: Drone): string {
-  return `${d.shortName} is ${d.ukClass}, takeoff about ${trimNum(d.weightG)} g (${d.weightNote}). In the UK a Flyer ID is required from 100 g, and an Operator ID is required from 100 g with a camera or from 250 g — this airframe needs both. This is not legal advice; read the CAA Drone Code for the airframe and battery you actually fly. Longer version: the UK Open explainer on this site (/guides/uk).`;
+  const plus =
+    d.batteryWhPlus && d.sub250
+      ? " A Plus battery can take this out of C0 — weigh the pack you fly."
+      : "";
+  return `${d.shortName} is ${d.ukClass}, takeoff about ${trimNum(d.weightG)} g (${d.weightNote}). In the UK a Flyer ID is required from 100 g, and an Operator ID is required from 100 g with a camera or from 250 g — this airframe needs both.${plus} This is not legal advice; read the CAA Drone Code for the airframe and battery you actually fly. Longer version: the UK Open explainer on this site (/guides/uk).`;
 }
 
 function flyFaq(d: Drone): string {

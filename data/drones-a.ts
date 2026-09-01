@@ -576,7 +576,7 @@ export const drones: Drone[] = [
     prices: {
       asOf: A,
       djiRrpGbp: 319,
-      djiUrl: "https://www.dji.com/mini-3",
+      djiUrl: "https://www.dji.com/uk/mini-3",
       djiBox: "Mini 3 with DJI RC (C0)",
       djiEan: null,
       amazonGbp: 339,
@@ -607,7 +607,7 @@ export const drones: Drone[] = [
       itemIds: ["videomaker-mini3", "heliguy-mini3-vs-pro", "dpreview-mini3"],
     },
     sources: [
-      src("aircraft", "DJI Mini 3 specs", "https://www.dji.com/mini-3/specs"),
+      src("aircraft", "DJI Mini 3 specs", "https://www.dji.com/uk/mini-3/specs"),
       src("amazon", "Amazon UK Mini 3 RC-N1", "https://www.amazon.co.uk/dp/B0CQ8DG1CX"),
     ],
   },

@@ -1204,7 +1204,7 @@ export const dronesB: Drone[] = [
       ),
       src("camera", "DJI Avata 360 product notes", "https://www.dji.com/uk/products/camera-drones"),
       src("price-band", "DroneXL Avata 360 note", "https://dronexl.co/best/dji-drones/"),
-      src("amazon", "Amazon UK Avata 360 Fly More RC 2", "https://www.amazon.co.uk/dp/B0G4R9GZYR"),
+      src("amazon", "Amazon UK Avata 360 Fly More", "https://www.amazon.co.uk/dp/B0G4R9GZYR"),
     ],
   },
 ];
