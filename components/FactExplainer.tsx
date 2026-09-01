@@ -35,7 +35,6 @@ export function FactExplainer({
   const btnRef = useRef<HTMLButtonElement>(null);
   const tipRef = useRef<HTMLDivElement>(null);
   const hideTimer = useRef<number | null>(null);
-  const openedAt = useRef(0);
   const tipId = useId();
 
   const clearHide = () => {
@@ -109,7 +108,6 @@ export function FactExplainer({
       ref={wrapRef}
       className="inline-flex max-w-full items-baseline gap-1"
       onMouseEnter={() => {
-        openedAt.current = Date.now();
         show();
       }}
       onMouseLeave={() => {
@@ -129,9 +127,7 @@ export function FactExplainer({
         onFocus={show}
         onClick={(e) => {
           e.preventDefault();
-          // A tap often fires mouseenter then click. Don't immediately toggle closed.
-          if (Date.now() - openedAt.current < 450 && open) return;
-          setOpen((v) => !v);
+          show();
         }}
       >
         i
@@ -145,7 +141,6 @@ export function FactExplainer({
               style={{ top: pos.top, left: pos.left, width: TIP_W }}
               className="fixed z-[80] border border-rule bg-paper p-3 text-left shadow-[0_10px_28px_rgba(20,19,17,0.14)]"
               onMouseEnter={() => {
-                openedAt.current = Date.now();
                 show();
               }}
               onMouseLeave={() => {
