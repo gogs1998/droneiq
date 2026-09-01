@@ -1,26 +1,36 @@
-import { keepFromTo, partsFor } from "@/data/parts";
+import { KIND_LABEL } from "@/data/gear";
+import { keepFromTo, partsFor, type PartKind } from "@/data/parts";
 import type { Drone } from "@/data/types";
+import Link from "next/link";
+
+const KINDS: PartKind[] = ["battery", "rc", "motion", "goggles", "nd"];
 
 export function Compatibility({ drone }: { drone: Drone }) {
-  const mine = ["battery", "rc", "nd", "goggles"] as const;
   return (
     <section className="mt-12">
       <h2 className="display text-2xl">Parts that fit</h2>
       <p className="mt-1 max-w-2xl text-sm text-muted">
-        Battery family, controllers, ND, goggles. Confirm firmware before you
-        mix RCs.
+        Battery family, controllers, motion, ND, goggles. Confirm firmware
+        before you mix RCs.{" "}
+        <Link href={`/gear?drone=${drone.slug}`} className="underline">
+          Full compatibility matrix
+        </Link>
       </p>
       <dl className="mt-4 grid gap-4 sm:grid-cols-2">
-        {mine.map((kind) => {
+        {KINDS.map((kind) => {
           const list = partsFor(drone.slug, kind);
           return (
             <div key={kind} className="border border-rule px-3 py-3">
-              <dt className="text-xs uppercase tracking-wider text-quiet">{kind}</dt>
+              <dt className="text-xs uppercase tracking-wider text-quiet">
+                {KIND_LABEL[kind]}
+              </dt>
               <dd className="mt-1 text-sm">
                 {list.length
                   ? list.map((p) => (
                       <p key={p.id}>
-                        {p.name}
+                        <Link href={`/gear/${p.id}`} className="hover:underline">
+                          {p.name}
+                        </Link>
                         <span className="block text-xs text-muted">{p.note}</span>
                       </p>
                     ))

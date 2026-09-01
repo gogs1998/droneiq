@@ -55,7 +55,11 @@ export default async function DronesIndex({ searchParams }: Props) {
       <h1 className="display text-4xl">Drones</h1>
       <p className="mt-2 max-w-xl text-muted">
         {list.length} of {drones.length} in the catalog. Filters are shareable
-        URLs, not a quiz.
+        URLs, not a quiz. Controllers and goggles live on{" "}
+        <Link href="/gear" className="underline">
+          Gear
+        </Link>
+        .
       </p>
       <div className="mt-6 flex flex-wrap gap-2">
         {chip("/drones", "All", !q.maxg && !q.tele && !q.omni && !q.maxgbp)}

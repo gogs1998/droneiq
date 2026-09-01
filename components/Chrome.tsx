@@ -11,6 +11,9 @@ export function SiteHeader() {
           <Link href="/drones" className="hover:text-ink">
             Drones
           </Link>
+          <Link href="/gear" className="hover:text-ink">
+            Gear
+          </Link>
           <Link href="/#bench" className="hover:text-ink">
             Bench
           </Link>
@@ -45,6 +48,10 @@ export function SiteFooter() {
           {" · "}
           <Link href="/drones" className="hover:text-ink">
             Catalog
+          </Link>
+          {" · "}
+          <Link href="/gear" className="hover:text-ink">
+            Gear
           </Link>
           {" · "}
           <Link href="/for" className="hover:text-ink">
