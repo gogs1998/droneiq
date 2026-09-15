@@ -7,7 +7,7 @@ import { featuredPairs, homeSheetKeys, homeSheets, pairKey } from "@/data/featur
 import { gearPairSlug } from "@/data/gear";
 import { DESK_LABEL, newsByDate } from "@/data/news";
 import { featuredGearResolved } from "@/lib/gear-compare";
-import { jsonLdWebPage, pageMeta, siteUrl } from "@/lib/seo";
+import { jsonLdOrganization, jsonLdWebPage, pageMeta, siteUrl } from "@/lib/seo";
 import Link from "next/link";
 
 export const metadata = pageMeta({
@@ -47,12 +47,15 @@ export default function HomePage() {
   return (
     <div className="mx-auto max-w-6xl px-4 py-8 md:px-6">
       <JsonLd
-        data={jsonLdWebPage({
-          name: "DroneIQ",
-          description:
-            "Compare DJI drones with sourced specs, UK class, CE range and a verdict on whether you would notice.",
-          url: siteUrl(),
-        })}
+        data={[
+          jsonLdWebPage({
+            name: "DroneIQ",
+            description:
+              "Compare DJI drones with sourced specs, UK class, CE range and a verdict on whether you would notice.",
+            url: siteUrl(),
+          }),
+          jsonLdOrganization(),
+        ]}
       />
 
       <p className="text-xs uppercase tracking-wider text-quiet">The sheets</p>
@@ -83,6 +86,10 @@ export default function HomePage() {
             Full catalog
           </Link>
           {" · "}
+          <Link href="/compare" className="underline">
+            All compares
+          </Link>
+          {" · "}
           <Link href="/for" className="underline">
             Pick by job
           </Link>
@@ -109,6 +116,10 @@ export default function HomePage() {
           ))}
         </ul>
         <p className="mt-4 text-sm">
+          <Link href="/compare" className="underline">
+            All compares
+          </Link>
+          {" · "}
           <Link href="/drones" className="underline">
             Full catalog
           </Link>

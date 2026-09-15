@@ -1,3 +1,4 @@
+import { Breadcrumbs } from "@/components/Breadcrumbs";
 import { GearSpecTable } from "@/components/GearSpecTable";
 import { JsonLd } from "@/components/JsonLd";
 import { Questions } from "@/components/Questions";
@@ -12,7 +13,7 @@ import {
 } from "@/data/gear";
 import { dronesFlown, dronesNotFlown, gearFaqs } from "@/lib/gear-compare";
 import { formatReleased } from "@/lib/compare";
-import { jsonLdFaq, jsonLdWebPage, pageMeta, siteUrl } from "@/lib/seo";
+import { jsonLdBreadcrumb, jsonLdFaq, jsonLdWebPage, pageMeta, siteUrl } from "@/lib/seo";
 import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
@@ -30,7 +31,7 @@ export async function generateMetadata({
   const g = getGear(slug);
   if (!g) return {};
   return pageMeta({
-    title: `${g.name} compatibility`,
+    title: `${g.shortName} compatibility`,
     description: `${g.name}: ${g.form}, ${g.transmission}. Flies ${g.flies.length} catalog airframe${g.flies.length === 1 ? "" : "s"}. Sourced compatibility, not a review.`,
     path: `/gear/${g.slug}`,
   });
@@ -47,8 +48,7 @@ export default async function GearPage({
   const faqs = gearFaqs([g]);
   const flown = dronesFlown(g);
   const notFlown = dronesNotFlown(g);
-  const related = relatedGear(g);
-  const compares = related.filter((o) => comparable(g, o)).slice(0, 4);
+  const compares = relatedGear(g, 99).filter((o) => comparable(g, o));
 
   return (
     <div className="mx-auto max-w-6xl px-4 py-8 md:px-6">
@@ -60,9 +60,21 @@ export default async function GearPage({
             url: `${siteUrl()}/gear/${g.slug}`,
           }),
           jsonLdFaq(faqs),
+          jsonLdBreadcrumb([
+            { name: "Home", path: "/" },
+            { name: "Gear", path: "/gear" },
+            { name: g.shortName, path: `/gear/${g.slug}` },
+          ]),
         ]}
       />
-      <p className="text-xs uppercase tracking-wider text-quiet">
+      <Breadcrumbs
+        items={[
+          { name: "Home", href: "/" },
+          { name: "Gear", href: "/gear" },
+          { name: g.shortName },
+        ]}
+      />
+      <p className="mt-3 text-xs uppercase tracking-wider text-quiet">
         {KIND_LABEL[g.kind]}
         {g.discontinued ? " · discontinued as new" : ""}
       </p>
@@ -72,6 +84,10 @@ export default async function GearPage({
         {g.note}{" "}
         <Link href="/gear" className="underline">
           Full compatibility matrix
+        </Link>
+        {" · "}
+        <Link href="/compare#gear" className="underline">
+          Gear compares
         </Link>
       </p>
 

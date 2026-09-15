@@ -1,11 +1,15 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import { Breadcrumbs } from "@/components/Breadcrumbs";
 import { JsonLd } from "@/components/JsonLd";
-import { jsonLdFaq, jsonLdWebPage, pageMeta, siteUrl } from "@/lib/seo";
+import { jsonLdBreadcrumb, jsonLdFaq, jsonLdWebPage, pageMeta, siteUrl } from "@/lib/seo";
 
-const TITLE = "UK Open category: Flyer ID, class marks, Remote ID";
+const TITLE = "UK drone rules";
 const DESC =
   "March 2026 CAA rules for the DJI drones on this site: Flyer ID from 100 g, Operator ID, C0/C1/C2, A1/A2/A3, Remote ID, CE vs FCC. Not legal advice.";
+
+/** Date this page was re-checked against the cited CAA Drone Code URLs. */
+export const UK_GUIDE_REVIEWED = "2026-09-15";
 
 const FAQS = [
   {
@@ -19,6 +23,18 @@ const FAQS = [
   {
     q: "When is Remote ID required?",
     a: "From 1 January 2026 when flying UK1, UK2 or UK3. C-class drones fly as the matching UK class until 31 December 2027, so C1 Air / Avata and C2 Mavic are in that set. UK0 / C0 camera Minis are later (Open category: 1 January 2028). This is not the US Remote ID rule.",
+  },
+  {
+    q: "When do Minis need Remote ID compared with Air or Mavic?",
+    a: "UK0 / C0 camera Minis and Neo (Open category) are 1 January 2028. C1 Air / Avata and C2 Mavic — UK1 / UK2 / UK3, and C-class treated as those until 31 December 2027 — needed Remote ID from 1 January 2026. This is not the US rule. This page will not invent DJI menu steps.",
+  },
+  {
+    q: "What happens if I fit a Plus battery to a C0 Mini 5 Pro?",
+    a: "Fly More Combo is C0; Fly More Combo Plus is C1. Fitting the Plus pack on a C0 airframe exceeds the C0/UK0 MTOM. Weigh the aircraft with the battery you will fly. C1 is still A1 Over People until 31 December 2027, then the C1 distances. Flyer ID and Operator ID apply on both packs.",
+  },
+  {
+    q: "Is unmarked Mini 2 the same A1 as a C0 Mini 4K?",
+    a: "Yes on Open subcategory. Mini 2 has no class mark; the CAA legacy weight table puts under 250 g in A1 Over People — the same subcategory as C0 Mini 4K. The difference is the missing mark, not where you may fly. Both need Flyer ID and Operator ID. From 250 g up, unmarked is A3 unless you hold an A2 CofC.",
   },
   {
     q: "Why does the spec table print CE range, not the big DJI number?",
@@ -43,17 +59,57 @@ export default function UkOpenGuide() {
             url: `${siteUrl()}/guides/uk`,
           }),
           jsonLdFaq(FAQS),
+          jsonLdBreadcrumb([
+            { name: "Home", path: "/" },
+            { name: "UK Open", path: "/guides/uk" },
+          ]),
         ]}
       />
-      <p className="text-xs uppercase tracking-wider text-quiet">Guide</p>
+      <Breadcrumbs items={[{ name: "Home", href: "/" }, { name: "UK Open" }]} />
+      <p className="mt-3 text-xs uppercase tracking-wider text-quiet">Guide</p>
       <h1 className="display mt-2 text-4xl">Flying in the UK</h1>
+      <p className="mt-2 text-sm text-quiet">
+        Last reviewed {UK_GUIDE_REVIEWED} against the CAA Drone Code URLs cited
+        below.
+      </p>
       <p className="mt-4 text-muted">
         The March 2026 CAA Drone Code, applied to the DJI airframes in this
         catalog. Not legal advice. The code applies to the aircraft and battery
         you actually take off with — weigh it.
       </p>
 
-      <section className="mt-10">
+      <nav className="mt-8 text-sm" aria-label="On this page">
+        <p className="text-xs uppercase tracking-wider text-quiet">On this page</p>
+        <ul className="mt-2 flex flex-wrap gap-x-3 gap-y-1">
+          <li>
+            <a href="#ids" className="underline">
+              Flyer ID and Operator ID
+            </a>
+          </li>
+          <li>
+            <a href="#class" className="underline">
+              C0, C1, C2 and A1 / A2 / A3
+            </a>
+          </li>
+          <li>
+            <a href="#remote-id" className="underline">
+              Remote ID
+            </a>
+          </li>
+          <li>
+            <a href="#ce" className="underline">
+              CE vs FCC
+            </a>
+          </li>
+          <li>
+            <a href="#fpv" className="underline">
+              FPV
+            </a>
+          </li>
+        </ul>
+      </nav>
+
+      <section id="ids" className="mt-10 scroll-mt-6">
         <h2 className="text-lg font-medium">Flyer ID and Operator ID</h2>
         <p className="mt-2 text-muted">
           Two different things. Flyer ID is the free competence test for the
@@ -89,7 +145,7 @@ export default function UkOpenGuide() {
         </p>
       </section>
 
-      <section className="mt-10">
+      <section id="class" className="mt-10 scroll-mt-6">
         <h2 className="text-lg font-medium">C0, C1, C2 and A1 / A2 / A3</h2>
         <p className="mt-2 text-muted">
           The class mark on the aircraft is what you fly, not the marketing
@@ -136,7 +192,7 @@ export default function UkOpenGuide() {
         </p>
       </section>
 
-      <section className="mt-10">
+      <section id="remote-id" className="mt-10 scroll-mt-6">
         <h2 className="text-lg font-medium">Remote ID</h2>
         <p className="mt-2 text-muted">
           From 1 January 2026, UK1 / UK2 / UK3 (and C1 / C2 treated as those
@@ -158,7 +214,7 @@ export default function UkOpenGuide() {
         </p>
       </section>
 
-      <section className="mt-10">
+      <section id="ce" className="mt-10 scroll-mt-6">
         <h2 className="text-lg font-medium">CE vs FCC</h2>
         <p className="mt-2 text-muted">
           Spec tables here print CE video range for a reason. UK transmitters
@@ -169,7 +225,7 @@ export default function UkOpenGuide() {
         </p>
       </section>
 
-      <section className="mt-10">
+      <section id="fpv" className="mt-10 scroll-mt-6">
         <h2 className="text-lg font-medium">FPV is still VLOS</h2>
         <p className="mt-2 text-muted">
           Goggles do not cancel Flyer ID, Operator ID, height, or visual line of

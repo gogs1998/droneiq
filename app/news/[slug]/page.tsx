@@ -1,8 +1,9 @@
+import { Breadcrumbs } from "@/components/Breadcrumbs";
 import { JsonLd } from "@/components/JsonLd";
 import { NewsBody, formatNewsDate } from "@/components/NewsBody";
 import { getDrone } from "@/data/catalog";
 import { DESK_LABEL, getNews, newsArticles } from "@/data/news";
-import { jsonLdNewsArticle, pageMeta, siteUrl } from "@/lib/seo";
+import { jsonLdBreadcrumb, jsonLdNewsArticle, pageMeta, siteUrl } from "@/lib/seo";
 import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
@@ -38,14 +39,28 @@ export default async function NewsArticlePage({ params }: Props) {
   return (
     <article className="mx-auto max-w-2xl px-4 py-8 md:px-6">
       <JsonLd
-        data={jsonLdNewsArticle({
-          headline: article.title,
-          description: article.dek,
-          url,
-          datePublished: article.published,
-        })}
+        data={[
+          jsonLdNewsArticle({
+            headline: article.title,
+            description: article.dek,
+            url,
+            datePublished: article.published,
+          }),
+          jsonLdBreadcrumb([
+            { name: "Home", path: "/" },
+            { name: "News", path: "/news" },
+            { name: article.title, path: `/news/${article.slug}` },
+          ]),
+        ]}
       />
-      <p className="text-xs uppercase tracking-wider text-quiet">
+      <Breadcrumbs
+        items={[
+          { name: "Home", href: "/" },
+          { name: "News", href: "/news" },
+          { name: DESK_LABEL[article.desk] },
+        ]}
+      />
+      <p className="mt-3 text-xs uppercase tracking-wider text-quiet">
         <Link href="/news" className="hover:text-ink">
           News
         </Link>
@@ -72,6 +87,16 @@ export default async function NewsArticlePage({ params }: Props) {
             ))}
           </p>
         </section>
+      ) : null}
+
+      {article.desk === "law" ? (
+        <p className="mt-8 text-sm text-muted">
+          The longer Open-category reading is the{" "}
+          <Link href="/guides/uk" className="underline">
+            UK flyer, class and Remote ID guide
+          </Link>
+          .
+        </p>
       ) : null}
 
       <section className="mt-10">

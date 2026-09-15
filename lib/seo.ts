@@ -1,5 +1,8 @@
 import { drones, getDrone } from "@/data/catalog";
 import { canonicalGearOrder, type Gear } from "@/data/gear";
+import { photoFor } from "@/data/photos";
+import { addDaysIso } from "@/lib/lastmod";
+import { sensorSummary } from "@/lib/compare";
 import type { Drone } from "@/data/types";
 import type { Metadata } from "next";
 
@@ -94,7 +97,7 @@ export function pageMeta(opts: {
 
 export function titleForPair(a: Drone, b: Drone): string {
   const [x, y] = canonicalOrder(a, b);
-  return `${x.name} vs ${y.name} (2026): sensor, weight, UK rules, price`;
+  return `${x.shortName} vs ${y.shortName}`;
 }
 
 export function descriptionForPair(a: Drone, b: Drone): string {
@@ -104,7 +107,7 @@ export function descriptionForPair(a: Drone, b: Drone): string {
 
 export function titleForGearPair(a: Gear, b: Gear): string {
   const [x, y] = canonicalGearOrder(a, b);
-  return `${x.name} vs ${y.name} (2026): which drones they fly`;
+  return `${x.shortName} vs ${y.shortName}`;
 }
 
 export function descriptionForGearPair(a: Gear, b: Gear): string {
@@ -193,4 +196,60 @@ export function jsonLdItemList(
       url: `${siteUrl()}${pathPrefix}/${d.slug}`,
     })),
   };
+}
+
+export type BreadcrumbItem = { name: string; path: string };
+
+export function jsonLdBreadcrumb(items: BreadcrumbItem[]) {
+  return {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    itemListElement: items.map((it, i) => ({
+      "@type": "ListItem",
+      position: i + 1,
+      name: it.name,
+      item: absUrl(it.path),
+    })),
+  };
+}
+
+export function jsonLdOrganization() {
+  return {
+    "@context": "https://schema.org",
+    "@type": "Organization",
+    name: "DroneIQ",
+    url: siteUrl(),
+    parentOrganization: {
+      "@type": "Organization",
+      name: "IQ Labs",
+      url: "https://iqlabs.app",
+    },
+    sameAs: ["https://iqlabs.app"],
+  };
+}
+
+export function jsonLdProduct(d: Drone) {
+  const photo = photoFor(d.slug);
+  const product: Record<string, unknown> = {
+    "@context": "https://schema.org",
+    "@type": "Product",
+    name: d.name,
+    brand: { "@type": "Brand", name: "DJI" },
+    description: `${d.name}: ${d.weightG} g, ${d.ukClass}, ${sensorSummary(d)}, ${d.flightTimeMin} min lab time. Sourced figures, UK prices.`,
+    url: `${siteUrl()}/drones/${d.slug}`,
+  };
+  if (photo) product.image = `${siteUrl()}${photo.src}`;
+  if (d.prices.djiRrpGbp != null) {
+    product.offers = {
+      "@type": "Offer",
+      url: d.prices.djiUrl,
+      priceCurrency: "GBP",
+      price: String(d.prices.djiRrpGbp),
+      priceValidUntil: addDaysIso(d.prices.asOf, 30),
+      ...(d.discontinued
+        ? { availability: "https://schema.org/Discontinued" }
+        : {}),
+    };
+  }
+  return product;
 }

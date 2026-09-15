@@ -1,8 +1,11 @@
+import { Breadcrumbs } from "@/components/Breadcrumbs";
 import { DronePhoto } from "@/components/DronePhoto";
 import { JsonLd } from "@/components/JsonLd";
 import { drones } from "@/data/catalog";
 import { gbp } from "@/lib/compare";
-import { jsonLdItemList, jsonLdWebPage, pageMeta, siteUrl } from "@/lib/seo";
+import { comparisonsFor, pairHref } from "@/lib/graph";
+import { jsonLdBreadcrumb, jsonLdItemList, jsonLdWebPage, pageMeta, siteUrl } from "@/lib/seo";
+import { upgradePath } from "@/lib/upgrade";
 import type { Metadata } from "next";
 import Link from "next/link";
 
@@ -50,14 +53,24 @@ export default async function DronesIndex({ searchParams }: Props) {
             url: `${siteUrl()}/drones`,
           }),
           jsonLdItemList(list, `${siteUrl()}/drones`),
+          jsonLdBreadcrumb([
+            { name: "Home", path: "/" },
+            { name: "Drones", path: "/drones" },
+          ]),
         ]}
       />
-      <h1 className="display text-4xl">Drones</h1>
+      <Breadcrumbs items={[{ name: "Home", href: "/" }, { name: "Drones" }]} />
+      <h1 className="display mt-3 text-4xl">Drones</h1>
       <p className="mt-2 max-w-xl text-muted">
         {list.length} of {drones.length} in the catalog. Filters are shareable
-        URLs, not a quiz. Controllers and goggles live on{" "}
+        URLs, not a quiz. Every airframe lists its comparisons. Controllers
+        and goggles live on{" "}
         <Link href="/gear" className="underline">
           Gear
+        </Link>
+        . The full grid is on{" "}
+        <Link href="/compare" className="underline">
+          Compare
         </Link>
         .
       </p>
@@ -85,6 +98,16 @@ export default async function DronesIndex({ searchParams }: Props) {
               </div>
               <p className="num mt-1 text-sm text-muted">
                 {d.weightG} g · {d.ukClass} · {d.cameras[0].sensor} · {d.cameras[0].maxVideo}
+              </p>
+              <p className="mt-2 flex flex-wrap gap-x-2 gap-y-1 text-xs text-muted">
+                <Link href={upgradePath(d.slug)} className="underline">
+                  Upgrade
+                </Link>
+                {comparisonsFor(d).map((o) => (
+                  <Link key={o.slug} href={pairHref(d, o)} className="hover:underline">
+                    vs {o.shortName}
+                  </Link>
+                ))}
               </p>
             </div>
           </li>
