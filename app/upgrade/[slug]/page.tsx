@@ -9,13 +9,18 @@ import {
   pageMeta,
   siteUrl,
 } from "@/lib/seo";
-import { upgradePath, upgradeRows } from "@/lib/upgrade";
+import { droneFromUpgradeParam, upgradePath, upgradeRows } from "@/lib/upgrade";
 import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 
 export function generateStaticParams() {
-  return drones.map((d) => ({ slug: d.slug }));
+  return drones.map((d) => ({ slug: `from-${d.slug}` }));
+}
+
+function droneFromParams(param: string) {
+  const slug = droneFromUpgradeParam(param);
+  return slug ? getDrone(slug) : undefined;
 }
 
 export async function generateMetadata({
@@ -24,7 +29,7 @@ export async function generateMetadata({
   params: Promise<{ slug: string }>;
 }): Promise<Metadata> {
   const { slug } = await params;
-  const d = getDrone(slug);
+  const d = droneFromParams(slug);
   if (!d) return {};
   return pageMeta({
     title: `Upgrade from ${d.shortName}`,
@@ -39,7 +44,7 @@ export default async function UpgradeFromPage({
   params: Promise<{ slug: string }>;
 }) {
   const { slug } = await params;
-  const from = getDrone(slug);
+  const from = droneFromParams(slug);
   if (!from) notFound();
   const rows = upgradeRows(from);
   const url = `${siteUrl()}${upgradePath(from.slug)}`;

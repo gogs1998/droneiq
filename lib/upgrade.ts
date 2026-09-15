@@ -64,3 +64,9 @@ export function upgradeRows(from: Drone): UpgradeRow[] {
 export function upgradePath(slug: string): string {
   return `/upgrade/from-${slug}`;
 }
+
+export function droneFromUpgradeParam(param: string): string | null {
+  if (!param.startsWith("from-")) return null;
+  const slug = param.slice("from-".length);
+  return slug.length ? slug : null;
+}
