@@ -1,3 +1,4 @@
+import { Breadcrumbs } from "@/components/Breadcrumbs";
 import { GearSpecTable } from "@/components/GearSpecTable";
 import { GearVerdictBlock } from "@/components/GearVerdictBlock";
 import { JsonLd } from "@/components/JsonLd";
@@ -7,7 +8,7 @@ import { ReviewsShelf } from "@/components/ReviewsShelf";
 import { SpecTable } from "@/components/SpecTable";
 import { UpgradeCost } from "@/components/UpgradeCost";
 import { VerdictBlock } from "@/components/VerdictBlock";
-import { getDrone, relatedDrones } from "@/data/catalog";
+import { getDrone } from "@/data/catalog";
 import {
   canonicalGearOrder,
   comparable,
@@ -15,16 +16,17 @@ import {
   gearPairSlug,
   getGear,
   parseGearPair,
-  relatedGear,
   type Gear,
 } from "@/data/gear";
 import { faqsFor, verdictFor } from "@/lib/compare";
 import { gearFaqs, gearVerdict } from "@/lib/gear-compare";
+import { adjacentPairs, gearAdjacent, pairHref } from "@/lib/graph";
 import {
   allCanonicalPairs,
   canonicalOrder,
   descriptionForGearPair,
   descriptionForPair,
+  jsonLdBreadcrumb,
   jsonLdFaq,
   jsonLdItemList,
   jsonLdWebPage,
@@ -35,6 +37,7 @@ import {
   titleForGearPair,
   titleForPair,
 } from "@/lib/seo";
+import { upgradePath } from "@/lib/upgrade";
 import type { Drone } from "@/data/types";
 import type { Metadata } from "next";
 import Link from "next/link";
@@ -123,9 +126,21 @@ export default async function ComparePage({
       : `${siteUrl()}/compare/${ordered.map((d) => d.slug).join("/")}`;
 
   const related =
+    ordered.length === 2 ? adjacentPairs(ordered[0], ordered[1]) : [];
+  const crumbs =
     ordered.length === 2
-      ? relatedDrones(ordered[1], 4).filter((d) => d.slug !== ordered[0].slug)
-      : [];
+      ? [
+          { name: "Home", path: "/" },
+          { name: "Compare", path: "/compare" },
+          {
+            name: `${ordered[0].shortName} vs ${ordered[1].shortName}`,
+            path: `/compare/${pairSlug(ordered[0], ordered[1])}`,
+          },
+        ]
+      : [
+          { name: "Home", path: "/" },
+          { name: "Compare", path: "/compare" },
+        ];
 
   return (
     <div className="mx-auto max-w-6xl px-4 py-8 md:px-6">
@@ -141,14 +156,50 @@ export default async function ComparePage({
           }),
           ...(faqs.length ? [jsonLdFaq(faqs)] : []),
           jsonLdItemList(ordered, url),
+          jsonLdBreadcrumb(crumbs),
         ]}
       />
-      <p className="text-xs uppercase tracking-wider text-quiet">Comparison</p>
+      <Breadcrumbs
+        items={crumbs.map((c, i) => ({
+          name: c.name,
+          href: i < crumbs.length - 1 ? c.path : undefined,
+        }))}
+      />
+      <p className="mt-3 text-xs uppercase tracking-wider text-quiet">Comparison</p>
       <h1 className="display mt-2 text-3xl leading-none md:text-5xl">
         {ordered.length === 2
           ? `${ordered[0].name} vs ${ordered[1].name}`
           : ordered.map((d) => d.shortName).join(" vs ")}
       </h1>
+      <p className="mt-3 max-w-2xl text-sm text-muted">
+        {ordered.length === 2 ? (
+          <>
+            <Link href={`/drones/${ordered[0].slug}`} className="underline">
+              {ordered[0].shortName} spec
+            </Link>
+            {" · "}
+            <Link href={`/drones/${ordered[1].slug}`} className="underline">
+              {ordered[1].shortName} spec
+            </Link>
+            {" · "}
+            <Link href={upgradePath(ordered[0].slug)} className="underline">
+              Upgrade from {ordered[0].shortName}
+            </Link>
+            {" · "}
+            <Link href={upgradePath(ordered[1].slug)} className="underline">
+              Upgrade from {ordered[1].shortName}
+            </Link>
+            {" · "}
+            <Link href="/compare" className="underline">
+              All compares
+            </Link>
+          </>
+        ) : (
+          <Link href="/compare" className="underline">
+            All compares
+          </Link>
+        )}
+      </p>
       <div className="mt-6">
         <VerdictBlock drones={ordered} />
       </div>
@@ -171,15 +222,20 @@ export default async function ComparePage({
 
       {related.length ? (
         <section className="mt-12">
-          <h2 className="display text-2xl">Related comparisons</h2>
-          <ul className="mt-3 space-y-2">
-            {related.map((o) => (
-              <li key={o.slug}>
-                <Link
-                  href={`/compare/${pairSlug(ordered[1], o)}`}
-                  className="hover:underline"
-                >
-                  {ordered[1].shortName} vs {o.shortName}
+          <h2 className="display text-2xl">Adjacent comparisons</h2>
+          <p className="mt-2 text-sm text-muted">
+            Same-line alternatives for each side. The rest of the grid is on the
+            drone pages and the{" "}
+            <Link href="/compare" className="underline">
+              compare hub
+            </Link>
+            .
+          </p>
+          <ul className="mt-3 columns-1 gap-x-8 sm:columns-2">
+            {related.map((p) => (
+              <li key={`${p.a.slug}-vs-${p.b.slug}`} className="break-inside-avoid py-0.5 text-sm">
+                <Link href={pairHref(p.a, p.b)} className="hover:underline">
+                  {p.a.shortName} vs {p.b.shortName}
                 </Link>
               </li>
             ))}
@@ -205,7 +261,7 @@ function GearCompare({ slugs, pair }: { slugs: string[]; pair: [Gear, Gear] }) {
   const faqs = gearFaqs([a, b]);
   const v = gearVerdict(a, b);
   const url = `${siteUrl()}/compare/${gearPairSlug(a, b)}`;
-  const related = relatedGear(b, 4).filter((g) => g.slug !== a.slug && comparable(b, g));
+  const related = gearAdjacent(a, b);
 
   return (
     <div className="mx-auto max-w-6xl px-4 py-8 md:px-6">
@@ -225,9 +281,21 @@ function GearCompare({ slugs, pair }: { slugs: string[]; pair: [Gear, Gear] }) {
             url,
             "/gear",
           ),
+          jsonLdBreadcrumb([
+            { name: "Home", path: "/" },
+            { name: "Compare", path: "/compare" },
+            { name: `${a.shortName} vs ${b.shortName}`, path: `/compare/${gearPairSlug(a, b)}` },
+          ]),
         ]}
       />
-      <p className="text-xs uppercase tracking-wider text-quiet">
+      <Breadcrumbs
+        items={[
+          { name: "Home", href: "/" },
+          { name: "Compare", href: "/compare" },
+          { name: `${a.shortName} vs ${b.shortName}` },
+        ]}
+      />
+      <p className="mt-3 text-xs uppercase tracking-wider text-quiet">
         Gear comparison
       </p>
       <h1 className="display mt-2 text-3xl leading-none md:text-5xl">
@@ -238,6 +306,18 @@ function GearCompare({ slugs, pair }: { slugs: string[]; pair: [Gear, Gear] }) {
         actually flies.{" "}
         <Link href="/gear" className="underline">
           Full matrix
+        </Link>
+        {" · "}
+        <Link href={`/gear/${a.slug}`} className="underline">
+          {a.shortName}
+        </Link>
+        {" · "}
+        <Link href={`/gear/${b.slug}`} className="underline">
+          {b.shortName}
+        </Link>
+        {" · "}
+        <Link href="/compare#gear" className="underline">
+          Gear compares
         </Link>
       </p>
       <div className="mt-6">
@@ -252,15 +332,12 @@ function GearCompare({ slugs, pair }: { slugs: string[]; pair: [Gear, Gear] }) {
 
       {related.length ? (
         <section className="mt-12">
-          <h2 className="display text-2xl">Related comparisons</h2>
-          <ul className="mt-3 space-y-2">
-            {related.map((o) => (
-              <li key={o.slug}>
-                <Link
-                  href={`/compare/${gearPairSlug(b, o)}`}
-                  className="hover:underline"
-                >
-                  {b.shortName} vs {o.shortName}
+          <h2 className="display text-2xl">Adjacent comparisons</h2>
+          <ul className="mt-3 columns-1 gap-x-8 sm:columns-2">
+            {related.map(([x, y]) => (
+              <li key={gearPairSlug(x, y)} className="break-inside-avoid py-0.5 text-sm">
+                <Link href={`/compare/${gearPairSlug(x, y)}`} className="hover:underline">
+                  {x.shortName} vs {y.shortName}
                 </Link>
               </li>
             ))}

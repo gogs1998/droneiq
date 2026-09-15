@@ -11,6 +11,9 @@ export function SiteHeader() {
           <Link href="/drones" className="hover:text-ink">
             Drones
           </Link>
+          <Link href="/compare" className="hover:text-ink">
+            Compare
+          </Link>
           <Link href="/gear" className="hover:text-ink">
             Gear
           </Link>
@@ -53,6 +56,10 @@ export function SiteFooter() {
             Catalog
           </Link>
           {" · "}
+          <Link href="/compare" className="hover:text-ink">
+            Compare
+          </Link>
+          {" · "}
           <Link href="/gear" className="hover:text-ink">
             Gear
           </Link>
@@ -71,6 +78,18 @@ export function SiteFooter() {
           {" · "}
           <Link href="/guides/buying-used" className="hover:text-ink">
             Buying used
+          </Link>
+          {" · "}
+          <Link href="/about" className="hover:text-ink">
+            About
+          </Link>
+          {" · "}
+          <Link href="/privacy" className="hover:text-ink">
+            Privacy
+          </Link>
+          {" · "}
+          <Link href="/terms" className="hover:text-ink">
+            Terms
           </Link>
         </p>
       </div>
