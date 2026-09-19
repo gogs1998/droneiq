@@ -19,7 +19,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const article = getNews(slug);
   if (!article) return pageMeta({ title: "News", description: "DroneIQ news.", path: "/news" });
   return pageMeta({
-    title: article.title,
+    title: article.seoTitle ?? article.title,
     description: article.dek,
     path: `/news/${article.slug}`,
   });
