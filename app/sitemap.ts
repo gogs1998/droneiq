@@ -3,6 +3,7 @@ import { drones, JOBS } from "@/data/catalog";
 import { comparablePairs, gear, gearPairSlug } from "@/data/gear";
 import { newsArticles } from "@/data/news";
 import {
+  catalogIndexLastmod,
   droneLastmod,
   gearLastmod,
   newestDate,
@@ -17,18 +18,14 @@ const USED_GUIDE = new Date("2026-09-01");
 
 export default function sitemap(): MetadataRoute.Sitemap {
   const base = siteUrl();
-  const catalogStamp = newestDate(
-    ...drones.map((d) => droneLastmod(d)),
-    ...gear.map((g) => gearLastmod(g)),
-    ...newsArticles.map((a) => a.published),
-  );
+  const indexStamp = newestDate(catalogIndexLastmod(), TRUST, UK_GUIDE, USED_GUIDE);
 
   const urls: MetadataRoute.Sitemap = [
-    { url: base, lastModified: catalogStamp, changeFrequency: "weekly", priority: 1 },
-    { url: `${base}/drones`, lastModified: catalogStamp, changeFrequency: "weekly", priority: 0.9 },
-    { url: `${base}/compare`, lastModified: catalogStamp, changeFrequency: "weekly", priority: 0.9 },
-    { url: `${base}/gear`, lastModified: catalogStamp, changeFrequency: "weekly", priority: 0.8 },
-    { url: `${base}/for`, lastModified: catalogStamp, changeFrequency: "monthly", priority: 0.6 },
+    { url: base, lastModified: indexStamp, changeFrequency: "weekly", priority: 1 },
+    { url: `${base}/drones`, lastModified: indexStamp, changeFrequency: "weekly", priority: 0.9 },
+    { url: `${base}/compare`, lastModified: indexStamp, changeFrequency: "weekly", priority: 0.9 },
+    { url: `${base}/gear`, lastModified: indexStamp, changeFrequency: "weekly", priority: 0.8 },
+    { url: `${base}/for`, lastModified: indexStamp, changeFrequency: "monthly", priority: 0.6 },
     { url: `${base}/news`, lastModified: newestDate(...newsArticles.map((a) => a.published)), changeFrequency: "weekly", priority: 0.8 },
     { url: `${base}/guides/uk`, lastModified: UK_GUIDE, changeFrequency: "monthly", priority: 0.7 },
     { url: `${base}/guides/buying-used`, lastModified: USED_GUIDE, changeFrequency: "monthly", priority: 0.5 },
@@ -39,7 +36,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
   for (const a of newsArticles) {
     urls.push({
       url: `${base}/news/${a.slug}`,
-      lastModified: newestDate(a.published, ...a.sources.map((s) => s.accessed)),
+      lastModified: a.published,
       changeFrequency: "monthly",
       priority: 0.6,
     });

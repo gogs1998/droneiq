@@ -64,6 +64,22 @@ function absUrl(path: string): string {
   return `${base}${path.startsWith("/") ? path : `/${path}`}`;
 }
 
+const TITLE_SUFFIX = " · DroneIQ";
+const TITLE_BUDGET = 60;
+
+/** Rendered `<title>` length, including the layout `%s · DroneIQ` template. */
+export function renderedTitleLength(pageTitle: string, absoluteTitle = false): number {
+  return absoluteTitle ? pageTitle.length : pageTitle.length + TITLE_SUFFIX.length;
+}
+
+function clipForTitle(pageTitle: string): string {
+  const budget = TITLE_BUDGET - TITLE_SUFFIX.length;
+  if (pageTitle.length <= budget) return pageTitle;
+  const sliced = pageTitle.slice(0, budget);
+  const clipped = sliced.replace(/\s+\S*$/, "").replace(/[.,;:–—\-\s]+$/, "");
+  return clipped.length >= 24 ? clipped : sliced.trim();
+}
+
 /** Self-referencing canonical, unique title/description, PNG og:image. Never the homepage. */
 export function pageMeta(opts: {
   title: string;
@@ -73,8 +89,14 @@ export function pageMeta(opts: {
   absoluteTitle?: boolean;
 }): Metadata {
   const url = absUrl(opts.path);
+  let title: Metadata["title"] = opts.title;
+  if (opts.absoluteTitle) {
+    title = { absolute: opts.title };
+  } else if (renderedTitleLength(opts.title) > TITLE_BUDGET) {
+    title = { absolute: `${clipForTitle(opts.title)}${TITLE_SUFFIX}` };
+  }
   return {
-    title: opts.absoluteTitle ? { absolute: opts.title } : opts.title,
+    title,
     description: opts.description,
     alternates: { canonical: url },
     openGraph: {

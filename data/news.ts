@@ -15,6 +15,8 @@ export type NewsArticle = {
   slug: string;
   desk: NewsDesk;
   title: string;
+  /** `<title>` when the headline plus ` · DroneIQ` is over 60 characters. H1 stays `title`. */
+  seoTitle?: string;
   dek: string;
   published: string;
   /** Lower first when dates tie. */
@@ -194,6 +196,7 @@ export const newsArticles: NewsArticle[] = [
     slug: "remote-id-eight-months",
     desk: "law",
     title: "Remote ID required on Air and Mavic drones since Jan. 1",
+    seoTitle: "Remote ID on Air and Mavic since Jan. 1",
     dek: "UK1, UK2 and UK3 aircraft must broadcast now. C0 Minis and unmarked camera drones wait until 2028.",
     published: "2026-09-01",
     sortOrder: 3,
@@ -267,6 +270,7 @@ export const newsArticles: NewsArticle[] = [
     slug: "two-heights-of-120m",
     desk: "law",
     title: "C0 drones must cap height at 120 metres from takeoff",
+    seoTitle: "C0 height is 120 m from takeoff",
     dek: "The Drone Code measures 120 metres from the surface. Class C0 product rules measure from the takeoff point.",
     published: "2026-09-01",
     sortOrder: 4,
@@ -375,6 +379,7 @@ export const newsArticles: NewsArticle[] = [
     slug: "neo-2-151g",
     desk: "product",
     title: "Neo 2 weighs 151 grams with omnidirectional sensing",
+    seoTitle: "Neo 2 is 151 g with omni sensing",
     dek: "DJI called it its lightest drone with omni sensing. The UK store listed drone-only from £209 on Sept. 1.",
     published: "2026-09-01",
     sortOrder: 6,
@@ -414,6 +419,7 @@ export const newsArticles: NewsArticle[] = [
     slug: "mini-5-pro-1-inch",
     desk: "product",
     title: "Mini 5 Pro puts a 1-inch sensor in the Mini class",
+    seoTitle: "Mini 5 Pro: 1-inch in the Mini class",
     dek: "DJI said Sept. 17, 2025, it is the first 1-inch Mini. The UK store’s C0 or C1 label depends on the battery.",
     published: "2026-09-01",
     sortOrder: 7,
@@ -501,6 +507,7 @@ export const newsArticles: NewsArticle[] = [
     slug: "flip-propeller-guards",
     desk: "product",
     title: "Flip ships with foldable full-coverage propeller guards",
+    seoTitle: "Flip ships with full-coverage guards",
     dek: "DJI said Jan. 14, 2025, the vlog drone stays under 249 grams with the guards on. It is C0, not a Mini 4 Pro.",
     published: "2026-09-01",
     sortOrder: 9,
