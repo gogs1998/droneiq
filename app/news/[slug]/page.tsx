@@ -1,9 +1,19 @@
 import { Breadcrumbs } from "@/components/Breadcrumbs";
 import { JsonLd } from "@/components/JsonLd";
 import { NewsBody, formatNewsDate } from "@/components/NewsBody";
+import { Questions } from "@/components/Questions";
 import { getDrone } from "@/data/catalog";
 import { DESK_LABEL, getNews, newsArticles } from "@/data/news";
-import { jsonLdBreadcrumb, jsonLdNewsArticle, pageMeta, siteUrl } from "@/lib/seo";
+import { newsFaqs } from "@/data/news-faqs";
+import { pairHref } from "@/lib/graph";
+import {
+  jsonLdBreadcrumb,
+  jsonLdFaq,
+  jsonLdNewsArticle,
+  pageMeta,
+  siteUrl,
+  titleForPair,
+} from "@/lib/seo";
 import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
@@ -33,6 +43,11 @@ export default async function NewsArticlePage({ params }: Props) {
   const related = article.related
     .map((s) => getDrone(s))
     .filter((d): d is NonNullable<typeof d> => Boolean(d));
+  const faqs = article.desk === "law" ? (newsFaqs[article.slug] ?? []) : [];
+  const compare =
+    related.length >= 2
+      ? { href: pairHref(related[0], related[1]), title: titleForPair(related[0], related[1]) }
+      : null;
 
   const url = `${siteUrl()}/news/${article.slug}`;
 
@@ -46,6 +61,7 @@ export default async function NewsArticlePage({ params }: Props) {
             url,
             datePublished: article.published,
           }),
+          ...(faqs.length ? [jsonLdFaq(faqs)] : []),
           jsonLdBreadcrumb([
             { name: "Home", path: "/" },
             { name: "News", path: "/news" },
@@ -73,11 +89,35 @@ export default async function NewsArticlePage({ params }: Props) {
       <p className="mt-4 text-muted">{article.dek}</p>
       <NewsBody blocks={article.body} />
 
-      {related.length > 0 ? (
-        <section className="mt-10">
-          <h2 className="text-lg font-medium">On the bench</h2>
-          <p className="mt-2 text-sm text-muted">
-            {related.map((d, i) => (
+      {faqs.length > 0 ? <Questions items={faqs} /> : null}
+
+      <section className="mt-10">
+        <h2 className="text-lg font-medium">Related on DroneIQ</h2>
+        <ul className="mt-3 space-y-2 text-sm">
+          <li>
+            <Link href="/guides/uk" className="underline">
+              Flying in the UK
+            </Link>
+          </li>
+          {compare ? (
+            <li>
+              <Link href={compare.href} className="underline">
+                {compare.title}
+              </Link>
+            </li>
+          ) : null}
+          {related[0] ? (
+            <li>
+              <Link href={`/drones/${related[0].slug}`} className="underline">
+                {related[0].shortName}
+              </Link>
+            </li>
+          ) : null}
+        </ul>
+        {related.length > 1 ? (
+          <p className="mt-3 text-sm text-muted">
+            Also on the bench:{" "}
+            {related.slice(1).map((d, i) => (
               <span key={d.slug}>
                 {i > 0 ? " · " : ""}
                 <Link href={`/drones/${d.slug}`} className="underline">
@@ -86,18 +126,8 @@ export default async function NewsArticlePage({ params }: Props) {
               </span>
             ))}
           </p>
-        </section>
-      ) : null}
-
-      {article.desk === "law" ? (
-        <p className="mt-8 text-sm text-muted">
-          The longer Open-category reading is the{" "}
-          <Link href="/guides/uk" className="underline">
-            UK flyer, class and Remote ID guide
-          </Link>
-          .
-        </p>
-      ) : null}
+        ) : null}
+      </section>
 
       <section className="mt-10">
         <h2 className="text-lg font-medium">Sources</h2>
