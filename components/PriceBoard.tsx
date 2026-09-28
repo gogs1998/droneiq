@@ -1,4 +1,5 @@
 import { FactLabel } from "@/components/FactExplainer";
+import { ShopLink } from "@/components/ShopLink";
 import { priceGlossary, type GlossaryEntry } from "@/data/glossary";
 import type { Drone } from "@/data/types";
 import { gbp } from "@/lib/compare";
@@ -119,9 +120,9 @@ function PriceRow({
         const code = ean(d);
         return (
           <td key={d.slug} className="px-2 py-3 sm:px-3">
-            <a href={href(d)} className="num text-ink underline-offset-2 hover:underline">
+            <ShopLink href={href(d)} className="num text-ink underline-offset-2 hover:underline">
               {value(d)}
-            </a>
+            </ShopLink>
             <div className="mt-1 max-w-[12rem] text-xs leading-snug text-muted">{box(d)}</div>
             {code ? (
               <div className="num mt-1 text-[10px] tracking-wide text-quiet">EAN {code}</div>
