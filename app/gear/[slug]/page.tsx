@@ -1,4 +1,5 @@
 import { Breadcrumbs } from "@/components/Breadcrumbs";
+import { ShopLink } from "@/components/ShopLink";
 import { GearSpecTable } from "@/components/GearSpecTable";
 import { JsonLd } from "@/components/JsonLd";
 import { Questions } from "@/components/Questions";
@@ -149,14 +150,14 @@ export default async function GearPage({
         </p>
         <ul className="mt-3 space-y-2 text-sm">
           <li>
-            <a href={g.djiUrl} className="underline">
+            <ShopLink href={g.djiUrl} className="underline">
               DJI
-            </a>
+            </ShopLink>
           </li>
           <li>
-            <a href={g.amazonUrl} className="underline">
+            <ShopLink href={g.amazonUrl} className="underline">
               Amazon UK search
-            </a>
+            </ShopLink>
           </li>
         </ul>
       </section>

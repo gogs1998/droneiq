@@ -14,6 +14,8 @@ import { upgradePath } from "@/lib/upgrade";
 
 const TRUST = new Date("2026-09-15");
 const UK_GUIDE = new Date("2026-09-15");
+/** Visible FAQ added; the CAA re-check date stays UK_GUIDE. */
+const UK_GUIDE_FAQ = new Date("2026-09-28");
 const USED_GUIDE = new Date("2026-09-01");
 
 export default function sitemap(): MetadataRoute.Sitemap {
@@ -27,7 +29,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
     { url: `${base}/gear`, lastModified: indexStamp, changeFrequency: "weekly", priority: 0.8 },
     { url: `${base}/for`, lastModified: indexStamp, changeFrequency: "monthly", priority: 0.6 },
     { url: `${base}/news`, lastModified: newestDate(...newsArticles.map((a) => a.published)), changeFrequency: "weekly", priority: 0.8 },
-    { url: `${base}/guides/uk`, lastModified: UK_GUIDE, changeFrequency: "monthly", priority: 0.7 },
+    { url: `${base}/guides/uk`, lastModified: UK_GUIDE_FAQ, changeFrequency: "monthly", priority: 0.7 },
     { url: `${base}/guides/buying-used`, lastModified: USED_GUIDE, changeFrequency: "monthly", priority: 0.5 },
     { url: `${base}/about`, lastModified: TRUST, changeFrequency: "yearly", priority: 0.4 },
     { url: `${base}/privacy`, lastModified: TRUST, changeFrequency: "yearly", priority: 0.2 },

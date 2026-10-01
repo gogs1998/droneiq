@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { Breadcrumbs } from "@/components/Breadcrumbs";
 import { JsonLd } from "@/components/JsonLd";
+import { Questions } from "@/components/Questions";
 import { jsonLdBreadcrumb, jsonLdFaq, jsonLdWebPage, pageMeta, siteUrl } from "@/lib/seo";
 
 const TITLE = "UK drone rules";
@@ -233,6 +234,8 @@ export default function UkOpenGuide() {
           free pass.
         </p>
       </section>
+
+      <Questions items={FAQS} />
 
       <p className="mt-10 text-sm text-muted">
         Then look at the{" "}

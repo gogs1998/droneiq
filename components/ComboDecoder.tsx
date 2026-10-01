@@ -1,3 +1,4 @@
+import { ShopLink } from "@/components/ShopLink";
 import type { Drone } from "@/data/types";
 import { gbp } from "@/lib/compare";
 
@@ -17,9 +18,9 @@ export function ComboDecoder({ drone }: { drone: Drone }) {
             className="flex flex-col gap-2 py-3 sm:flex-row sm:flex-wrap sm:items-baseline sm:justify-between sm:gap-3"
           >
             <div className="min-w-0">
-              <a href={c.url} className="font-medium hover:underline">
+              <ShopLink href={c.url} className="font-medium hover:underline">
                 {c.name}
-              </a>
+              </ShopLink>
               <p className="mt-1 max-w-xl text-sm text-muted">{c.blurb}</p>
               {c.ean || c.mpn ? (
                 <p className="num mt-1 text-xs text-quiet">
