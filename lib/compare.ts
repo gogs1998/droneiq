@@ -241,6 +241,13 @@ function kitLine(slug: string, kind: PartKind): string {
   return list.map((p) => p.name).join("; ");
 }
 
+function gimbalCell(d: Drone): string {
+  const c = d.cameras[0];
+  const tilt = c.gimbalRange ?? `${c.gimbalTiltDeg}° tilt`;
+  if (c.trueVertical && !/roll|vertical/i.test(tilt)) return `${tilt} · true vertical`;
+  return tilt;
+}
+
 function sensingCell(d: Drone): string {
   const label = SENSING_LABEL[d.sensing];
   const note = d.sensingNote.trim();
@@ -297,12 +304,11 @@ export function specRows(list: Drone[]): SpecRow[] {
     return "same";
   });
 
-  const tilt = list.map((d) => primaryCamera(d).gimbalTiltDeg);
+  const gimbalLabels = list.map(gimbalCell);
   const gimbalNotice: Notice[] = list.map((d) => {
     const verticalDiff = list.some((o) => o.cameras[0].trueVertical !== d.cameras[0].trueVertical);
-    const tiltGap = Math.max(...tilt) - Math.min(...tilt);
-    if (verticalDiff || tiltGap >= 90) return "notice";
-    if (tiltGap >= 20) return "quiet";
+    if (verticalDiff) return "notice";
+    if (new Set(gimbalLabels).size > 1) return "quiet";
     return "same";
   });
 
@@ -494,12 +500,9 @@ export function specRows(list: Drone[]): SpecRow[] {
       "gimbal",
       "Camera",
       "Gimbal / vertical",
-      list.map(
-        (d) =>
-          `${d.cameras[0].gimbalTiltDeg}° tilt${d.cameras[0].trueVertical ? " · true vertical" : ""}`,
-      ),
+      gimbalLabels,
       gimbalNotice,
-      uniqueWinner(tilt, "max"),
+      null,
     ),
     row(
       "flightTime",
@@ -948,17 +951,24 @@ function cameraNotice(a: Drone, b: Drone): string {
   return `${a.shortName} main: ${sensorSummary(a)}, ${a.cameras[0].maxVideo}. ${b.shortName} main: ${sensorSummary(b)}, ${b.cameras[0].maxVideo}. You would notice sensor class in low light; you would not notice the word 4K if both already do it.${tele}`;
 }
 
+function plusPackNote(d: Drone): string {
+  if (!d.batteryWhPlus || !d.sub250) return "";
+  // Only Mini 5 Pro's Plus combo is a C1 aircraft. Mini 3 / Mini 3 Pro Plus
+  // cross 249 g and DJI does not give them a C1 mark.
+  if (d.slug === "mini-5-pro") return " (C1 with Plus pack)";
+  return " (Plus pack over 249 g, not a C1 mark)";
+}
+
 function ukClassCell(d: Drone): string {
-  const plus =
-    d.batteryWhPlus && d.sub250 ? " (C1 with Plus pack)" : "";
-  return `${d.ukClass}${d.sub250 ? " · sub-250 g" : ""}${plus} · Operator ID${d.flyerIdRequired ? " + Flyer ID" : ""}`;
+  return `${d.ukClass}${d.sub250 ? " · sub-250 g" : ""}${plusPackNote(d)} · Operator ID${d.flyerIdRequired ? " + Flyer ID" : ""}`;
 }
 
 function ukRegister(d: Drone): string {
-  const plus =
-    d.batteryWhPlus && d.sub250
-      ? " A Plus battery can take this out of C0 — weigh the pack you fly."
-      : "";
+  const plus = !d.batteryWhPlus || !d.sub250
+    ? ""
+    : d.slug === "mini-5-pro"
+      ? " A Plus battery is the C1 combo — weigh the pack you fly."
+      : " A Plus battery takes takeoff over 249 g. DJI does not give this airframe a C1 mark — weigh the pack you fly.";
   return `${d.shortName} is ${d.ukClass}, takeoff about ${trimNum(d.weightG)} g (${d.weightNote}). In the UK a Flyer ID is required from 100 g, and an Operator ID is required from 100 g with a camera or from 250 g — this airframe needs both.${plus} This is not legal advice; read the CAA Drone Code for the airframe and battery you actually fly. Longer version: the UK Open explainer on this site (/guides/uk).`;
 }
 

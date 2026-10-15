@@ -85,7 +85,7 @@ export const glossary: Record<string, GlossaryEntry> = {
     id: "gimbal",
     label: "Gimbal",
     oneLiner: "True vertical and extra tilt are how you fill a phone screen without cropping.",
-    body: "A gimbal that rotates to portrait uses the full sensor; a crop-to-vertical Mini wastes pixels. 225° tilt (Mini 5 Pro) and 360° infinity (Mavic 4 Pro) are for Dutch angles and overheads, not for ‘more stable’. If you only ever shoot landscape 16:9, this row is quiet.",
+    body: "The cell is DJI’s controllable tilt, not a single marketing degree. Mini 5 Pro’s 225° is roll (−180° to 45°); tilt is −90° to +55°. Mavic 4 Pro’s 360° is roll; tilt is −90° to +70°. Older airframes often publish −90° to 0°, with a few degrees of upward tilt only in an extended setting. True vertical is the roll to portrait. If you only ever shoot landscape 16:9, this row is quiet.",
     sourceLabel: "DJI Mini 5 Pro / Mavic 4 Pro product pages",
     sourceUrl: "https://www.dji.com/uk/mini-5-pro",
   },
