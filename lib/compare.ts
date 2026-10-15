@@ -1,5 +1,5 @@
 import { glossary } from "@/data/glossary";
-import { keepFromTo } from "@/data/parts";
+import { keepFromTo, partsFor, type PartKind } from "@/data/parts";
 import { gearForDrone } from "@/data/gear";
 import { featuredFor } from "@/data/featured-matchups";
 import type { Drone, SensingKind } from "@/data/types";
@@ -35,7 +35,12 @@ export type SpecKey =
   | "storage"
   | "sdCard"
   | "gnss"
-  | "opTemp";
+  | "opTemp"
+  | "kitBattery"
+  | "kitRc"
+  | "kitMotion"
+  | "kitNd"
+  | "kitGoggles";
 
 /** Rows that feed the “would you notice” verdict — not every spec line. */
 const VERDICT_KEYS: SpecKey[] = [
@@ -227,6 +232,25 @@ function row(
   winnerIndex: number | null,
 ): SpecRow {
   return { key, group, label, values, notice, winnerIndex };
+}
+
+/** Catalog part names. A dash means this catalog lists none — not a guessed size. */
+function kitLine(slug: string, kind: PartKind): string {
+  const list = partsFor(slug, kind);
+  if (!list.length) return "—";
+  return list.map((p) => p.name).join("; ");
+}
+
+function sensingCell(d: Drone): string {
+  const label = SENSING_LABEL[d.sensing];
+  const note = d.sensingNote.trim();
+  if (!note) return label;
+  // Drop the short label only when the note already carries every word in it.
+  // "Omni + nightscape" stays if the note never says nightscape.
+  const tokens = label.toLowerCase().split(/[^a-z0-9]+/).filter(Boolean);
+  const hay = note.toLowerCase();
+  const covered = tokens.every((word) => hay.includes(word.slice(0, 4)));
+  return covered ? note : `${label}. ${note}`;
 }
 
 export function specRows(list: Drone[]): SpecRow[] {
@@ -565,7 +589,7 @@ export function specRows(list: Drone[]): SpecRow[] {
       "sensing",
       "Sensing",
       "Obstacle sensing",
-      list.map((d) => SENSING_LABEL[d.sensing]),
+      list.map(sensingCell),
       senseNotice,
       uniqueWinner(sense, "max"),
     ),
@@ -633,7 +657,18 @@ export function specRows(list: Drone[]): SpecRow[] {
       differNotice(list.map((d) => d.opTempC)),
       null,
     ),
+    kitRow(list, "kitBattery", "Battery family", "battery"),
+    kitRow(list, "kitRc", "Controller", "rc"),
+    kitRow(list, "kitMotion", "Motion", "motion"),
+    kitRow(list, "kitNd", "ND filters", "nd"),
+    kitRow(list, "kitGoggles", "Goggles", "goggles"),
   ];
+}
+
+/** Different kit is a fact you would notice. No winner — a different pack is not “ahead”. */
+function kitRow(list: Drone[], key: SpecKey, label: string, kind: PartKind): SpecRow {
+  const values = list.map((d) => kitLine(d.slug, kind));
+  return row(key, "Kit", label, values, differNotice(values, "notice"), null);
 }
 
 function uniqueWinner(nums: number[], dir: "max" | "min"): number | null {
@@ -753,9 +788,16 @@ function proseNotices(list: Drone[], rows: SpecRow[]): string {
     }
   }
   const unique = [...new Set(bits)];
-  if (!unique.length) return "The table below is the difference.";
+  const kitKept = rows
+    .filter((h) => h.group === "Kit" && maxNotice(h.notice) === "notice")
+    .map((h) => h.label);
+  const kitSentence = kitKept.length
+    ? `You would notice the kit you can keep (${kitKept.join(", ")}).`
+    : "";
+  if (!unique.length) return kitSentence || "The table below is the difference.";
   const lead = unique[0].charAt(0).toUpperCase() + unique[0].slice(1);
-  return `${lead}${unique.length > 1 ? `; ${unique.slice(1).join("; ")}` : ""}.`;
+  const body = `${lead}${unique.length > 1 ? `; ${unique.slice(1).join("; ")}` : ""}.`;
+  return kitSentence ? `${body} ${kitSentence}` : body;
 }
 
 function snippetFor(list: Drone[], rows: SpecRow[], law: string): string {

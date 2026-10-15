@@ -289,6 +289,46 @@ export const glossary: Record<string, GlossaryEntry> = {
     sourceLabel: "DJI controller / goggles compatibility notes",
     sourceUrl: "https://www.dji.com/uk/products/camera-drones",
   },
+  kitBattery: {
+    id: "kitBattery",
+    label: "Battery family",
+    oneLiner: "The pack name. Watt-hours are the row above; this is whether the packs move.",
+    body: "A different family means the intelligent flight batteries do not swap. Mini 4 Pro packs are not Mini 5 Pro packs. Plus batteries, where the watt-hour row lists them, stay in the same family and can change the class mark. This cell is the catalog name, not a new capacity figure.",
+    sourceLabel: "DJI product compatibility notes",
+    sourceUrl: "https://www.dji.com/uk/products/camera-drones",
+  },
+  kitRc: {
+    id: "kitRc",
+    label: "Controller",
+    oneLiner: "The sticks listed for this airframe. The same OcuSync generation is not the same RC.",
+    body: "O4 on an RC-N2 does not make it an RC-N3. The cell is every controller in this catalog that lists the aircraft. Firmware on a used stick can still block a listed pair — check the RC you actually hold.",
+    sourceLabel: "DJI product compatibility notes",
+    sourceUrl: "https://www.dji.com/uk/products/camera-drones",
+  },
+  kitMotion: {
+    id: "kitMotion",
+    label: "Motion",
+    oneLiner: "Thumb motion, not the FPV sticks. Only the airframes that list it.",
+    body: "Motion 2 and Motion 3 are different kits. A Mini does not grow a motion controller because an Avata in the same compare has one. A dash means this catalog does not list one for that aircraft.",
+    sourceLabel: "DJI product compatibility notes",
+    sourceUrl: "https://www.dji.com/uk/products/camera-drones",
+  },
+  kitNd: {
+    id: "kitNd",
+    label: "ND filters",
+    oneLiner: "The filter set listed for this airframe. Thread and size do not follow the brand name.",
+    body: "Mini 4 Pro ND does not sit on Mini 5 Pro. Many airframes have no ND set in this catalog — the cell stays a dash rather than a guessed diameter. Confirm the thread on the lens you hold.",
+    sourceLabel: "DJI ND filter product notes",
+    sourceUrl: "https://www.dji.com/uk/products/camera-drones",
+  },
+  kitGoggles: {
+    id: "kitGoggles",
+    label: "Goggles",
+    oneLiner: "The headset listed for this airframe. A display, not a transmitter for a Mini.",
+    body: "Avata 1 goggles do not fly Avata 2. Goggles do not cancel Flyer ID or visual line of sight. A dash means this catalog does not list a headset for that aircraft.",
+    sourceLabel: "DJI product compatibility notes",
+    sourceUrl: "https://www.dji.com/uk/products/camera-drones",
+  },
 };
 
 /** Price-board rows. Same shape as spec glossary so the i tooltip is shared. */
