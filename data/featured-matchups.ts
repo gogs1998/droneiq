@@ -83,7 +83,7 @@ export const featuredMatchups: FeaturedMatchup[] = [
       },
       {
         q: "Will I notice the 1-inch sensor over the Mini 4 Pro’s 1/1.3-inch?",
-        a: "In noon sun, often not on a phone screen. In evening light, interiors, and anything you grade, yes — that is the point of the Mini 5 Pro. 4K/120 and 225° gimbal tilt are the other two things you would actually use. Advertised O4 vs O4+ range is not; both are CE ~10 km and you fly VLOS.",
+        a: "In noon sun, often not on a phone screen. In evening light, interiors, and anything you grade, yes — that is the point of the Mini 5 Pro. 4K/120 and 225° gimbal roll are the other two things you would actually use. Advertised O4 vs O4+ range is not; both are CE ~10 km and you fly VLOS.",
       },
     ],
   },

@@ -28,7 +28,10 @@ export type Camera = {
   hdr: boolean;
   log: string | null;
   trueVertical: boolean;
+  /** Controllable tilt span in degrees. The spec cell prefers `gimbalRange` when set. */
   gimbalTiltDeg: number;
+  /** DJI controllable range, when a single degree would mix tilt, roll, and an endpoint. */
+  gimbalRange?: string;
 };
 
 export type Combo = {
